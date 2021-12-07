@@ -1,5 +1,8 @@
 # Merchant-CMS
 
+to run the app use:
+> npm run dev
+
 | endpoint                 | sub-enpoin         | Operation
 | ------------------------ | ------------------ | --------------------------- |
 | /merchants               | /                  | POST, GET                   |
