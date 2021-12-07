@@ -9,9 +9,12 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use([
+  cors(),
+  express.json(),
+  express.urlencoded({ extended: false }),
+]);
+
 
 const PORT = process.env.PORT || 3000;
 app.use(router);
