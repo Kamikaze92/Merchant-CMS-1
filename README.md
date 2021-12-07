@@ -9,9 +9,9 @@ How to pull updated org main branch:
 > - to pull new updated code : `git pull main-org main`
 
 How to merge and pull request your code:
-> - git add <filename-with-full-path>
-> - git commit -m <your-messages>
-> - git push origin <main> or <your-work-branch>
+> - git add `<filename-with-full-path>`
+> - git commit -m `<your-messages>`
+> - git push origin `<main>` or `<your-work-branch>`
 > - create PR on github Organization
 > - done.
 
