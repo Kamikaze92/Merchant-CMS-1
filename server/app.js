@@ -8,11 +8,7 @@ const cors = require('cors');
 
 const app = express();
 
-app.use([
-  cors(),
-  express.json(),
-  express.urlencoded({ extended: false }),
-]);
+app.use([cors(), express.json(), express.urlencoded({ extended: false })]);
 
 app.use(router);
 
