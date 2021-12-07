@@ -15,7 +15,7 @@ How to merge and pull request your code:
 > - create PR on github Organization
 > - done.
 
-
+  
 | endpoint                 | sub-enpoin         | Operation
 | ------------------------ | ------------------ | --------------------------- |
 | /merchants               | /                  | POST, GET                   |
