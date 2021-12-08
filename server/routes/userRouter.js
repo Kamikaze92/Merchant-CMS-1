@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {});
-router.post('/', (req, res) => {});
-router.get('/:id', (req, res) => {});
-router.put('/:id', (req, res) => {});
-router.patch('/:id', (req, res) => {});
-router.delete('/:id', (req, res) => {});
+router.get('/users', (req, res) => {});
+router.post('/users', (req, res) => {});
+router.get('/users/:id', (req, res) => {});
+router.put('/users/:id', (req, res) => {});
+router.patch('/users/:id', (req, res) => {});
+router.delete('/users/:id', (req, res) => {});
 
 module.exports = router;

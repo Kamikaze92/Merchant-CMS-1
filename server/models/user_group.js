@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Role extends Model {
+  class User_Group extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,38 +13,34 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  Role.init({
-    name: {
+  User_Group.init({
+    role_id: {
       allowNull: false,
-      unique: {
-        args: true,
-        msg: "Role name must be unique"
-      },
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       validate: {
         notNull: {
-          msg: "Role name can't be empty"
+          msg: "role_id can't be empty"
         },
         notEmpty: {
-          msg: "Role name can't be empty"
+          msg: "role_id can't be empty"
         }
       }
     },
-    description: {
+    privilege_id: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       validate: {
         notNull: {
-          msg: "Role description can't be empty"
+          msg: "privilege_id can't be empty"
         },
         notEmpty: {
-          msg: "Role description can't be empty"
+          msg: "privilege_id can't be empty"
         }
       }
     }
   }, {
     sequelize,
-    modelName: 'Role',
+    modelName: 'User_Group',
   });
-  return Role;
+  return User_Group;
 };

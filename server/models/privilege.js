@@ -14,63 +14,19 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Privilege.init({
-    action_a: {
+    name: {
       allowNull: false,
-      type: DataTypes.BOOLEAN,
+      unique: {
+        args: true,
+        msg: 'Privilege name must be unique'
+      },
+      type: DataTypes.STRING,
       validate: {
         notNull: {
-          msg: "Privilege action can't be empty"
+          msg: "Privilege name can't be empty"
         },
         notEmpty: {
-          msg: "Privilege action can't be empty"
-        }
-      }
-    },
-    action_b: {
-      allowNull: false,
-      type: DataTypes.BOOLEAN,
-      validate: {
-        notNull: {
-          msg: "Privilege action can't be empty"
-        },
-        notEmpty: {
-          msg: "Privilege action can't be empty"
-        }
-      }
-    },
-    action_c: {
-      allowNull: false,
-      type: DataTypes.BOOLEAN,
-      validate: {
-        notNull: {
-          msg: "Privilege action can't be empty"
-        },
-        notEmpty: {
-          msg: "Privilege action can't be empty"
-        }
-      }
-    },
-    action_d: {
-      allowNull: false,
-      type: DataTypes.BOOLEAN,
-      validate: {
-        notNull: {
-          msg: "Privilege action can't be empty"
-        },
-        notEmpty: {
-          msg: "Privilege action can't be empty"
-        }
-      }
-    },
-    action_e: {
-      allowNull: false,
-      type: DataTypes.BOOLEAN,
-      validate: {
-        notNull: {
-          msg: "Privilege action can't be empty"
-        },
-        notEmpty: {
-          msg: "Privilege action can't be empty"
+          msg: "Privilege name can't be empty"
         }
       }
     }
