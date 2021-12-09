@@ -8,10 +8,10 @@ export const transporter = nodemailer.createTransport({
     },
     pool: true
 })
-let otpNumber = Math.floor(100000 + Math.random() * 900000)
+
 let activationLink = "dummy"
 
-export const mailOtp = (emailUser) => {
+export const mailOtp = (emailUser, otpNumber) => {
     return {
         from: 'h8.pedulilindungi.merchant@gmail.com',
         to: emailUser,
