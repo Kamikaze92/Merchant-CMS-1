@@ -28,3 +28,12 @@ export const mailActivation = (emailUser) => {
         text: `This is your verification link \n ${activationLink} \n Click link to finish your registration.`
     }
 }
+
+export const resetPasswordMail = (emailUser, resetLink) => {
+    return {
+        from: 'h8.pedulilindungi.merchant@gmail.com',
+        to: emailUser,
+        subject: '[PEDULI-LINDUNGI-CMS] Request reset account password',
+        text: `This is your one-time link to reset your password. \n ${resetLink} \n Click link to reset password.`
+    }
+}
