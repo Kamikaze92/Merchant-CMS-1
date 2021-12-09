@@ -1,6 +1,6 @@
 const {comparePassword} = require('../helpers/bcrypt')
 const {jwtSign, signPasswordLink} = require('../helpers/jwt')
-const {transporter, mailOtp} = require('../helpers/nodemailer')
+const {transporter, mailOtp, resetPasswordMail} = require('../helpers/nodemailer')
 
 module.exports = class AuthController {
   // your code goes here

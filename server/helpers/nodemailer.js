@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer')
 
-export const transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: 'h8.pedulilindungi.merchant@gmail.com',
@@ -11,7 +11,7 @@ export const transporter = nodemailer.createTransport({
 
 let activationLink = "dummy"
 
-export const mailOtp = (emailUser, otpNumber) => {
+const mailOtp = (emailUser, otpNumber) => {
     return {
         from: 'h8.pedulilindungi.merchant@gmail.com',
         to: emailUser,
@@ -20,7 +20,7 @@ export const mailOtp = (emailUser, otpNumber) => {
     }
 }
 
-export const mailActivation = (emailUser) => {
+const mailActivation = (emailUser) => {
     return {
         from: 'h8.pedulilindungi.merchant@gmail.com',
         to: emailUser,
@@ -29,7 +29,7 @@ export const mailActivation = (emailUser) => {
     }
 }
 
-export const resetPasswordMail = (emailUser, resetLink) => {
+const resetPasswordMail = (emailUser, resetLink) => {
     return {
         from: 'h8.pedulilindungi.merchant@gmail.com',
         to: emailUser,
@@ -37,3 +37,5 @@ export const resetPasswordMail = (emailUser, resetLink) => {
         text: `This is your one-time link to reset your password. \n ${resetLink} \n Click link to reset password.`
     }
 }
+
+module.exports = {resetPasswordMail, mailActivation, mailOtp, transporter}
