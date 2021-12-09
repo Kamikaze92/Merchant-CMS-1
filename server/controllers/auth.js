@@ -1,17 +1,17 @@
-const {comparePassword} = require('../helpers/bcrypt')
-const {jwtSign} = require('../helpers/jwt')
-const {transporter, mailOtp} = require('../helpers/nodemailer')
+const { comparePassword } = require('../helpers/bcrypt');
+const { jwtSign } = require('../helpers/jwt');
+const { transporter, mailOtp } = require('../helpers/nodemailer');
 
 module.exports = class AuthController {
   // your code goes here
-  static async userLogin (req,res,next) {
+  static async userLogin(req, res, next) {
     try {
-        const {email, password} = req.body
-        if(!req.body.email){
-            throw {name: 'mailnotfound'}
-        } else if(!req.body.password){
-            throw {name: 'passnotfound'}
-        }
+      const { email, password } = req.body;
+      if (!req.body.email) {
+        throw { name: 'email_not_found' };
+      } else if (!req.body.password) {
+        throw { name: 'password_not_found' };
+      }
 
         let response = await User.findOne({
             where: {email}
@@ -39,7 +39,7 @@ module.exports = class AuthController {
     }
   }
 
-  static async userRegister(req,res,next) {
+  static async userRegister(req, res, next) {
     try {
         const {nama_lengkap, email, no_hp, password, role_id, verificator_id} = req.body
         //validation here
@@ -63,10 +63,14 @@ module.exports = class AuthController {
           }
         }
       }
-      catch (err) {
-        next(err)
+      res.status(201).json({
+        message: `Success registered ${response.email}`,
+      });
+    } catch (err) {
+      next(err);
     }
   }
+
 
   static async resendOtp(){
 
