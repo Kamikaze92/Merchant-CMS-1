@@ -1,5 +1,5 @@
 const {comparePassword} = require('../helpers/bcrypt')
-const {jwtSign, signPasswordLink, verifyData} = require('../helpers/jwt')
+const {jwtSign, signPasswordLink} = require('../helpers/jwt')
 const {transporter, mailOtp} = require('../helpers/nodemailer')
 
 module.exports = class AuthController {
@@ -7,18 +7,12 @@ module.exports = class AuthController {
   static async userLogin (req,res,next) {
     try {
         const {email, password} = req.body
-        if(!req.body.email){
-            throw {name: 'mailnotfound'}
-        } else if(!req.body.password){
-            throw {name: 'passnotfound'}
-        }
-
         let response = await User.findOne({
             where: {email}
         })
         if(response && comparePassword(password, response.password)){
           if(!response.approve_at){
-              throw {name: "accountnotverified"}
+              throw {name: "not_authenticated"}
           } 
           else {
               const access_token = jwtSign({
@@ -31,7 +25,7 @@ module.exports = class AuthController {
             }
           }
         else{
-            throw {name: 'invalidlogin'}
+            throw {name: 'invalid_user'}
         }
     } 
     catch (err) {
@@ -58,7 +52,7 @@ module.exports = class AuthController {
               message: `Your registered are on process, please wait 1x24 hour.`
             })
           } else {
-            throw {name: "invalidotp"}
+            throw {name: "invalid_otp"}
           }
         }
       }
@@ -72,7 +66,7 @@ module.exports = class AuthController {
         const { email } = req.body;
         const response = await User.findOne({ where: { email } });
         if(!email) {
-          throw { name: 'Email not exist' }
+          throw { name: 'email_not_found' }
         }
         const payload = {
             id: response.id,
@@ -80,7 +74,7 @@ module.exports = class AuthController {
         };
         const token = signPasswordLink(payload, response.password);
         let link = `http://localhost:3000/${response.id}/${token}`
-        transporter.sendMail(mailOtp(response.email, link), (err) => {
+        transporter.sendMail(resetPasswordMail(response.email, link), (err) => {
           if(err){
             console.log(err)
           } else{
@@ -100,7 +94,7 @@ module.exports = class AuthController {
       const { id } = req.params
       const { password, password2 } = req.body
       if(password !== password2){
-        throw {name: "password not match"}
+        throw {name: "password_not_match"}
       }
       //create hooks beforeUpdate to hash new password
       let params = { password }

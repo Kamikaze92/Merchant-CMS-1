@@ -5,11 +5,11 @@ export const resetPasswordMiddleware = async (req, res, next) => {
       const { id, token } = req.params
       const response = await User.findOne({ where: { id } })
       if(!response){
-        throw {name: "Email not exist"}
+        throw {name: "email_not_found"}
       }
       const payload = verifyLink(token)
       if (!payload){
-          throw {name: "invalidtoken"}
+          throw {name: "invalid_token"}
       }
       next()
     } catch (err) {
