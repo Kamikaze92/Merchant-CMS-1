@@ -52,7 +52,6 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: {
             msg: "Password is required",
           },
-          len: {},
         },
       },
       verifiedAt: DataTypes.DATE,
@@ -71,12 +70,26 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      RoleId: DataTypes.INTEGER,
+      RoleId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Role is required",
+          },
+          notEmpty: {
+            msg: "Role is required",
+          },
+        },
+      },
       approvedBy: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: {
+            msg: "Name is required",
+          },
+          notEmpty: {
             msg: "Name is required",
           },
         },
