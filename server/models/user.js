@@ -54,7 +54,18 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      verifiedAt: DataTypes.DATE,
+      verifiedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Verified at is required",
+          },
+          notEmpty: {
+            msg: "Verified at is required",
+          },
+        },
+      },
       mobilePhone: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -84,15 +95,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       approvedBy: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Name is required",
-          },
-          notEmpty: {
-            msg: "Name is required",
-          },
-        },
       },
       approvedAt: DataTypes.DATE,
       VerficatorId: DataTypes.INTEGER,
