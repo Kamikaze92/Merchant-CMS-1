@@ -2,6 +2,8 @@ const { getPagination, getPagingData } = require("../helpers/pagination");
 const  newHistory= require('../helpers/historyInstance');
 const { User, Role, Verificator, sequelize, History } = require("../models");
 const { Op } = require("sequelize");
+const {jwtSign, verifyData} = require('../helpers/jwt')
+const {transporter, mailActivation} = require('../helpers/nodemailer')
 module.exports = class UserController {
   // your code goes here
 
@@ -240,6 +242,73 @@ module.exports = class UserController {
       await t.rollback();
       console.log(err);
       next(err);
+    }
+  }
+
+  static async sendActivationLink(req, res, next){
+    try {
+      const {id} = req.params;
+      const foundUser = await User.findOne({id});
+      const payload = {
+        id: foundUser.id,
+        email: foundUser.email
+      };
+      const token = jwtSign(payload);
+      let link = `http://localhost:3000/${foundUser.id}/${token}`
+      transporter.sendMail(mailActivation(foundUser.email, link), (err) => {
+        if(err){
+          throw {
+            message: 'error Send OTP',
+          }
+        } else{
+          console.log(`email sent to ${response.email}`)
+          res.status(201).json({ 
+            message: 'Activation link has been sent to your email'
+          })
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  static async approveUser(req, res, next) {
+    try {
+      const {id, token} = req.params
+      const payload = verifyData(token)
+      let params = {
+        approved_at: new Date(),
+        approved_by: payload.email
+      }
+      await User.update(params,{
+        where: {id}
+      })
+      res.status(201).json({ 
+        message: 'User has been approved.',
+        id: id
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  static async userCreatePassword(req, res, next){
+    try {
+      const { id } = req.params
+      const { password, password2 } = req.body
+      if(password !== password2){
+        throw {name: "password_not_match"}
+      }
+      //create hooks beforeUpdate to hash new password
+      let params = { password }
+      await User.update(params, {
+        where: { id }
+      })
+      res.status(201).json({ 
+        message: 'Password registered. Please attempt login.'
+      })
+    } catch (err) {
+      next(err)
     }
   }
 };
