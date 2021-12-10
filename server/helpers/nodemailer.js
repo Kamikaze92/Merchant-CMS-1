@@ -9,23 +9,21 @@ const transporter = nodemailer.createTransport({
     pool: true
 })
 
-let activationLink = "dummy"
-
 const mailOtp = (emailUser, otpNumber) => {
     return {
         from: 'h8.pedulilindungi.merchant@gmail.com',
         to: emailUser,
         subject: '[PEDULI-LINDUNGI-CMS] Register new user OTP Verification',
-        text: `This is your verification code \n ${otpNumber} \n Input this number to verify your email address.`
+        html: `This is your verification code \n <h1>${otpNumber}</h1> \n Input this number to verify your email address.`
     }
 }
 
-const mailActivation = (emailUser) => {
+const mailActivation = (emailUser, activationLink) => {
     return {
         from: 'h8.pedulilindungi.merchant@gmail.com',
         to: emailUser,
         subject: '[PEDULI-LINDUNGI-CMS] Activation Link for verify new user',
-        text: `This is your verification link \n ${activationLink} \n Click link to finish your registration.`
+        html: `This is your verification link \n <a>${activationLink}</a> \n Click link to finish your registration.`
     }
 }
 
@@ -34,7 +32,7 @@ const resetPasswordMail = (emailUser, resetLink) => {
         from: 'h8.pedulilindungi.merchant@gmail.com',
         to: emailUser,
         subject: '[PEDULI-LINDUNGI-CMS] Request reset account password',
-        text: `This is your one-time link to reset your password. \n ${resetLink} \n Click link to reset password.`
+        html: `This is your one-time link to reset your password. \n <a>${resetLink}</a> \n Click link to reset password.`
     }
 }
 
