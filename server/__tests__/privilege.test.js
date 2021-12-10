@@ -286,7 +286,7 @@ afterAll(done => {
         description: 'Super Dupper Admin'
     } 
     request(app)
-        .delete(`/roles/${role_id}`)
+        .put(`/myheroes/${idMyHero}`)
         .set("access_token", validToken1)
         .send(input)
         .then((response) => {
@@ -319,75 +319,3 @@ afterAll(done => {
        });
     });
  });
-
- describe("DELETE /roles/:id", () => {
-  test("200 success DELETE role by id", (done) => {
-   request(app)
-     .delete(`/roles/${role_id}`)
-     .set("access_token", validToken1)
-     .then((response) => {
-      const { body, status } = response;
-      expect(status).toBe(200);
-      expect(body).toHaveProperty("message", `Role with id ${role_id} has been deleted`);
-      done();
-     })
-     .catch((err) => {
-       done(err);
-     });
-  });
-  test("403 DELETE role by id with unauthorized user", (done) => {
-      request(app)
-      .delete(`/roles/${role_id}`)
-      .set("access_token", validToken2)
-      .then((response) => {
-          const { body, status } = response;
-          expect(status).toBe(403);
-          expect(body).toHaveProperty("message", "You are not authorized");
-          done();
-      })
-      .catch((err) => {
-          done(err);
-      });
-  });
- test("401 DELETE role by id with invalid token", (done) => {
-      request(app)
-     .delete(`/roles/${role_id}`)
-     .set("access_token", invalidToken)
-     .then((response) => {
-      const { body, status } = response;
-      expect(status).toBe(401);
-      expect(body).toHaveProperty("message", "Invalid token");
-      done();
-     })
-     .catch((err) => {
-       done(err);
-     });
- });
- test("401 DELETE role by id without token", (done) => {
-  request(app)
-      .delete(`/roles/${role_id}`)
-      .then((response) => {
-      const { body, status } = response;
-      expect(status).toBe(401);
-      expect(body).toHaveProperty("message", "Invalid token");
-      done();
-      })
-      .catch((err) => {
-          done(err);
-      });
- });
- test("404 DELETE role by id not found", (done) => {
-   request(app)
-     .delete(`/roles/${role_id}`)
-     .set("access_token", validToken1)
-     .then((response) => {
-       const { body, status } = response;
-       expect(status).toBe(404);
-       expect(body).toHaveProperty("message", "Role is not found");
-       done();
-     })
-     .catch((err) => {
-       done(err);
-     });
-  });
-});

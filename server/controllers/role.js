@@ -15,7 +15,11 @@ class RoleController {
       if(!isHistoryCreated) {
         throw { name: 'Fail create history' };
       }
-      res.status(201).json({ message: 'New role has been added' });
+      res.status(201).json({
+        id: resp.id,
+        name: resp.name,
+        description: resp.description,
+      });
     } catch (error) {
       res.status(500).json(error)
       next(error);
@@ -27,7 +31,7 @@ class RoleController {
         { exclude: ['createdAt', 'updatedAt'] } 
       });
       if(!resp.length) {
-        res.status(200).json({ message: 'Data is not found' });
+        res.status(200).json({ message: 'Role is not found' });
     } else {
         res.status(200).json(resp);
     }
