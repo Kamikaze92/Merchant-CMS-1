@@ -1,6 +1,7 @@
 const {verifyLink} = require('../helpers/jwt')
 const {User} = require('../models/index')
-export const resetPasswordMiddleware = async (req, res, next) => {
+const resetPasswordMiddleware = async (req, res, next) => {
+
     try {
       const { id, token } = req.params
       const response = await User.findOne({ where: { id } })
@@ -15,4 +16,7 @@ export const resetPasswordMiddleware = async (req, res, next) => {
     } catch (err) {
       next(err)
     }
-  }
+
+}
+
+module.exports = {resetPasswordMiddleware}
