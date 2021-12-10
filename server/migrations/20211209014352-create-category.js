@@ -12,6 +12,15 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      description: {
+        type: Sequelize.STRING,
+      },
+      isTenant: {
+        type: Sequelize.BOOLEAN,
+      },
+      createdBy: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

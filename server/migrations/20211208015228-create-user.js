@@ -23,6 +23,7 @@ module.exports = {
       },
       verifiedAt: {
         type: Sequelize.DATE,
+        allowNull: false,
       },
       mobilePhone: {
         type: Sequelize.STRING,
