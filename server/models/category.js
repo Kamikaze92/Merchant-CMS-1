@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Category.hasMany(Category, {
+        foreignKey: "parent_id",
+        as: "SubCategory",
+      });
     }
   }
   Category.init(
@@ -24,6 +27,18 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Name is required",
           },
         },
+      },
+      description: {
+        type: DataTypes.STRING,
+      },
+      is_tenant_group: {
+        type: DataTypes.BOOLEAN,
+      },
+      createdBy: {
+        type: DataTypes.STRING,
+      },
+      parent_id: {
+        type: DataTypes.INTEGER,
       },
     },
     {

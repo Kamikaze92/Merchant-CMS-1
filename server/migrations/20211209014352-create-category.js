@@ -12,6 +12,18 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      description: {
+        type: Sequelize.STRING,
+      },
+      is_tenant_group: {
+        type: Sequelize.BOOLEAN,
+      },
+      createdBy: {
+        type: Sequelize.STRING,
+      },
+      parent_id: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
