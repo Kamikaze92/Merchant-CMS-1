@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      nama_pengampuh: {
+      institution: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -20,40 +20,41 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      post_code: {
+      postal_code: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      province: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      city: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      subcategory_id: {
+      province_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
-          model: 'SubCategories',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+      },
+      city_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      category_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      tenant_category_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       parent_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
+      deleted_at: {
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {

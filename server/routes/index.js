@@ -5,7 +5,9 @@ const privilegeRouter = require('./privilegeRouter');
 const userRouter = require('./userRouter');
 const categoryRouter = require('./categoryRouter');
 const userGroupsRouter = require('./userGroupsRouter');
+const authRouter = require('./authRouter');
 
+router.use('/', authRouter);
 router.use('/roles', roleRouter);
 router.use('/privileges', privilegeRouter);
 router.use('/users', userRouter);

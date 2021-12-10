@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon bin/www.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest:db": "NODE_ENV=test npx sequelize db:drop && NODE_ENV=test npx sequelize db:create",
+    "pretest": "NODE_ENV=test npx sequelize db:migrate",
+    "test": "NODE_ENV=test jest --detectOpenHandles --forceExit --maxWorkers=1"
   },
   "keywords": [],
   "author": "",

@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      fullName: {
+      full_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -21,44 +21,42 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      verifiedAt: {
+      verified_at: {
         type: Sequelize.DATE,
       },
-      mobilePhone: {
+      phone_number: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      RoleId: {
+      approved_by: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Roles",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
       },
-      approvedBy: {
+      approved_at: {
+        type: Sequelize.DATE,
+      },
+      is_rejected: {
+        type: Sequelize.BOOLEAN,
+      },
+      rejected_reason: {
         type: Sequelize.STRING,
       },
-      approvedAt: {
-        type: Sequelize.DATE,
-      },
-      VerficatorId: {
+      verifier_id: {
         type: Sequelize.INTEGER,
+        allowNull: true,
         references: {
-          model: "Verificators",
+          model: "Verifiers",
           key: "id",
         },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deleted_at: {
         type: Sequelize.DATE,
       },
     });

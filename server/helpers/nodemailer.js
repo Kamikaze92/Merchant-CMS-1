@@ -29,9 +29,7 @@ const mailActivation = (emailUser) => {
     }
 }
 
-
 const resetPasswordMail = (emailUser, resetLink) => {
-
     return {
         from: 'h8.pedulilindungi.merchant@gmail.com',
         to: emailUser,

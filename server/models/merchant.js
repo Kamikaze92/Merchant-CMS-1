@@ -15,15 +15,20 @@ module.exports = (sequelize, DataTypes) => {
   };
   Merchant.init({
     user_id: DataTypes.INTEGER,
-    nama_pengampuh: DataTypes.STRING,
+    institution: DataTypes.STRING,
     address: DataTypes.STRING,
-    post_code: DataTypes.STRING,
-    province: DataTypes.STRING,
-    city: DataTypes.STRING,
-    subcategory_id: DataTypes.INTEGER,
+    postal_code: DataTypes.STRING,
+    province_id: DataTypes.INTEGER,
+    city_id: DataTypes.INTEGER,
+    category_id: DataTypes.INTEGER,
+    tenant_category_id: DataTypes.INTEGER,
     parent_id: DataTypes.INTEGER
   }, {
     sequelize,
+    paranoid: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
     modelName: 'Merchant',
   });
   return Merchant;
