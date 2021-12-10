@@ -38,9 +38,4 @@ const resetPasswordMail = (emailUser, resetLink) => {
     }
 }
 
-<<<<<<< HEAD
 module.exports = {resetPasswordMail, mailActivation, mailOtp, transporter}
-=======
-module.exports = {resetPasswordMail, mailActivation, mailOtp, transporter}
-
->>>>>>> 34a2a0e1f392491b3846769ca27f01764e0e9139

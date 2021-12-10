@@ -1,11 +1,9 @@
 const {comparePassword} = require('../helpers/bcrypt')
 const {jwtSign, signPasswordLink} = require('../helpers/jwt')
+const newHistory = require('../helpers/historyInstance');
 const {transporter, mailOtp, resetPasswordMail} = require('../helpers/nodemailer')
-<<<<<<< HEAD
-=======
 const { sequelize, User, Merchant, Verifier } = require('../models');
->>>>>>> 34a2a0e1f392491b3846769ca27f01764e0e9139
-
+const redis = require('../config/redis')
 module.exports = class AuthController {
   // your code goes here
   static async userLogin (req,res,next) {
@@ -37,20 +35,6 @@ module.exports = class AuthController {
     }
   }
 
-<<<<<<< HEAD
-  static async userRegister(req,res,next) {
-    try {
-        const {nama_lengkap, email, no_hp, password, role_id, verificator_id} = req.body
-        //validation here 
-        let response = await User.create({nama_lengkap, email, no_hp, password, role_id, verificator_id})
-        if (response){
-          let otp = Math.floor(100000 + Math.random() * 900000)
-          transporter.sendMail(mailOtp(response.email, otp), (err) => {
-            if(err){
-              console.log(err)
-            } else{
-              console.log(`email sent to ${response.email}`)
-=======
   /**
    * Because the merchant registration process and the verifier are the same.
    * It is necessary to add non database field [use_type] to identify what type of user will be created.
@@ -74,7 +58,6 @@ module.exports = class AuthController {
         province_id,
         city_id,
       } = req.body;
-      
       // user transaction
       const userTransaction = await User.create({
         full_name,
@@ -112,8 +95,10 @@ module.exports = class AuthController {
       }
 
       // create history
-      // !need to add history later.
-
+      const isHistoryCreated = await newHistory('createUser', userTransaction);
+      if(!isHistoryCreated) {
+          throw { name: 'Fail create history' };
+      }
       // if transaction successfull, send the OTP.
       t.afterCommit(() => {
         // using padStart so it will be always 6 digit.
@@ -123,32 +108,67 @@ module.exports = class AuthController {
             // !need to rework error name.
             throw {
               message: 'error Send OTP',
->>>>>>> 34a2a0e1f392491b3846769ca27f01764e0e9139
             }
           } else{
-            // ! store OTP & email on redis.
+            redis.set("otp", OTP)
+            redis.set("emailtoken", userTransaction.email)
             res.status(201).json({
-<<<<<<< HEAD
-              message: `Your registered are on process, please wait 1x24 hour.`
-            })
-          } else {
-            throw {name: "invalid_otp"}
-          }
-        }
-      }
-      catch (err) {
-        next(err)
-=======
-              message: `Registration success, OTP was sent to ${userTransaction.email}.`,
+              message: `OTP was sent to ${userTransaction.email}.`,
             });
           };
         });
       });
       await t.commit();
+      await redis.del('otp');
+      await redis.del('emailtoken');
     } catch (error) {
       await t.rollback();
       next(error);
->>>>>>> 34a2a0e1f392491b3846769ca27f01764e0e9139
+    }
+  }
+
+  static async verifyOtp(req, res, next){
+    //ambil otp dan email dari redis
+    try {
+      const {otp} = req.body
+      const redisOtp = await redis.get('otp')
+      if(redisOtp !== otp){
+        throw {name: 'invalid_otp'}
+      }
+      const {email} = req.params
+      const foundEmailToken = await User.update(
+        {verified_at: new Date ()},
+        {where: email}
+      )
+      if(!foundEmailToken){
+        throw {name: "not_authenticated"}
+      }
+      await redis.del('otp')
+      res.status(201).json({
+        message: 'Registration success! Please check your email by 3x24 for verification process.'
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  static async resendOtp(req, res, next){
+    try {
+      const OTP = String(Math.floor(Math.random() * 999999)).padStart(6, '0');
+      transporter.sendMail(mailOtp(userTransaction.email, OTP), (error) => {
+        if(error){
+          throw {
+            message: 'error Send OTP',
+          }
+        } else{
+          redis.set("otp", OTP)
+          res.status(201).json({
+            message: `OTP was sent.`,
+          });
+        };
+      });
+    } catch (err) {
+      next(err)
     }
   }
 
