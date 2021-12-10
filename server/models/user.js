@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      fullName: {
+      full_name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -54,19 +54,8 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      verifiedAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Verified at is required",
-          },
-          notEmpty: {
-            msg: "Verified at is required",
-          },
-        },
-      },
-      mobilePhone: {
+      verified_at: DataTypes.DATE,
+      phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -81,29 +70,20 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      RoleId: {
+      approved_by: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Role is required",
-          },
-          notEmpty: {
-            msg: "Role is required",
-          },
-        },
       },
-      approvedBy: {
-        type: DataTypes.STRING,
-      },
-      approvedAt: DataTypes.DATE,
-      VerficatorId: DataTypes.INTEGER,
-      deletedAt: "deletedAt",
-      paranoid: true,
-      timestamps: true,
+      approved_at: DataTypes.DATE,
+      is_rejected: DataTypes.BOOLEAN,
+      rejected_reason: DataTypes.STRING,
+      verifier_id: DataTypes.INTEGER,
     },
     {
       sequelize,
+      paranoid: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      deletedAt: 'deleted_at',
       modelName: "User",
       hooks: {
         beforeCreate(user) {

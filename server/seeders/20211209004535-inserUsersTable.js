@@ -14,12 +14,6 @@ module.exports = {
           mobilePhone: "628515602393",
           // RoleId: 'Admin',
           approvedAt: new Date(),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          approvedBy: new Date(),
-          approvedAt: new Date(),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
         {
           id: 2,
@@ -28,9 +22,7 @@ module.exports = {
           password: "password",
           verifiedAt: new Date(),
           mobilePhone: "628515602393",
-          // RoleId: 'province',
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          // RoleId: 'Province',
         },
       ],
       {}

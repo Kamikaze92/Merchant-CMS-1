@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Category.hasMany(models.SubCategory, { foreignKey: "CategoryId" });
+      // define association here
     }
   }
   Category.init(
@@ -22,24 +22,6 @@ module.exports = (sequelize, DataTypes) => {
           },
           notEmpty: {
             msg: "Name is required",
-          },
-        },
-      },
-      description: {
-        type: DataTypes.STRING,
-      },
-      isTenant: {
-        type: DataTypes.BOOLEAN,
-      },
-      createdBy: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Created by is required",
-          },
-          notEmpty: {
-            msg: "Created by is required",
           },
         },
       },
