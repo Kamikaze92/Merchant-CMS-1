@@ -1,4 +1,5 @@
 const { getPagination, getPagingData } = require("../helpers/pagination");
+const  newHistory= require('../helpers/historyInstance');
 const { User, Role, Verificator, sequelize, History } = require("../models");
 const { Op } = require("sequelize");
 module.exports = class UserController {
@@ -134,13 +135,15 @@ module.exports = class UserController {
         verificator_id,
       };
       const create = await User.create(newUser, { transaction: t });
-      const newHistory = {
-        entityName: User.modelName,
-        description: `create new user with id ${create.id}`,
+      const payload = {
+        entity_name: 'User',
         entity_id: create.id,
         user_id: create.id,
       };
-      await History.create(newHistory, { returning: true });
+      const isHistoryCreated = await newHistory('createUser', payload);
+      if(!isHistoryCreated) {
+        throw { err: 'Fail create history' };
+      }
       await t.commit();
       res.status(201).json({ message: "success create new user" });
     } catch (err) {
@@ -167,12 +170,15 @@ module.exports = class UserController {
         where: { id: id },
         transaction: t
       });
-      const newHistory = {
-        entityName: User.modelName,
-        description: `Update user with id ${result.id}`,
+      const payload = {
+        entity_mame: 'User',
         entity_id: result.id,
         user_id: req.user.id || result.id,
       };
+      const isHistoryCreated = await newHistory('updateUser', payload);
+      if(!isHistoryCreated) {
+        throw { err: 'Fail create history' };
+      }
       await t.commit();
       res.status(200).json({ message: "Success update the user" });
     } catch (err) {
@@ -191,13 +197,15 @@ module.exports = class UserController {
         throw { name: "not found" };
       }
       const del = await User.destroy({ where: { id: id }, transaction: t });
-      const newHistory = {
-        entityName: User.modelName,
-        description: `delete soft user with id ${findUser.id}`,
+      const payload = {
+        entity_name: 'User',
         entity_id: findUser.id,
         user_id: req.user.id, // yang menghapus adalah yang login menekan tombol
       };
-      await History.create(newHistory, { returning: true });
+      const isHistoryCreated = await newHistory('deleteUserSoft', payload);
+      if(!isHistoryCreated) {
+        throw { err: 'Fail create history' };
+      }
       await t.commit();
       res.status(200).json({ message: "Success delete the User" });
     } catch (err) {
@@ -217,13 +225,15 @@ module.exports = class UserController {
         throw { name: "not found" };
       }
       const del = await User.destroy({ where: { id: id }, force: true, transaction: t });
-      const newHistory = {
-        entityName: User.modelName,
-        description: `delete hard user with id ${findUser.id}`,
+      const payload = {
+        entity_name: 'User',
         entity_id: findUser.id,
-        user_id: req.user.id, // yang menghapus adalah yang login menekan tombol
+        user_id: req.user.id // yang menghapus adalah yang login menekan tombol
       };
-      await History.create(newHistory, { returning: true });
+      const isHistoryCreated = await newHistory('deleteUserSoft', payload);
+      if(!isHistoryCreated) {
+        throw { err: 'Fail create history' };
+      }
       await t.commit();
       res.status(200).json({ message: "Success delete the User" });
     } catch (err) {

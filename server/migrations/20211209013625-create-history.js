@@ -1,32 +1,28 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Privileges', {
+    await queryInterface.createTable('Histories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      action_a: {
+      entity_name: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.STRING
       },
-      action_b: {
+      description: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.TEXT
       },
-      action_c: {
+      entity_id: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.INTEGER
       },
-      action_d: {
+      user_id: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
-      },
-      action_e: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +35,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Privileges');
+    await queryInterface.dropTable('Histories');
   }
 };

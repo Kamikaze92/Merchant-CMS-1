@@ -1,19 +1,36 @@
 const { Role } = require('../models');
+const newHistory = require('../helpers/historyInstance');
 
 class RoleController {
   static async createRole (req, res, next) {
     try {
       const { name, description } = req.body;
-      await Role.create({ name, description });
-      res.status({ message: 'New role has been added' });
+      const resp = await Role.create({ name, description });
+      const payload = {
+        entity_name: 'Role',
+        entity_id: resp.id,
+        user_id: req.user.id
+      };
+      const isHistoryCreated = await newHistory('createRole', payload);
+      if(!isHistoryCreated) {
+        throw { name: 'Fail create history' };
+      }
+      res.status(201).json({ message: 'New role has been added' });
     } catch (error) {
+      res.status(500).json(error)
       next(error);
     }
   }
   static async getAllRoles (req, res, next) {
     try {
-      const resp = await Role.findAll();
-      res.status(200).json(resp);
+      const resp = await Role.findAll({ attributes: 
+        { exclude: ['createdAt', 'updatedAt'] } 
+      });
+      if(!resp.length) {
+        res.status(200).json({ message: 'Data is not found' });
+    } else {
+        res.status(200).json(resp);
+    }
     } catch (error) {
       next(error);
     }
@@ -21,12 +38,15 @@ class RoleController {
   static async getRole (req, res, next) {
     try {
       const { id } = req.params;
-      const resp = await Role.findByPk(id);
+      const resp = await Role.findOne({ where: { id }, attributes: 
+        { exclude: ['createdAt', 'updatedAt'] } 
+      });
       if(!resp) {
         throw { name: 'Data is not found' };
       }
       res.status(200).json(resp);
     } catch (error) {
+      res.status(500).json(error)
       next(error);
     }
   }
@@ -38,9 +58,21 @@ class RoleController {
       if(!foundRole) {
         throw { name: 'Data is not found' };
       }
-      const resp = await Role.update({ name, description });
-      console.log(resp);
-      res.status(200).json(foundRole);
+      const resp = await Role.update({ name, description }, { where: { id }, returning: true });
+      if(!resp[1]) {
+        res.status(200).json({ message: 'Everything is already uptodated' });
+      } else {
+        const payload = {
+          entity_name: 'Role',
+          entity_id: resp[1][0].id,
+          user_id: req.user.id
+        };
+        const isHistoryCreated = await newHistory('updateRole', payload);
+        if(!isHistoryCreated) {
+          throw { name: 'Fail create history' };
+        }
+        res.status(200).json({ message: `Role with id ${id} has been updated` })
+      }
     } catch (error) {
       next(error);
     }
@@ -53,7 +85,16 @@ class RoleController {
         throw { name: 'Data is not found' };
       }
       await Role.destroy({ where: { id } });
-      res.status(200).json({ message: 'Role has been deleted' });
+      const payload = {
+        entity_name: 'Role',
+        entity_id: foundRole.id,
+        user_id: req.user.id
+      };
+      const isHistoryCreated = await newHistory('deleteRole', payload);
+      if(!isHistoryCreated) {
+        throw { name: 'Fail create history' };
+      }
+      res.status(200).json({ message: `Role with id ${id} has been deleted` });
     } catch (error) {
       next(error);
     }

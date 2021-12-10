@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer')
 
-export const transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: 'h8.pedulilindungi.merchant@gmail.com',
@@ -8,10 +8,10 @@ export const transporter = nodemailer.createTransport({
     },
     pool: true
 })
-let otpNumber = Math.floor(100000 + Math.random() * 900000)
+
 let activationLink = "dummy"
 
-export const mailOtp = (emailUser) => {
+const mailOtp = (emailUser, otpNumber) => {
     return {
         from: 'h8.pedulilindungi.merchant@gmail.com',
         to: emailUser,
@@ -20,7 +20,7 @@ export const mailOtp = (emailUser) => {
     }
 }
 
-export const mailActivation = (emailUser) => {
+const mailActivation = (emailUser) => {
     return {
         from: 'h8.pedulilindungi.merchant@gmail.com',
         to: emailUser,
@@ -28,3 +28,15 @@ export const mailActivation = (emailUser) => {
         text: `This is your verification link \n ${activationLink} \n Click link to finish your registration.`
     }
 }
+
+const resetPasswordMail = (emailUser, resetLink) => {
+    return {
+        from: 'h8.pedulilindungi.merchant@gmail.com',
+        to: emailUser,
+        subject: '[PEDULI-LINDUNGI-CMS] Request reset account password',
+        text: `This is your one-time link to reset your password. \n ${resetLink} \n Click link to reset password.`
+    }
+}
+
+module.exports = {resetPasswordMail, mailActivation, mailOtp, transporter}
+
