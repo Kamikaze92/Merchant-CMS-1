@@ -1,8 +1,9 @@
 const {comparePassword} = require('../helpers/bcrypt')
 const {jwtSign, signPasswordLink} = require('../helpers/jwt')
+const newHistory = require('../helpers/historyInstance');
 const {transporter, mailOtp, resetPasswordMail} = require('../helpers/nodemailer')
 const { sequelize, User, Merchant, Verifier } = require('../models');
-
+const redis = require('../config/redis')
 module.exports = class AuthController {
   // your code goes here
   static async userLogin (req,res,next) {
@@ -57,7 +58,6 @@ module.exports = class AuthController {
         province_id,
         city_id,
       } = req.body;
-      
       // user transaction
       const userTransaction = await User.create({
         full_name,
@@ -93,14 +93,20 @@ module.exports = class AuthController {
           parent_id,
         }, { transaction: t });
       }
-
+      // create params token
+      const emailToken = jwtSign({
+        id: userTransaction.id,
+        email: userTransaction.email
+      })
       // create history
-      // !need to add history later.
-
+      const isHistoryCreated = await newHistory('createUser', userTransaction);
+      if(!isHistoryCreated) {
+          throw { name: 'Fail create history' };
+      }
       // if transaction successfull, send the OTP.
       t.afterCommit(() => {
         // using padStart so it will be always 6 digit.
-        const OTP = String(Math.floor(Math.random() * 999999)).padStart(6, '0');
+        const OTP = String(Math.floor(Math.random() * 999999));
         transporter.sendMail(mailOtp(userTransaction.email, OTP), (error) => {
           if(error){
             // !need to rework error name.
@@ -108,9 +114,12 @@ module.exports = class AuthController {
               message: 'error Send OTP',
             }
           } else{
-            // ! store OTP & email on redis.
+            console.log('otp to email sent.')
+            redis.set(`${userTransaction.id}`, OTP, 'ex', 120)
             res.status(201).json({
-              message: `Registration success, OTP was sent to ${userTransaction.email}.`,
+              message: `OTP was sent to ${userTransaction.email}.`,
+              id: userTransaction.id,
+              token: emailToken
             });
           };
         });
@@ -119,6 +128,51 @@ module.exports = class AuthController {
     } catch (error) {
       await t.rollback();
       next(error);
+    }
+  }
+
+  static async verifyUser(req, res, next){
+    //ambil otp dan email dari redis
+    try {
+      const {otp} = req.body
+      const redisOtp = await redis.get(`${req.params.id}`)
+      if(redisOtp !== otp){
+        throw {name: 'invalid_otp'}
+      }
+      const {id} = req.params
+      const response = await User.update(
+        {verified_at: new Date ()},
+        {where: id}
+      )
+      if(!response){
+        throw {name: "not_authenticated"}
+      }
+      res.status(201).json({
+        message: 'Registration success! Please check your email by 3x24 for verification process.'
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  static async resendOtp(req, res, next){
+    try {
+      const OTP = String(Math.floor(Math.random() * 999999));
+      transporter.sendMail(mailOtp(userTransaction.email, OTP), (error) => {
+        if(error){
+          throw {
+            message: 'error Send OTP',
+          }
+        } else{
+          console.log('OTP resend to email.')
+          await redis.set("otp", OTP)
+          res.status(201).json({
+            message: `OTP was sent.`,
+          });
+        };
+      });
+    } catch (err) {
+      next(err)
     }
   }
 
@@ -137,13 +191,15 @@ module.exports = class AuthController {
         let link = `http://localhost:3000/${response.id}/${token}`
         transporter.sendMail(resetPasswordMail(response.email, link), (err) => {
           if(err){
-            console.log(err)
+            throw {
+              message: 'error Send OTP',
+            }
           } else{
             console.log(`email sent to ${response.email}`)
+            res.status(201).json({ 
+              message: 'A link has been sent to your email'
+            })
           }
-        })
-        res.status(200).json({ 
-          message: 'A link has been sent to your email'
         })
       } catch (err) {
         next(err)
