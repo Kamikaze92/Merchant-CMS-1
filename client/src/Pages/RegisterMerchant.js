@@ -1,13 +1,15 @@
 import { Form } from "react-bootstrap";
 
 const RegisterPage = {
-  backgroundColor: "#0B4C6F"
+  backgroundColor: "#094C6F",
 };
 const RegisterForm = {
   backgroundColor: "white",
   border: "5px",
   borderRadius: "10px",
   padding: 20,
+  boxShadow: "0px 24px 24px rgba(0, 0, 0, 0.25)",
+  borderRadius: "12px"
 };
 const RegisterHeading = {
   color: "#0B4C6F",
@@ -17,9 +19,21 @@ const RegisterHeading = {
 };
 const FormText = {
   color: "black",
-  fontWeight: "300",
-  fontFamily: "Source Sans Pro",
+  fontWeight: "600",
+  fontSize: "14px",
+  fontFamily: 'Roboto',
+  marginTop: 10,
+  marginBottom: 10,
 };
+
+const RegisterFooter = {
+  color: "#229BD8",
+  textAlign: "center",
+  fontWeight: "200",
+  fontSize: 14,
+  marginTop: 10,
+  marginBottom: 10
+}
 
 export default function RegisterMerchant() {
   return (
@@ -210,21 +224,13 @@ export default function RegisterMerchant() {
                   </button>
                 </div>
               </form>
-              <div
-                className="mt-2"
-                style={{
-                  textAlign: "center",
-                  color: "#0277bd",
-                  fontWeight: "400",
-                  fontFamily: 'Source Sans Pro'
-                }}
-              >
+              <div style={RegisterFooter}>
                 <h6>
-                  Sudah punya akun? <a href="#"><strong>Login</strong></a>
+                  Sudah punya akun? <a href="#" style={{ fontColor: '#229BD8'}} className="text-decoration-none">Login</a>
                 </h6>
                 <h6>
                   Sudah melakukan registrasi?{" "}
-                  <a href="#"><strong>Periksa status registrasi akun anda</strong></a>
+                  <a href="#" className="text-decoration-none">Periksa status registrasi akun anda</a>
                 </h6>
               </div>
             </div>

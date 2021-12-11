@@ -5,6 +5,8 @@ import CategoryTenant from "./Pages/CategoryTenantPage";
 import Users from "./Pages/Users";
 import Sidebar from "./Sidebar";
 
+import OtpInput from './Pages/OtpInput';
+
 import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
 
@@ -22,6 +24,8 @@ function App() {
       <div className="App">
         {/* <RegisterMerchant /> */}
         {/* <RegisterVerificator /> */}
+        {/* <OtpInput /> */}
+        {/* <RegisterMerchant /> */}
       </div>
     </>
   );
