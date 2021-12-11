@@ -1,6 +1,6 @@
 const { getPagination, getPagingData } = require("../helpers/pagination");
-const  newHistory= require('../helpers/historyInstance');
-const { User, Role, Verificator, sequelize, History } = require("../models");
+const  newHistory = require('../helpers/historyInstance');
+const { User, Role, Verificator, sequelize, History, Verifier, Merchant, City } = require("../models");
 const { Op } = require("sequelize");
 const {jwtSign, verifyData} = require('../helpers/jwt')
 const {transporter, mailActivation} = require('../helpers/nodemailer')
