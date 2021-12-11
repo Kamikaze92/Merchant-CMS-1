@@ -72,14 +72,19 @@ module.exports = class CategoryController {
         let response = await Category.findByPk(+id);
         if (!response) {
           throw {
-            name: "Category not found",
+            name: "category_not_found",
           };
         }
 
         let { name, description } = req.body;
+        if (!name) {
+          throw {
+            name: "name_is_required",
+          };
+        }
         if (!description) {
           throw {
-            name: "Description is required",
+            name: "description_is_required",
           };
         }
         let [created, data] = await Category.update(
@@ -91,7 +96,7 @@ module.exports = class CategoryController {
             returning: true,
           }
         );
-        res.status(201).json(data);
+        res.status(200).json(data[0]);
       } catch (error) {
         next(error);
       }
@@ -107,10 +112,15 @@ module.exports = class CategoryController {
         let response = await Category.findByPk(+id);
         if (!response) {
           throw {
-            name: "Category not found",
+            name: "category_not_found",
           };
         }
         let { name } = req.body;
+        if (!name) {
+          throw {
+            name: "name_is_required",
+          };
+        }
         let [created, data] = await Category.update(
           { name },
           {
@@ -120,7 +130,7 @@ module.exports = class CategoryController {
             returning: true,
           }
         );
-        res.status(201).json(data);
+        res.status(200).json(data[0]);
       } catch (error) {
         next(error);
       }
@@ -135,7 +145,7 @@ module.exports = class CategoryController {
       let response = await Category.findByPk(+id);
       if (!response) {
         throw {
-          name: "Category not found",
+          name: "category_not_found",
         };
       }
       await Category.destroy({
@@ -157,8 +167,12 @@ module.exports = class CategoryController {
         let category = await Category.findByPk(+id);
         if (!category) {
           throw {
-            name: "Category not found",
-            createdBy: "req.user.name",
+            name: "category_not_found",
+          };
+        }
+        if (!name) {
+          throw {
+            name: "name_is_required",
           };
         }
         let data = await Category.create({
@@ -181,13 +195,19 @@ module.exports = class CategoryController {
       let response = await Category.findByPk(+id);
       if (!response) {
         throw {
-          name: "Sub category not found",
+          name: "sub_category_not_found",
         };
       }
       let { name, parent_id } = req.body;
       if (!parent_id) {
         throw {
-          name: "Category not found",
+          name: "category_not_found",
+        };
+      }
+      let category = await Category.findByPk(+parent_id);
+      if (!category) {
+        throw {
+          name: "category_not_found",
         };
       }
       let [updated, data] = await Category.update(
@@ -199,9 +219,8 @@ module.exports = class CategoryController {
           returning: true,
         }
       );
-      res.status(201).json(data);
+      res.status(200).json(data[0]);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
@@ -217,6 +236,11 @@ module.exports = class CategoryController {
         },
         include: "SubCategory",
       });
+      if (!response) {
+        throw {
+          name: "category_not_found",
+        };
+      }
       res.status(200).json(response);
     } catch (error) {
       next(error);
