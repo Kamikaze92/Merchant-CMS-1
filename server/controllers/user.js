@@ -104,6 +104,198 @@ module.exports = class UserController {
       next(err);
     }
   }
+
+  static async getUserMerchant(req, res, next) {
+    try {
+      // search digunakan untuk mencari nama atau email
+      // filter digunakan untuk berdasarkan grup sepertinya mmasih belum tau
+      const { page, size, search, filter } = req.query;
+      if (+page < 1) page = 1;
+      if (+size < 1) size = 10;
+
+      //=========
+      // const { Verifier } = req.user;
+      // if super admin all filter are passed.
+      // TODO : this one get from authentication when ready.
+      // remove later.
+      const verifier = {
+        province_id: 170,
+        city_id: 2,
+      }
+      // const role = 'Admin';
+      const role = 'Verifikator';
+      //=========
+
+      // New Merchant User.
+      let conditions = {
+        verifier_id: null,
+        approved_at: null,
+        approved_by: null,
+        is_rejected: null,
+        deleted_at: null,
+      };
+
+      // Filter for list merchant.
+      /**
+       * Should throw error if.
+       * not admin and 
+       * verifier null or
+       * province null (because verifier should have province)
+       */
+      if (role !== 'Admin' && (!verifier || !verifier.province_id)) {
+        // TODO : throw error, because should have verifier.
+        throw {
+          name: 'NotAuthorized',
+          msg: ''
+        }
+      };
+
+      if (role !== 'Admin' && verifier.city_id) {
+        conditions = {
+          ...conditions,
+          '$Merchant.city_id$': verifier.city_id,
+        }
+      }
+
+      if (role !== 'Admin' && verifier.province_id) {
+        conditions = {
+          ...conditions,
+          '$Merchant.province_id$': verifier.province_id,
+        }
+      } else {
+        // TODO : hrow error, because minimum should have province_id.
+      }
+
+      if (search) {
+        conditions = {
+          ...conditions,
+          [Op.or]: [
+            { email: { [Op.iLike]: `%${search}%` } },
+            { full_name: { [Op.iLike]: `%${search}%` } },
+          ],
+        };
+      };
+
+      const { limit, offset } = getPagination(page, size);
+      const response = await User.findAndCountAll({
+        where: conditions,
+        order: [["full_name", "ASC"]],
+        attributes: {
+          exclude: ["password"],
+        },
+        include: [
+          {
+            model: Merchant,
+            require: true, // REQUIRED!. because if not have merchant it should return empty array!.
+          },
+        ],
+        limit,
+        offset,
+      });
+      if (!response) {
+        throw { name: "user_not_found" };
+      }
+      res.status(200).json(getPagingData(response, page, limit));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getUserVerifier(req, res, next) {
+    try {
+      // search digunakan untuk mencari nama atau email
+      // filter digunakan untuk berdasarkan grup sepertinya mmasih belum tau
+      const { page, size, search, filter } = req.query;
+      if (+page < 1) page = 1;
+      if (+size < 1) size = 10;
+
+      //=========
+      // const { Verifier } = req.user;
+      // if super admin all filter are passed.
+      // TODO : this one get from authentication when ready.
+      // remove later.
+      const verifier = {
+        province_id: 170,
+        city_id: null,
+      }
+      // const role = 'Admin';
+      const role = 'Verifikator';
+      //=========
+
+      // New Verifier User.
+      let conditions = {
+        verifier_id: { [Op.ne]: null },
+        approved_at: null,
+        approved_by: null,
+        is_rejected: null,
+        deleted_at: null,
+      };
+
+      // Filter for list verifier.
+      /**
+       * Should throw error if.
+       * not admin and 
+       * verifier null or
+       * province null or
+       * city not null 
+       */
+      if (role !== 'Admin' && (!verifier || !verifier.province_id || verifier.city_id)) {
+        // TODO : hrow error, because minimum should have province_id.
+        throw {
+          name: 'NotAuthorized',
+          msg: ''
+        }
+      } 
+      
+      // if not admin, should check province id to show all the user below their province.
+      if (verifier.province_id && role !== 'Admin') {
+        let cities = await City.findAll({
+          where: {
+            province_id: verifier.province_id,
+          },
+        });
+        cities = cities.map(e => e.id);
+        conditions = {
+          ...conditions,
+          '$Verifier.city_id$': { [Op.in]: cities },
+        }
+      }
+
+      if (search) {
+        conditions = {
+          ...conditions,
+          [Op.or]: [
+            { email: { [Op.iLike]: `%${search}%` } },
+            { full_name: { [Op.iLike]: `%${search}%` } },
+          ],
+        };
+      };
+
+      const { limit, offset } = getPagination(page, size);
+      const response = await User.findAndCountAll({
+        where: conditions,
+        order: [['created_at', 'DESC']],
+        attributes: {
+          exclude: ['password'],
+        },
+        include: [
+          {
+            model: Verifier,
+            require: true, // REQUIRED!. because if not have verifier it should return empty array!.
+          },
+        ],
+        limit,
+        offset,
+      });
+      if (!response) {
+        throw { name: "user_not_found" };
+      }
+      res.status(200).json(getPagingData(response, page, limit));
+    } catch (error) {
+      next(error);
+    }
+  }
+
   // create user
   static async createUser(req, res, next) {
     const t = await sequelize.transaction();
