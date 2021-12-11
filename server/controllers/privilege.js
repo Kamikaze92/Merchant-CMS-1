@@ -12,7 +12,7 @@ class PrivilegeController {
               };
               const isHistoryCreated = await newHistory('createPrivilege', payload);
               if(!isHistoryCreated) {
-                throw { name: 'Fail create history' };
+                throw { name: 'fail_create_history' };
               }
             res.status(201).json({ message: 'New privilege has been added' })
         } catch (error) {
@@ -40,7 +40,7 @@ class PrivilegeController {
                 exclude: ['createdAt', 'updatedAt'] } 
             });
             if(!resp) {
-                throw { name: 'Data is not found' };
+                throw { name: 'privilege_not_found' };
             }
             res.status(200).json(resp);
         } catch (error) {
@@ -52,7 +52,7 @@ class PrivilegeController {
             const { id } = req.params;
             const privilegeFound = await Privilege.findByPk(id);
             if(!privilegeFound) {
-                throw { name: 'Data is not found' };
+                throw { name: 'privilege_not_found' };
             }
             await Privilege.destroy({ where: { id } });
             const payload = {
@@ -62,7 +62,7 @@ class PrivilegeController {
               };
               const isHistoryCreated = await newHistory('deletePrivilege', payload);
               if(!isHistoryCreated) {
-                throw { name: 'Fail create history' };
+                throw { name: 'fail_create_history' };
               }
             res.status(200).json({ message: 'Privilege has been deleted' })
         } catch (error) {

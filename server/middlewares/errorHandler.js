@@ -59,6 +59,12 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "name_is_required") {
     code = 400;
     msg = "Name is required";
+  } else if (err.name === "error_send_OTP") {
+    code = 400;
+    msg = "OTP was not sent successfully"
+  } else if (err.name === "invalid_otp") {
+    code = 400;
+    msg = "OTP is not valid"
   }
 
   res.status(code).json({

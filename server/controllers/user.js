@@ -44,7 +44,7 @@ module.exports = class UserController {
         offset,
       });
       if (!response) {
-        throw { name: "not found" };
+        throw { name: "user_not_found" };
       }
       res.status(200).json(getPagingData(response, page, limit));
     } catch (err) {
@@ -75,7 +75,7 @@ module.exports = class UserController {
         },
       });
       if (!result) {
-        throw { name: "not found" };
+        throw { name: "user_not_found" };
       }
       res.status(200).json(result);
     } catch (err) {
@@ -90,7 +90,7 @@ module.exports = class UserController {
       const { email } = req.body
       const find = await User.findOne({where: {email: email}})
       if (!find){
-        throw { name: "not found" };  // Email tidak ditemukan Throw
+        throw { name: "email_not_found" };  // Email tidak ditemukan Throw
       }
       if (!find.verified_at){
         res.status(200).json({message: "rejected"}) // belum verifikasi 
@@ -120,10 +120,10 @@ module.exports = class UserController {
         verificator_id,
       } = req.body;
       if (!role_id) {
-        throw { name: "not found" };
+        throw { name: "role_not_found" };
       }
       if (!verificator_id) {
-        throw { name: "not found" };
+        throw { name: "verificator_not_found" };
       }
       const newUser = {
         fullname,
@@ -144,7 +144,7 @@ module.exports = class UserController {
       };
       const isHistoryCreated = await newHistory('createUser', payload);
       if(!isHistoryCreated) {
-        throw { err: 'Fail create history' };
+        throw { err: 'fail_create_history' };
       }
       await t.commit();
       res.status(201).json({ message: "success create new user" });
@@ -166,7 +166,7 @@ module.exports = class UserController {
       };
       const result = await User.findByPk(id);
       if (!result) {
-        throw { name: "not found" };
+        throw { name: "user_not_found" };
       }
       const update = await User.update(userUpdate, {
         where: { id: id },
@@ -179,7 +179,7 @@ module.exports = class UserController {
       };
       const isHistoryCreated = await newHistory('updateUser', payload);
       if(!isHistoryCreated) {
-        throw { err: 'Fail create history' };
+        throw { err: 'fail_create_history' };
       }
       await t.commit();
       res.status(200).json({ message: "Success update the user" });
@@ -196,7 +196,7 @@ module.exports = class UserController {
       const id = req.params.id
       const findUser = await User.findByPk(id)
       if (!findUser){
-        throw { name: "not found" };
+        throw { name: "user_not_found" };
       }
       const del = await User.destroy({ where: { id: id }, transaction: t });
       const payload = {
@@ -206,7 +206,7 @@ module.exports = class UserController {
       };
       const isHistoryCreated = await newHistory('deleteUserSoft', payload);
       if(!isHistoryCreated) {
-        throw { err: 'Fail create history' };
+        throw { err: 'fail_create_history' };
       }
       await t.commit();
       res.status(200).json({ message: "Success delete the User" });
@@ -224,7 +224,7 @@ module.exports = class UserController {
       const id = req.params.id;
       const findUser = await User.findByPk(id);
       if (!findUser) {
-        throw { name: "not found" };
+        throw { name: "user_not_found" };
       }
       const del = await User.destroy({ where: { id: id }, force: true, transaction: t });
       const payload = {
@@ -234,7 +234,7 @@ module.exports = class UserController {
       };
       const isHistoryCreated = await newHistory('deleteUserSoft', payload);
       if(!isHistoryCreated) {
-        throw { err: 'Fail create history' };
+        throw { err: 'fail_create_history' };
       }
       await t.commit();
       res.status(200).json({ message: "Success delete the User" });
