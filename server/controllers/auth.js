@@ -101,7 +101,7 @@ module.exports = class AuthController {
       // create history
       const isHistoryCreated = await newHistory('createUser', userTransaction);
       if(!isHistoryCreated) {
-          throw { name: 'Fail create history' };
+          throw { name: 'fail_create_history' };
       }
       // if transaction successfull, send the OTP.
       t.afterCommit(() => {
@@ -111,7 +111,7 @@ module.exports = class AuthController {
           if(error){
             // !need to rework error name.
             throw {
-              message: 'error Send OTP',
+              name: 'error_send_otp',
             }
           } else{
             console.log('otp to email sent.')
@@ -192,7 +192,7 @@ module.exports = class AuthController {
         transporter.sendMail(resetPasswordMail(response.email, link), (err) => {
           if(err){
             throw {
-              message: 'error Send OTP',
+              name: 'error_send_otp',
             }
           } else{
             console.log(`email sent to ${response.email}`)
