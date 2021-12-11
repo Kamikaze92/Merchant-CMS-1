@@ -162,8 +162,6 @@ module.exports = class UserController {
           ...conditions,
           '$Merchant.province_id$': verifier.province_id,
         }
-      } else {
-        // TODO : hrow error, because minimum should have province_id.
       }
 
       if (search) {
@@ -301,49 +299,84 @@ module.exports = class UserController {
     const t = await sequelize.transaction();
     try {
       const {
-        fullname,
+        user_type, // This is FLAG to identify user is Merchant or verifier.
+        full_name,
         email,
-        verified_at,
         phone_number,
-        password,
-        role_id,
-        approved_by,
-        approved_at,
-        verificator_id,
+        category_id,
+        tenant_category_id,
+        parent_id,
+        place_name,
+        institution,
+        address,
+        postal_code,
+        province_id,
+        city_id,
       } = req.body;
-      if (!role_id) {
-        throw { name: "role_not_found" };
+      
+      // guard
+      if (user_type !== 'Merchant' && user_type !== 'Verifier' ) {
+        throw {
+          name: 'errorUserType',
+          mgs: 'user type should be "Merchant" or "Verifier"',
+        }
       }
-      if (!verificator_id) {
-        throw { name: "verificator_not_found" };
-      }
-      const newUser = {
-        fullname,
+
+      // for verifier
+      let verifierTransaction = null;
+      if (user_type === 'Verifier') {
+        verifierTransaction = await Verifier.create({
+          institution,
+          province_id,
+          city_id,
+        }, { transaction: t });
+      };
+
+      // user transaction
+      const userTransaction = await User.create({
+        full_name,
         email,
-        verified_at,
         phone_number,
-        password,
-        role_id,
-        approved_by,
-        approved_at,
-        verificator_id,
-      };
-      const create = await User.create(newUser, { transaction: t });
-      const payload = {
-        entity_name: 'User',
-        entity_id: create.id,
-        user_id: create.id,
-      };
-      const isHistoryCreated = await newHistory('createUser', payload);
-      if(!isHistoryCreated) {
-        throw { err: 'fail_create_history' };
+        password: 'random',
+        verifier_id: verifierTransaction?.id || null,
+      }, { transaction: t });
+
+      // merchant transaction.
+      // should chose one, category_id or tenant_category_id.
+      // cannot both.
+      if (user_type === 'Merchant') {
+        await Merchant.create({
+          user_id: userTransaction.id,
+          institution,
+          address,
+          province_id,
+          city_id,
+          place_name,
+          category_id,
+          postal_code,
+          tenant_category_id,
+          parent_id,
+        }, { transaction: t });
       }
+
+      // rework ? using transaction ?...
+      // const payload = {
+      //   entity_name: 'User',
+      //   entity_id: create.id,
+      //   user_id: create.id,
+      // };
+
+      // const isHistoryCreated = await newHistory('createUser', payload);
+
+      // if(!isHistoryCreated) {
+      //   throw { err: 'fail_create_history' };
+      // }
+
       await t.commit();
       res.status(201).json({ message: "success create new user" });
-    } catch (err) {
+    } catch (error) {
       await t.rollback();
-      console.log(err);
-      next(err);
+      next(error);
     }
   }
   // update user
