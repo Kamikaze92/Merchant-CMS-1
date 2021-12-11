@@ -18,8 +18,8 @@ module.exports = {
         {
           name: "Tempat Ibadah",
           description: "Untuk tempat ibadah",
-          is_tenant_category: false,
           created_by: "",
+          is_tenant_category: false,
           parent_id: null,
           deleted_at: null,
           created_at: new Date(),
@@ -258,7 +258,6 @@ module.exports = {
         {
           name: "Apotek",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 1,
           deleted_at: null,
@@ -268,7 +267,6 @@ module.exports = {
         {
           name: "Rumah Sakit",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 1,
           deleted_at: null,
@@ -278,7 +276,6 @@ module.exports = {
         {
           name: "Klinik",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 1,
           deleted_at: null,
@@ -288,7 +285,6 @@ module.exports = {
         {
           name: "Laboratorium",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 1,
           deleted_at: null,
@@ -298,7 +294,6 @@ module.exports = {
         {
           name: "Puskesmas",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 1,
           deleted_at: null,
@@ -308,7 +303,6 @@ module.exports = {
         {
           name: "Gereja Katolik",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 2,
           deleted_at: null,
@@ -318,7 +312,6 @@ module.exports = {
         {
           name: "Gereja Kristen",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 2,
           deleted_at: null,
@@ -328,7 +321,6 @@ module.exports = {
         {
           name: "Klenteng",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 2,
           deleted_at: null,
@@ -338,7 +330,6 @@ module.exports = {
         {
           name: "Pura",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 2,
           deleted_at: null,
@@ -348,7 +339,6 @@ module.exports = {
         {
           name: "Vihara",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 2,
           deleted_at: null,
@@ -358,7 +348,6 @@ module.exports = {
         {
           name: "Masjid",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 2,
           deleted_at: null,
@@ -368,7 +357,6 @@ module.exports = {
         {
           name: "Cafe",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 3,
           deleted_at: null,
@@ -378,7 +366,6 @@ module.exports = {
         {
           name: "Bar",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 3,
           deleted_at: null,
@@ -388,7 +375,6 @@ module.exports = {
         {
           name: "Restoran",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 3,
           deleted_at: null,
@@ -398,7 +384,6 @@ module.exports = {
         {
           name: "Restoran Cepat Saji",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 3,
           deleted_at: null,
@@ -408,7 +393,6 @@ module.exports = {
         {
           name: "Restoran Tradisional",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 3,
           deleted_at: null,
@@ -418,7 +402,6 @@ module.exports = {
         {
           name: "Bandara",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 4,
           deleted_at: null,
@@ -428,7 +411,6 @@ module.exports = {
         {
           name: "Stasiun",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 4,
           deleted_at: null,
@@ -438,7 +420,6 @@ module.exports = {
         {
           name: "Pelabuhan",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 4,
           deleted_at: null,
@@ -448,7 +429,6 @@ module.exports = {
         {
           name: "Terminal",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 4,
           deleted_at: null,
@@ -458,7 +438,6 @@ module.exports = {
         {
           name: "Bioskop",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -468,7 +447,6 @@ module.exports = {
         {
           name: "Karaoke",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -478,7 +456,6 @@ module.exports = {
         {
           name: "Club",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -488,7 +465,6 @@ module.exports = {
         {
           name: "Teater",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -498,7 +474,6 @@ module.exports = {
         {
           name: "Aula",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -508,7 +483,6 @@ module.exports = {
         {
           name: "Ruang Pameran",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -518,7 +492,6 @@ module.exports = {
         {
           name: "Museum",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -528,7 +501,6 @@ module.exports = {
         {
           name: "Galeri Seni",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -538,7 +510,6 @@ module.exports = {
         {
           name: "Perpustakaan",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -548,7 +519,6 @@ module.exports = {
         {
           name: "Tempat Wisata",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -558,7 +528,6 @@ module.exports = {
         {
           name: "Taman Publik",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 5,
           deleted_at: null,
@@ -568,7 +537,6 @@ module.exports = {
         {
           name: "Stadium",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 6,
           deleted_at: null,
@@ -578,7 +546,6 @@ module.exports = {
         {
           name: "Gelanggang Olahraga",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 6,
           deleted_at: null,
@@ -588,7 +555,6 @@ module.exports = {
         {
           name: "Pusat Kebugaran",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 6,
           deleted_at: null,
@@ -598,7 +564,6 @@ module.exports = {
         {
           name: "Golf",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 6,
           deleted_at: null,
@@ -608,7 +573,6 @@ module.exports = {
         {
           name: "Salon",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 7,
           deleted_at: null,
@@ -618,7 +582,6 @@ module.exports = {
         {
           name: "Spa",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 7,
           deleted_at: null,
@@ -628,7 +591,6 @@ module.exports = {
         {
           name: "Massage",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 7,
           deleted_at: null,
@@ -638,7 +600,6 @@ module.exports = {
         {
           name: "Department Store",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 8,
           deleted_at: null,
@@ -648,7 +609,6 @@ module.exports = {
         {
           name: "Mall",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 8,
           deleted_at: null,
@@ -658,7 +618,6 @@ module.exports = {
         {
           name: "Supermarket",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 8,
           deleted_at: null,
@@ -668,7 +627,6 @@ module.exports = {
         {
           name: "Minimarket",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 8,
           deleted_at: null,
@@ -678,7 +636,6 @@ module.exports = {
         {
           name: "Pasar Tradisional",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 8,
           deleted_at: null,
@@ -688,7 +645,6 @@ module.exports = {
         {
           name: "Warung",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 8,
           deleted_at: null,
@@ -698,7 +654,6 @@ module.exports = {
         {
           name: "Toko Ritel",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 8,
           deleted_at: null,
@@ -708,7 +663,6 @@ module.exports = {
         {
           name: "Bank",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 9,
           deleted_at: null,
@@ -718,7 +672,6 @@ module.exports = {
         {
           name: "Gedung Perkantoran Swasta",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 9,
           deleted_at: null,
@@ -728,7 +681,6 @@ module.exports = {
         {
           name: "Kantor BUMN",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 9,
           deleted_at: null,
@@ -738,7 +690,6 @@ module.exports = {
         {
           name: "Kantor Instansi Pemerintah",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 9,
           deleted_at: null,
@@ -748,7 +699,6 @@ module.exports = {
         {
           name: "Kantor Polisi",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 9,
           deleted_at: null,
@@ -758,7 +708,6 @@ module.exports = {
         {
           name: "Kantor TNI",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 9,
           deleted_at: null,
@@ -768,7 +717,6 @@ module.exports = {
         {
           name: "Pabrik / Refinery / Pembangkit",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 10,
           deleted_at: null,
@@ -778,7 +726,6 @@ module.exports = {
         {
           name: "Non-IOMKI",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 10,
           deleted_at: null,
@@ -788,7 +735,6 @@ module.exports = {
         {
           name: "Sentra Logistik atau Distribusi",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 10,
           deleted_at: null,
@@ -798,7 +744,6 @@ module.exports = {
         {
           name: "Area Konstruksi",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 10,
           deleted_at: null,
@@ -808,7 +753,6 @@ module.exports = {
         {
           name: "Pergudangan",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 10,
           deleted_at: null,
@@ -818,7 +762,6 @@ module.exports = {
         {
           name: "Otomotif (Bengkel, Showroom)",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 10,
           deleted_at: null,
@@ -828,7 +771,6 @@ module.exports = {
         {
           name: "Sekolah",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 11,
           deleted_at: null,
@@ -838,7 +780,6 @@ module.exports = {
         {
           name: "Universitas / Sekolah Tinggi",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 11,
           deleted_at: null,
@@ -848,7 +789,6 @@ module.exports = {
         {
           name: "Lembaga Kursus",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 11,
           deleted_at: null,
@@ -858,7 +798,6 @@ module.exports = {
         {
           name: "Gedung Apartemen",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 12,
           deleted_at: null,
@@ -868,7 +807,6 @@ module.exports = {
         {
           name: "Hotel",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 12,
           deleted_at: null,
@@ -878,7 +816,6 @@ module.exports = {
         {
           name: "Kompleks Perumahan",
           description: "",
-          is_tenant_category: false,
           created_by: "",
           parent_id: 12,
           deleted_at: null,

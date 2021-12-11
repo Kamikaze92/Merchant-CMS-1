@@ -1,11 +1,26 @@
-import RegisterMerchant from './Pages/RegisterMerchant';
-import RegisterVerificator from './Pages/RegisterVerificator';
+import { Routes, Route, Link } from "react-router-dom";
+import Category from "./Pages/CategoryPage";
+import CategoryDetail from "./Pages/CategoryDetailPage";
+import CategoryTenant from "./Pages/CategoryTenantPage";
+import Sidebar from "./Sidebar";
+
+import RegisterMerchant from "./Pages/RegisterMerchant";
+import RegisterVerificator from "./Pages/RegisterVerificator";
 function App() {
+  // <div className="App">{/* <RegisterMerchant /> */}</div>;
   return (
-    <div className="App">
-      {/* <RegisterMerchant /> */}
-      <RegisterVerificator />
-    </div>
+    <>
+      <Sidebar />
+      <Routes>
+        <Route path="/category" element={<Category />}></Route>
+        <Route path="/category/detail" element={<CategoryDetail />}></Route>
+        <Route path="/category/tenant" element={<CategoryTenant />}></Route>
+      </Routes>
+      <div className="App">
+        {/* <RegisterMerchant /> */}
+        {/* <RegisterVerificator /> */}
+      </div>
+    </>
   );
 }
 
