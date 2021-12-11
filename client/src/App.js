@@ -3,22 +3,22 @@ import Category from "./Pages/CategoryPage";
 import CategoryDetail from "./Pages/CategoryDetailPage";
 import CategoryTenant from "./Pages/CategoryTenantPage";
 import Users from "./Pages/Users";
-import Sidebar from "./Sidebar";
+import Sidebar from "./Components/Sidebar";
 
 import OtpInput from './Pages/OtpInput';
 import CheckStatus from './Pages/CheckStatus'
 import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
-
+import ActiveMerchant from "./Pages/ActiveMerchant"
 function App() {
   // <div className="App">{/* <RegisterMerchant /> */}</div>;
   return (
     <>
-      <CheckStatus />
+      {/* <CheckStatus />
       <OtpInput />
       <RegisterMerchant />
-      <RegisterVerificator />
-      {/* <Sidebar /> */}
+      <RegisterVerificator /> */}
+      <ActiveMerchant />
       <Routes>
         <Route path="/category" element={<Category />}></Route>
         <Route path="/category/detail" element={<CategoryDetail />}></Route>

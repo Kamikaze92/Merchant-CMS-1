@@ -1,4 +1,4 @@
-import "../Sidebar.css";
+
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 const image = {
   width: "135.02px",
@@ -9,9 +9,9 @@ const image = {
   marginTop: 30,
   marginLeft: 20,
 };
-export default function Sidebar(props) {
+export default function Sidebar() {
   return (
-    <>
+    <div id="sidebar">
       <div className="sidebar d-flex flex-column" id="wrapper">
         <div className="" id="sidebar-wrapper">
           <div>
@@ -36,18 +36,11 @@ export default function Sidebar(props) {
               <Dropdown.Item href="#/action-3">Kategori & Sub-Kategori</Dropdown.Item>
               <Dropdown.Item href="#/action-4">Kategori Tenant</Dropdown.Item>
               <Dropdown.Item href="#/action-5">Ubah Password</Dropdown.Item>
-
             </DropdownButton>
             <a className="list-group-item-action p-3">Keluar Akun</a>
           </div>
         </div>
       </div>
-      <div className="d-flex flex-row-reverse p-3">
-        <div className="d-flex flex-row p-2">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/1024px-Circle-icons-profile.svg.png" alt="Avatar" style={{width: 30, height: 30, marginRight: 10}}/>
-          <p>Satgas</p>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
