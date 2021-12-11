@@ -50,7 +50,6 @@ const newHistory = async (type, payload) => {
         await History.create(historyInput, { returning: true });
         return true;  
     } catch (error) {
-        console.log(error);
         return false;
     }
 }
