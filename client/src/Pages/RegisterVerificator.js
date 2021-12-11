@@ -1,5 +1,3 @@
-import { Form } from "react-bootstrap";
-
 const RegisterPage = {
   backgroundColor: "#0B4C6F"
 };
@@ -21,7 +19,7 @@ const FormText = {
   fontFamily: "Source Sans Pro",
 };
 
-export default function RegisterMerchant() {
+export default function RegisterVerificator() {
   return (
     <div style={RegisterPage}>
       <div className="register-form">
@@ -36,7 +34,7 @@ export default function RegisterMerchant() {
                 />
                 <h6 style={{ fontSize: 12, color: "#229BD8" }}>Merchant CMS</h6>
                 <h4 style={RegisterHeading}>
-                  Register Akun Pengelola QR Code PeduliLindungi
+                  Register Akun Verificator QR Code PeduliLindungi
                 </h4>
               </div>
               <form>
@@ -77,26 +75,17 @@ export default function RegisterMerchant() {
                   </div>
                   <div className="mt-2">
                     <label className="form-label" style={FormText}>
-                      Apakah anda tenant di Mall, Gedung Perkantoran, Tempat
-                      Wisata, Perbelanjaan Lainnya?
+                      Instansi
                     </label>
-                    <div className="d-flex">
-                      <Form.Check
-                        type="radio"
-                        aria-label="radio 1"
-                        label="Ya"
-                      />
-                      <Form.Check
-                        className="ms-2"
-                        type="radio"
-                        aria-label="radio 1"
-                        label="Tidak"
-                      />
-                    </div>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="phone_number"
+                    />
                   </div>
                   <div className="mt-2">
                     <label className="form-label" style={FormText}>
-                      Kategori Tenant
+                      Kategori Pengguna
                     </label>
                     <div className="input-group ">
                       <select class="form-select">
@@ -104,68 +93,12 @@ export default function RegisterMerchant() {
                         <option selected disabled>
                           Pilih Kategori
                         </option>
-                        <option value="1">Restoran</option>
-                        <option value="2">Restoran Cepat Saji</option>
-                        <option value="3">Cafe</option>
+                        <option value="1">Admin</option>
+                        <option value="2">Verifikator Provinsi</option>
+                        <option value="3">Verifikator Kab/Kota</option>
+                        <option value="3">Merchant</option>
                       </select>
                     </div>
-                  </div>
-                  <div className="mt-2">
-                    <label className="form-label" style={FormText}>
-                      Sub-Kategori
-                    </label>
-                    <div className="input-group ">
-                      <select class="form-select">
-                        {/**Sampel */}
-                        <option selected disabled>
-                          Pilih Sub-Kategori
-                        </option>
-                        <option value="1">Apotek</option>
-                        <option value="2">Rumah Sakit</option>
-                        <option value="3">Klinik</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="mt-2">
-                    <label className="form-label" style={FormText}>
-                      Nama Mall / Gedung Perkantoran / Tempat Wisata / Pusat
-                      Perbelanjaan
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="" //Belum tau Variable
-                    />
-                  </div>
-                  <div className="mt-2">
-                    <label className="form-label" style={FormText}>
-                      Nama Tempat / Nama Gedung
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="" //Belum tau Variable
-                    />
-                  </div>
-                  <div className="mt-2">
-                    <label className="form-label" style={FormText}>
-                      Nama Institusi Pengampu
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="" //Belum tau Variable
-                    />
-                  </div>
-                  <div className="mt-2">
-                    <label className="form-label" style={FormText}>
-                      Alamat
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="" //Belum tau Variable
-                    />
                   </div>
                   <div className="mt-2">
                     <label className="form-label" style={FormText}>
@@ -191,7 +124,7 @@ export default function RegisterMerchant() {
                       <select class="form-select">
                         {/**Sampel */}
                         <option selected disabled>
-                          Pilih Kategori
+                          Pilih Kota
                         </option>
                         <option value="1">Padang</option>
                         <option value="2">Medan</option>
@@ -216,15 +149,20 @@ export default function RegisterMerchant() {
                   textAlign: "center",
                   color: "#0277bd",
                   fontWeight: "400",
-                  fontFamily: 'Source Sans Pro'
+                  fontFamily: "Source Sans Pro",
                 }}
               >
                 <h6>
-                  Sudah punya akun? <a href="#"><strong>Login</strong></a>
+                  Sudah punya akun?{" "}
+                  <a href="#">
+                    <strong>Login</strong>
+                  </a>
                 </h6>
                 <h6>
                   Sudah melakukan registrasi?{" "}
-                  <a href="#"><strong>Periksa status registrasi akun anda</strong></a>
+                  <a href="#">
+                    <strong>Periksa status registrasi akun anda</strong>
+                  </a>
                 </h6>
               </div>
             </div>
