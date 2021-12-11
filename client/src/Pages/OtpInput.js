@@ -70,11 +70,11 @@ const OtpPage = {
                   <h4 style={{fontSize: 18, fontColor: "#0B4C6F"}} className="mb-5">Verifikasi Email</h4>
                   <h6 style={{fontSize: 12}}>Masukan 6 digit kode verifikasi yang telah kami kirimkan ke email</h6>
                 </div>
-                <form>
+                <form className="justify-content-center">
                 <div id="divOuter">
-                <div id="divInner">
-                    <input style={OtpInput} type="text" maxlength="6" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  onKeyPress="if(this.value.length==4) return false;"/>
-                </div>
+                  <div id="divInner">
+                      <input id="partitioned" className="mt-5 mb-3" type="text" maxLength="6"/>
+                  </div>
                 </div>
                 </form>
                 <div
