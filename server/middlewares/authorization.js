@@ -5,7 +5,7 @@ async function AuthorizeAdmin(req, res, next) {
     const id = req.user.id || req.params.id;
     const response = await User.findByPk(id);
     if (!response) {
-      throw { name: "not found" };
+      throw { name: "user_not_found" };
     }
     if (req.user.role === "Admin") {
       next();
@@ -23,7 +23,7 @@ async function AuthorizeVerificatorProvince(req, res, next) {
     const id = req.user.id || req.params.id;
     const response = await User.findByPk(id);
     if (!response) {
-      throw { name: "not found" };
+      throw { name: "user_not_found" };
     }
     if (req.user.role === "Verificator Province" || req.user.role === "Admin") {
       next();
@@ -41,7 +41,7 @@ async function AuthorizeVerificatorDisctrict(req, res, next) {
     const id = req.user.id || req.params.id;
     const response = await User.findByPk(id);
     if (!response) {
-      throw { name: "not found" };
+      throw { name: "user_not_found" };
     }
     if (
       req.user.role === "Verificator Kab/Kota" ||    // nama masih belum tau

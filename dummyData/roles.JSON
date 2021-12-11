@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Admin",
+        "description": "Untuk admin"
+    },
+    {
+        "name": "Verifikator Provinsi",
+        "description": "Untuk verifikator provinsi"
+    },
+    {
+        "name": "Verifikator Kab/Kota",
+        "description": "Untuk verifikator kab/kota"
+    },
+    {
+        "name": "Merchant",
+        "description": "Untuk merchant"
+    }
+]

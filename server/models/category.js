@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Category.hasMany(Category, {
         foreignKey: "parent_id",
-        as: "SubCategory",
+        as: "sub_category",
       });
     }
   }
@@ -31,10 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         type: DataTypes.STRING,
       },
-      is_tenant_group: {
+      is_tenant_category: {
         type: DataTypes.BOOLEAN,
       },
-      createdBy: {
+      created_by: {
         type: DataTypes.STRING,
       },
       parent_id: {
@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
+      paranoid: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      deletedAt: 'deleted_at',
       modelName: "Category",
     }
   );
