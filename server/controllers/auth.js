@@ -158,7 +158,7 @@ module.exports = class AuthController {
   static async resendOtp(req, res, next){
     try {
       const OTP = String(Math.floor(Math.random() * 999999));
-      transporter.sendMail(mailOtp(userTransaction.email, OTP), (error) => {
+      transporter.sendMail(mailOtp(userTransaction.email, OTP), async (error) => {
         if(error){
           throw {
             message: 'error Send OTP',

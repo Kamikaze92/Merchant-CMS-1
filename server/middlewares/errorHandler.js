@@ -22,22 +22,43 @@ const errorHandler = (err, req, res, next) => {
     msg = "Privilege not found";
   } else if (err.name === "role_not_found") {
     code = 404;
-    msg = "Role not found";
+    msg = "Role is not found";
   } else if (err.name === "user_not_found") {
     code = 404;
-    msg = "User not found";
+    msg = "User is not found";
   } else if (err.name === "email_not_found") {
     code = 404;
-    msg = "Email not found";
+    msg = "Email is not found";
   } else if (err.name === "verificator_not_found") {
     code = 404;
-    msg = "Verificator not found";
+    msg = "Verificator is not found";
   } else if (err.name === "userGroup_not_found") {
     code = 404;
-    msg = "User group not found";
+    msg = "User group is not found";
   } else if (err.name === "password_not_found") {
     code = 404;
-    msg = "Password not found";
+    msg = "Password is not found";
+  } else if (err.name === "password_not_match") {
+    code = 401;
+    msg = "Password not match";
+  } else if (err.name === "description_is_required") {
+    code = 400;
+    msg = "Description is required";
+  } else if (err.name === "category_not_found") {
+    code = 404;
+    msg = "Category is not found";
+  } else if (err.name === "sub_category_not_found") {
+    code = 404;
+    msg = "Sub Category is not found";
+  } else if (err.name === "fail_create_history") {
+    code = 401;
+    msg = "Failed to create history";
+  } else if (err.name === "forbidden") {
+    code = 403;
+    msg = "You are not allowed";
+  } else if (err.name === "name_is_required") {
+    code = 400;
+    msg = "Name is required";
   }
 
   res.status(code).json({
