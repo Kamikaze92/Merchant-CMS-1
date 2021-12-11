@@ -16,7 +16,7 @@ class UserGroupsController {
             const payload = {
                 entity_name: 'User_Group',
                 entity_id: resp.id,
-                user_id: req.user.id
+                user_id: 1 //req.user.id
               };
               const isHistoryCreated = await newHistory('createUserGroup', payload);
               if(!isHistoryCreated) {
@@ -39,7 +39,8 @@ class UserGroupsController {
                 res.status(200).json(resp);
             }  
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
     static async getUserGroup(req, res, next) {
@@ -53,7 +54,8 @@ class UserGroupsController {
             }
             res.status(200).json(resp);
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
     static async updateUserGroup(req, res, next) {
@@ -71,7 +73,7 @@ class UserGroupsController {
                 const payload = {
                     entity_name: 'User_Group',
                     entity_id: resp[1][0].id,
-                    user_id: req.user.id
+                    user_id: 1 //req.user.id
                 };
                 const isHistoryCreated = await newHistory('updateUserGroup', payload);
                 if(!isHistoryCreated) {
@@ -80,7 +82,8 @@ class UserGroupsController {
             res.status(200).json({ message: `User Group with id ${id} has been updated` })
             }
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
     static async deleteUserGroup(req, res, next) {
@@ -94,7 +97,7 @@ class UserGroupsController {
             const payload = {
                 entity_name: 'User_Group',
                 entity_id: foundUserGroup.id,
-                user_id: req.user.id
+                user_id: 1 //req.user.id
             };
             const isHistoryCreated = await newHistory('deleteUserGroup', payload);
             if(!isHistoryCreated) {
@@ -102,7 +105,8 @@ class UserGroupsController {
             }
             res.status(200).json({ message: `User Group with id ${id} has been deleted` });
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
 }
