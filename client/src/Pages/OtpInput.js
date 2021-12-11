@@ -65,15 +65,15 @@ const OtpPage = {
                   <img 
                     src="https://ik.imagekit.io/fjaskqdnu0xp/logo-email_Vztzgz4bl.png?updatedAt=1639203405172"
                     alt="email-logo"
-                    style={{height: "80px", width: "80px", padding: 0 }} 
+                    style={{height: "100px", width: "100px", padding: 0 }} 
                   />
-                  <h4 style={{fontSize: 18, fontColor: "#0B4C6F"}} className="mb-5">Verifikasi Email</h4>
+                  <h4 style={{fontSize: 18, fontColor: "#0B4C6F"}} className="mb-2"><strong>Verifikasi Email</strong></h4>
                   <h6 style={{fontSize: 12}}>Masukan 6 digit kode verifikasi yang telah kami kirimkan ke email</h6>
                 </div>
                 <form className="justify-content-center">
                 <div id="divOuter">
                   <div id="divInner">
-                      <input id="partitioned" className="mt-5 mb-3" type="text" maxLength="6"/>
+                      <input id="partitioned" className="mt-5 mb-3" type="text" maxlength="6"/>
                   </div>
                 </div>
                 </form>
