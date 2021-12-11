@@ -3,7 +3,6 @@ import Category from "./Pages/CategoryPage";
 import CategoryDetail from "./Pages/CategoryDetailPage";
 import CategoryTenant from "./Pages/CategoryTenantPage";
 import Sidebar from "./Sidebar";
-
 import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
 function App() {
