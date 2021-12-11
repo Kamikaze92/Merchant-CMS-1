@@ -15,20 +15,20 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
       },
-      is_tenant_group: {
+      is_tenant_category: {
         type: Sequelize.BOOLEAN,
       },
-      createdBy: {
+      created_by: {
         type: Sequelize.STRING,
       },
       parent_id: {
         type: Sequelize.INTEGER,
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
