@@ -1,16 +1,23 @@
 const { Category } = require("../models");
+const redis = require('../config/redis');
 
 module.exports = class CategoryController {
   static async getAllCategoriesNonTenant(req, res, next) {
     try {
-      let response = await Category.findAll({
-        include: "SubCategory",
-        where: {
-          parent_id: null,
-          is_tenant_group: false,
-        },
-      });
-      res.status(200).json(response);
+      let chace = await redis.get('categories_non_tenant')
+      if (chace) {
+        res.status(200).json(JSON.parse(chace));
+      } else {
+        let response = await Category.findAll({
+          include: "SubCategory",
+          where: {
+            parent_id: null,
+            is_tenant_group: false,
+          },
+        });
+        await redis.set('categories_non_tenant', JSON.stringify(response))
+        res.status(200).json(response);
+      }
     } catch (error) {
       next(error);
     }
@@ -18,14 +25,20 @@ module.exports = class CategoryController {
 
   static async getAllCategoriesIsTenant(req, res, next) {
     try {
-      let response = await Category.findAll({
-        include: "SubCategory",
-        where: {
-          parent_id: null,
-          is_tenant_group: true,
-        },
-      });
-      res.status(200).json(response);
+      let chace = await redis.get('categories_tenant')
+      if (chace) {
+        res.status(200).json(JSON.parse(chace));
+      } else {
+        let response = await Category.findAll({
+          include: "SubCategory",
+          where: {
+            parent_id: null,
+            is_tenant_group: true,
+          },
+        });
+        await redis.set('categories_tenant', JSON.stringify(response))
+        res.status(200).json(response);
+      }
     } catch (error) {
       next(error);
     }
@@ -39,6 +52,7 @@ module.exports = class CategoryController {
         is_tenant_group: true,
         createdBy: "req.user.name",
       });
+      await redis.del('categories_tenant')
       res.status(201).json(response);
     } catch (error) {
       next(error);
@@ -59,6 +73,7 @@ module.exports = class CategoryController {
         createdBy: "req.user.name",
         is_tenant_group: false,
       });
+      await redis.del('categories_non_tenant')
       res.status(201).json(response);
     } catch (error) {
       next(error);
@@ -96,6 +111,7 @@ module.exports = class CategoryController {
             returning: true,
           }
         );
+        await redis.del('categories_non_tenant')
         res.status(200).json(data[0]);
       } catch (error) {
         next(error);
@@ -130,6 +146,7 @@ module.exports = class CategoryController {
             returning: true,
           }
         );
+        await redis.del('categories_tenant')
         res.status(200).json(data[0]);
       } catch (error) {
         next(error);
@@ -147,6 +164,17 @@ module.exports = class CategoryController {
         throw {
           name: "category_not_found",
         };
+      }
+      if (response.parent_id === null && is_tenant_group === false) {
+        await redis.del('categories_non_tenant')
+      }
+
+      if (response.parent_id ===null && is_tenant_group === true) {
+        await redis.del('categories_tenant')
+      }
+
+      if (Number(response.parent_id)) {
+        await redis.del('categories_non_tenant')
       }
       await Category.destroy({
         where: { id: +id },
@@ -180,6 +208,7 @@ module.exports = class CategoryController {
           createdBy: "req.user.name",
           parent_id: category.id,
         });
+        await redis.del('categories_non_tenant')
         res.status(201).json(data);
       } catch (error) {
         next(error);
@@ -219,6 +248,7 @@ module.exports = class CategoryController {
           returning: true,
         }
       );
+      await redis.del('categories_non_tenant')
       res.status(200).json(data[0]);
     } catch (error) {
       next(error);
