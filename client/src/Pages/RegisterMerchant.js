@@ -226,11 +226,11 @@ export default function RegisterMerchant() {
               </form>
               <div style={RegisterFooter}>
                 <h6>
-                  Sudah punya akun? <a href="#" style={{ fontColor: '#229BD8'}} className="text-decoration-none">Login</a>
+                  Sudah punya akun? <a href="#" style={{ fontColor: '#229BD8'}} className="text-info text-decoration-none"><strong>Login</strong></a>
                 </h6>
                 <h6>
                   Sudah melakukan registrasi?{" "}
-                  <a href="#" className="text-decoration-none">Periksa status registrasi akun anda</a>
+                  <a href="#" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></a>
                 </h6>
               </div>
             </div>
