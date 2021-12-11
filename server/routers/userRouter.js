@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const UserController = require('../controllers/user');
+const {verifyMiddleware} = require('../middlewares/verifyMiddleware');
 
-router.get('/users', (req, res) => {});
-router.post('/users', (req, res) => {});
-router.get('/users/:id', (req, res) => {});
-router.put('/users/:id', (req, res) => {});
-router.patch('/users/:id', (req, res) => {});
-router.delete('/users/:id', (req, res) => {});
-
+router.get('/', UserController.getUsers);
+router.post('/', UserController.createUser);
+router.get('/:id', UserController.getUser);
+router.put('/:id', UserController.updateUser);
+router.patch('/:id', UserController.updateUser);
+router.delete('/:id', UserController.deleteUserSoft);
+router.post('/activation/:id', UserController.sendActivationLink);
+router.patch('/approve-user/:id/:token', verifyMiddleware, UserController.approveUser);
+router.patch('/create-password/:id', UserController.userCreatePassword)
 module.exports = router;
