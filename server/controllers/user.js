@@ -249,6 +249,10 @@ module.exports = class UserController {
     try {
       const {id} = req.params;
       const foundUser = await User.findOne({id});
+      const params = {
+        approve_by: req.user.email
+      }
+      await User.update()
       const payload = {
         id: foundUser.id,
         email: foundUser.email
@@ -277,8 +281,7 @@ module.exports = class UserController {
       const {id, token} = req.params
       const payload = verifyData(token)
       let params = {
-        approved_at: new Date(),
-        approved_by: payload.email
+        approved_at: new Date()
       }
       await User.update(params,{
         where: {id}
