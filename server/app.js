@@ -3,12 +3,16 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const express = require("express");
-const router = require("./routes/index");
+const router = require("./routers/index");
 const cors = require("cors");
 
 const app = express();
 
-app.use([cors(), express.json(), express.urlencoded({ extended: false })]);
+app.use([
+  cors(),
+  express.json(),
+  express.urlencoded({ extended: false })
+]);
 
 app.use(router);
 
