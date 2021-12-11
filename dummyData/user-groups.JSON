@@ -1,18 +1,18 @@
 [
     {
-        "name": "Admin",
+        "role_id": 1,
         "privilege_id": 1
     },
     {
-        "name": "Verifikator Provinsi",
+        "role_id": 2,
         "privilege_id": 2
     },
     {
-        "name": "Verifikator Kab/Kota",
+        "role_id": 3,
         "privilege_id": 3
     },
     {
-        "name": "Merchant",
+        "role_id": 4,
         "privilege_id": 4
     }
 ]

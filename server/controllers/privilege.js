@@ -1,4 +1,5 @@
 const { Privilege } = require('../models');
+const newHistory = require('../helpers/historyInstance');
 
 class PrivilegeController {
     static async createPrivilege (req, res, next) {
@@ -14,7 +15,10 @@ class PrivilegeController {
               if(!isHistoryCreated) {
                 throw { name: 'Fail create history' };
               }
-            res.status(201).json({ message: 'New privilege has been added' })
+              res.status(201).json({
+                id: resp.id,
+                name: resp.name
+              });
         } catch (error) {
             console.log(error);
             // next(error);

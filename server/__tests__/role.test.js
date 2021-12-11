@@ -9,11 +9,13 @@ const { jwtSign } = require("../helpers/jwt");
    email: "h8.pedulilindungi.merchant@gmail.com",
    password: "finalproject1",
  };
- const roleTest = JSON.parse(fs.readFileSync('../../dummyData/role.JSON', 'utf-8'));
+ const roleTest = JSON.parse(fs.readFileSync('../../dummyData/roles.JSON', 'utf-8'));
+
  roleTest.forEach(element => {
-   element.createdAt = new Date();
-   element.updatedAt = new Date();
- });
+    element.createdAt = new Date();
+    element.updatedAt = new Date();
+  });
+
  beforeAll((done) => {
    User.create(validUser1)
      .then((registeredUser1) => {
@@ -29,10 +31,13 @@ const { jwtSign } = require("../helpers/jwt");
     });
 });
  
-afterAll(done => {
+afterAll((done) => {
     User.destroy({ truncate: true, cascade: true, restartIdentity: true})
      .then(_ => {
        return Role.destroy({ truncate: true, cascade: true, restartIdentity: true})
+     })
+     .then(_ => {
+       done();
      })
      .catch(err => {
        done(err);
@@ -99,6 +104,7 @@ afterAll(done => {
             done(err);
           });
         });
+        await Role.destroy({ truncate: true, cascade: true, restartIdentity: true});
       });
 
   describe("POST /roles", async () => {
@@ -106,7 +112,7 @@ afterAll(done => {
       name: 'Admin',
       description: 'Untuk admin'
     }
-      test("201 success POST roles", (done) => {
+      test("201 success POST role", (done) => {
       request(app)
         .post("/roles")
         .set("access_token", validToken1)
@@ -125,7 +131,7 @@ afterAll(done => {
         });
       });
       await Role.destroy({ truncate: true, cascade: true, restartIdentity: true});
-      test("401 POST roles with invalid token", (done) => {
+      test("401 POST role with invalid token", (done) => {
       request(app)
         .post("/roles")
         .set("access_token", invalidToken)
@@ -141,7 +147,7 @@ afterAll(done => {
         });
       });
       await Role.destroy({ truncate: true, cascade: true, restartIdentity: true});
-      test("401 POST roles without token", (done) => {
+      test("401 POST role without token", (done) => {
       request(app)
         .post("/roles")
         .send(postRoleTest)
@@ -207,7 +213,6 @@ afterAll(done => {
      request(app)
        .get(`/roles/1000`)
        .set("access_token", validToken1)
-       .send(input)
        .then((response) => {
          const { body, status } = response;
          expect(status).toBe(404);
@@ -240,20 +245,6 @@ afterAll(done => {
          done(err);
        });
     });
-    test("200 success UPDATE role by id with empty input", (done) => {
-        request(app)
-          .put(`/roles/${role_id}`)
-          .set("access_token", validToken1)
-          .then((response) => {
-           const { body, status } = response;
-           expect(status).toBe(200);
-           expect(body).toHaveProperty("message", "Everything is already uptodated");
-           done();
-          })
-          .catch((err) => {
-            done(err);
-        });
-    });
    test("401 UPDATE role by id with invalid token", (done) => {
       request(app)
        .put(`/roles/${role_id}`)
@@ -272,8 +263,7 @@ afterAll(done => {
    test("401 UPDATE role by id without token", (done) => {
     request(app)
         .put(`/roles/${role_id}`)
-        .set("access_token", validToken1)
-        .send(input)
+        .send(updateRoleTest)
         .then((response) => {
         const { body, status } = response;
         expect(status).toBe(401);
@@ -288,7 +278,7 @@ afterAll(done => {
      request(app)
        .put(`/roles/1000`)
        .set("access_token", validToken1)
-       .send(input)
+       .send(updateRoleTest)
        .then((response) => {
          const { body, status } = response;
          expect(status).toBe(404);
@@ -306,18 +296,20 @@ afterAll(done => {
 	 request(app)
 		 .delete(`/roles/${role_id}`)
 		 .set("access_token", validToken1)
-		 .send(input)
 		 .then((response) => {
 			const { body, status } = response;
 			expect(status).toBe(200);
-			expect(body).toHaveProperty("message", `Role with id ${role_id} has been updated`);
+			expect(body).toHaveProperty("message", `Role with id ${role_id} has been deleted`);
 			done();
 		 })
 		 .catch((err) => {
 			 done(err);
 		 });
 	});
-  const roleCreated = await Role.create(postRoleTest);
+  const roleCreated = await Role.create({
+    name: 'Admin',
+    description: 'Untuk admin'
+  });
   role_id = roleCreated.id;
   test("401 DELETE role by id with invalid token", (done) => {
     request(app)
@@ -336,7 +328,6 @@ afterAll(done => {
   test("401 DELETE role by id without token", (done) => {
     request(app)
         .delete(`/roles/${role_id}`)
-        .set("access_token", validToken1)
         .then((response) => {
         const { body, status } = response;
         expect(status).toBe(401);
@@ -349,7 +340,7 @@ afterAll(done => {
   });
   test("404 DELETE role by id not found", (done) => {
     request(app)
-      .put(`/roles/1000`)
+      .delete(`/roles/1000`)
       .set("access_token", validToken1)
       .then((response) => {
         const { body, status } = response;
