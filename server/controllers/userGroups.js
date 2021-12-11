@@ -7,20 +7,20 @@ class UserGroupsController {
             const roleFound = await Role.findByPk(role_id);
             const privileFound = await Privilege.findByPk(privilege_id);
             if(!roleFound) {
-                throw { name: 'Role is not found' };
+                throw { name: 'role_not_found' };
             }
             if(!privileFound) {
-                throw { name: 'Privilege is not found' };
+                throw { name: 'privilege_not_found' };
             }
             const resp = await User_Group.create({ role_id, privilege_id });
             const payload = {
                 entity_name: 'User_Group',
                 entity_id: resp.id,
-                user_id: req.user.id
+                user_id: 1 //req.user.id
               };
               const isHistoryCreated = await newHistory('createUserGroup', payload);
               if(!isHistoryCreated) {
-                throw { name: 'Fail create history' };
+                throw { name: 'fail_create_history' };
               }
             res.status(201).json({ message: 'User Group has been added' });
         } catch (error) {
@@ -39,7 +39,8 @@ class UserGroupsController {
                 res.status(200).json(resp);
             }  
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
     static async getUserGroup(req, res, next) {
@@ -49,11 +50,12 @@ class UserGroupsController {
                 exclude: ['createdAt', 'updatedAt'] } 
             });
             if(!resp) {
-                throw { name: 'Data is not found' };
+                throw { name: 'userGroup_not_found' };
             }
             res.status(200).json(resp);
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
     static async updateUserGroup(req, res, next) {
@@ -62,7 +64,7 @@ class UserGroupsController {
             const { role_id, privilege_id } = req.body;
             const foundUserGroup = await User_Group.findByPk(id);
             if(!foundUserGroup) {
-                throw { name: 'Data is not found' };
+                throw { name: 'userGroup_not_found' };
             }
             const resp = await User_Group.update({ role_id, privilege_id }, { where: { id }, returning: true });
             if(!resp[1]) {
@@ -71,16 +73,17 @@ class UserGroupsController {
                 const payload = {
                     entity_name: 'User_Group',
                     entity_id: resp[1][0].id,
-                    user_id: req.user.id
+                    user_id: 1 //req.user.id
                 };
                 const isHistoryCreated = await newHistory('updateUserGroup', payload);
                 if(!isHistoryCreated) {
-                    throw { name: 'Fail create history' };
+                    throw { name: 'fail_create_history' };
                 }
             res.status(200).json({ message: `User Group with id ${id} has been updated` })
             }
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
     static async deleteUserGroup(req, res, next) {
@@ -88,21 +91,22 @@ class UserGroupsController {
             const { id } = req.params;
             const foundUserGroup = await User_Group.findByPk(id);
             if(!foundUserGroup) {
-                throw { name: 'Data is not found' };
+                throw { name: 'userGroup_not_found' };
             }
             await User_Group.destroy({ where: { id } });
             const payload = {
                 entity_name: 'User_Group',
                 entity_id: foundUserGroup.id,
-                user_id: req.user.id
+                user_id: 1 //req.user.id
             };
             const isHistoryCreated = await newHistory('deleteUserGroup', payload);
             if(!isHistoryCreated) {
-                throw { name: 'Fail create history' };
+                throw { name: 'fail_create_history' };
             }
             res.status(200).json({ message: `User Group with id ${id} has been deleted` });
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
 }

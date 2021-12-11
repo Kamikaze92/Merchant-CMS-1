@@ -1,16 +1,23 @@
 const { Category } = require("../models");
+const redis = require("../config/redis");
 
 module.exports = class CategoryController {
   static async getAllCategoriesNonTenant(req, res, next) {
     try {
-      let response = await Category.findAll({
-        include: "SubCategory",
-        where: {
-          parent_id: null,
-          is_tenant_group: false,
-        },
-      });
-      res.status(200).json(response);
+      let chace = await redis.get("categories_non_tenant");
+      if (chace) {
+        res.status(200).json(JSON.parse(chace));
+      } else {
+        let response = await Category.findAll({
+          include: "sub_category",
+          where: {
+            parent_id: null,
+            is_tenant_category: false,
+          },
+        });
+        await redis.set("categories_non_tenant", JSON.stringify(response));
+        res.status(200).json(response);
+      }
     } catch (error) {
       next(error);
     }
@@ -18,14 +25,20 @@ module.exports = class CategoryController {
 
   static async getAllCategoriesIsTenant(req, res, next) {
     try {
-      let response = await Category.findAll({
-        include: "SubCategory",
-        where: {
-          parent_id: null,
-          is_tenant_group: true,
-        },
-      });
-      res.status(200).json(response);
+      let chace = await redis.get("categories_tenant");
+      if (chace) {
+        res.status(200).json(JSON.parse(chace));
+      } else {
+        let response = await Category.findAll({
+          include: "sub_category",
+          where: {
+            parent_id: null,
+            is_tenant_category: true,
+          },
+        });
+        await redis.set("categories_tenant", JSON.stringify(response));
+        res.status(200).json(response);
+      }
     } catch (error) {
       next(error);
     }
@@ -36,9 +49,10 @@ module.exports = class CategoryController {
       let { name } = req.body;
       let response = await Category.create({
         name,
-        is_tenant_group: true,
-        createdBy: "req.user.name",
+        is_tenant_category: true,
+        created_by: "req.user.name",
       });
+      await redis.del("categories_tenant");
       res.status(201).json(response);
     } catch (error) {
       next(error);
@@ -56,9 +70,10 @@ module.exports = class CategoryController {
       let response = await Category.create({
         name,
         description,
-        createdBy: "req.user.name",
-        is_tenant_group: false,
+        created_by: "req.user.name",
+        is_tenant_category: false,
       });
+      await redis.del("categories_non_tenant");
       res.status(201).json(response);
     } catch (error) {
       next(error);
@@ -72,14 +87,19 @@ module.exports = class CategoryController {
         let response = await Category.findByPk(+id);
         if (!response) {
           throw {
-            name: "Category not found",
+            name: "category_not_found",
           };
         }
 
         let { name, description } = req.body;
+        if (!name) {
+          throw {
+            name: "name_is_required",
+          };
+        }
         if (!description) {
           throw {
-            name: "Description is required",
+            name: "description_is_required",
           };
         }
         let [created, data] = await Category.update(
@@ -91,7 +111,8 @@ module.exports = class CategoryController {
             returning: true,
           }
         );
-        res.status(201).json(data);
+        await redis.del("categories_non_tenant");
+        res.status(200).json(data[0]);
       } catch (error) {
         next(error);
       }
@@ -107,10 +128,15 @@ module.exports = class CategoryController {
         let response = await Category.findByPk(+id);
         if (!response) {
           throw {
-            name: "Category not found",
+            name: "category_not_found",
           };
         }
         let { name } = req.body;
+        if (!name) {
+          throw {
+            name: "name_is_required",
+          };
+        }
         let [created, data] = await Category.update(
           { name },
           {
@@ -120,7 +146,8 @@ module.exports = class CategoryController {
             returning: true,
           }
         );
-        res.status(201).json(data);
+        await redis.del("categories_tenant");
+        res.status(200).json(data[0]);
       } catch (error) {
         next(error);
       }
@@ -135,8 +162,19 @@ module.exports = class CategoryController {
       let response = await Category.findByPk(+id);
       if (!response) {
         throw {
-          name: "Category not found",
+          name: "category_not_found",
         };
+      }
+      if (response.parent_id === null && is_tenant_category === false) {
+        await redis.del("categories_non_tenant");
+      }
+
+      if (response.parent_id === null && is_tenant_category === true) {
+        await redis.del("categories_tenant");
+      }
+
+      if (Number(response.parent_id)) {
+        await redis.del("categories_non_tenant");
       }
       await Category.destroy({
         where: { id: +id },
@@ -157,15 +195,20 @@ module.exports = class CategoryController {
         let category = await Category.findByPk(+id);
         if (!category) {
           throw {
-            name: "Category not found",
-            createdBy: "req.user.name",
+            name: "category_not_found",
+          };
+        }
+        if (!name) {
+          throw {
+            name: "name_is_required",
           };
         }
         let data = await Category.create({
           name,
-          createdBy: "req.user.name",
+          created_by: "req.user.name",
           parent_id: category.id,
         });
+        await redis.del("categories_non_tenant");
         res.status(201).json(data);
       } catch (error) {
         next(error);
@@ -181,13 +224,19 @@ module.exports = class CategoryController {
       let response = await Category.findByPk(+id);
       if (!response) {
         throw {
-          name: "Sub category not found",
+          name: "sub_category_not_found",
         };
       }
       let { name, parent_id } = req.body;
       if (!parent_id) {
         throw {
-          name: "Category not found",
+          name: "category_not_found",
+        };
+      }
+      let category = await Category.findByPk(+parent_id);
+      if (!category) {
+        throw {
+          name: "category_not_found",
         };
       }
       let [updated, data] = await Category.update(
@@ -199,9 +248,9 @@ module.exports = class CategoryController {
           returning: true,
         }
       );
-      res.status(201).json(data);
+      await redis.del("categories_non_tenant");
+      res.status(200).json(data[0]);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
@@ -212,11 +261,16 @@ module.exports = class CategoryController {
       let response = await Category.findOne({
         where: {
           id: +id,
-          is_tenant_group: false,
+          is_tenant_category: false,
           parent_id: null,
         },
-        include: "SubCategory",
+        include: "sub_category",
       });
+      if (!response) {
+        throw {
+          name: "category_not_found",
+        };
+      }
       res.status(200).json(response);
     } catch (error) {
       next(error);
