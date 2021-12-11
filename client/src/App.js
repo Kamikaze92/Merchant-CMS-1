@@ -14,6 +14,7 @@ function App() {
   // <div className="App">{/* <RegisterMerchant /> */}</div>;
   return (
     <>
+      <OtpInput />
       <Sidebar />
       <Routes>
         <Route path="/category" element={<Category />}></Route>
