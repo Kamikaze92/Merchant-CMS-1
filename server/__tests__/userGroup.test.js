@@ -1,97 +1,65 @@
+const fs = require('fs');
 const request = require("supertest");
 const app = require("../app");
-const { User, Role } = require("../models");
+const { User, Privilege, Role, User_Group } = require("../models");
 const { jwtSign } = require("../helpers/jwt");
  
- let validToken1, validToken2, invalidToken, role_id;
- const validUser = {
+ let validToken1, invalidToken, user_group_id;
+ const validUser1 = {
    email: "h8.pedulilindungi.merchant@gmail.com",
    password: "finalproject1",
  };
- 
+ const roleTest = JSON.parse(fs.readFileSync('../../dummyData/roles.JSON', 'utf-8'));
+ const privilegeTest = JSON.parse(fs.readFileSync('../../dummyData/privileges.JSON', 'utf-8'));
+ const userGroupTest = JSON.parse(fs.readFileSync('../../dummyData/user-groups.JSON', 'utf-8'));
+
+ roleTest.forEach(element => {
+    element.createdAt = new Date();
+    element.updatedAt = new Date();
+  });
+
  beforeAll((done) => {
-   User.create(validUser)
+   User.create(validUser1)
      .then((registeredUser1) => {
        validToken1 = jwtSign({
          id: registeredUser1.id,
          email: registeredUser1.email,
        });
        invalidToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbGFoQG1haWwuY29tIiwicGFzc3dvcmQiOiJzYWxhaHNla2FsaSIsImlhdCI6MTYzOTA5MTcxMH0.2e6zYFESSmO0iwL4gl-rIxEs4irLktYj4SLjgamw5Ec";
-       return User.create(userTest2);
+       return Privilege.bulkCreate(privilegeTest);
     })
-    .then((registeredUser2) => {
-        validToken2 = jwtSign({
-            id: registeredUser2.id,
-            email: registeredUser2.email
-        });
-        done()
+    .then(() => {
+      return Role.bulkCreate(roleTest);
+    })
+    .then(() => {
+      done();
     })
     .catch((err) => {
       done(err);
     });
-})
+});
  
-afterAll(done => {
+afterAll((done) => {
     User.destroy({ truncate: true, cascade: true, restartIdentity: true})
      .then(_ => {
-       return Role.destroy({ truncate: true, cascade: true, restartIdentity: true})
+       return Role.destroy({ truncate: true, cascade: true, restartIdentity: true});
+     })
+     .then(_ => {
+       return Privilege.destroy({ truncate: true, cascade: true, restartIdentity: true});
+     })
+     .then(_ => {
+       done();
      })
      .catch(err => {
        done(err);
      });
  });
  
- describe("POST /roles", () => {
-    test("201 success POST roles", (done) => {
+ describe("GET /user-groups", async () => {
+   await User_Group.bulkCreate(userGroupTest);
+    test("200 success GET user groups with data available", (done) => {
      request(app)
-       .post("/roles")
-       .set("access_token", validToken1)
-       .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(201);
-        expect(body).toHaveProperty("id", expect.any(Number));
-        expect(body).toHaveProperty("name", expect.any(String));
-        expect(body).toHaveProperty("description", expect.any(String));
-        role_id = body.id;
-        done();
-       })
-       .catch((err) => {
-         done(err);
-       });
-    });
-    test("401 POST roles with invalid token", (done) => {
-     request(app)
-       .post("/roles")
-       .set("access_token", invalidToken)
-       .then((response) => {
-         const { body, status } = response;
-         expect(status).toBe(401);
-         expect(body).toHaveProperty("message", "Invalid token");
-         done();
-       })
-       .catch((err) => {
-         done(err);
-       });
-    });
-    test("401 POST roles without token", (done) => {
-     request(app)
-       .post("/roles")
-       .then((response) => {
-         const { body, status } = response;
-         expect(status).toBe(401);
-         expect(body).toHaveProperty("message", "Invalid token");
-         done();
-       })
-       .catch((err) => {
-         done(err);
-       });
-    });
- });
- 
- describe("GET /roles", () => {
-    test("200 success GET roles with data available", (done) => {
-     request(app)
-       .get('/roles')
+       .get('/user-groups')
        .set("access_token", validToken1)
        .then((response) => {
         const { body, status } = response;
@@ -104,69 +72,130 @@ afterAll(done => {
          done(err);
        });
     });
-    test("200 success GET roles with data empty", (done) => {
+    await User_Group.destroy({ truncate: true, cascade: true, restartIdentity: true});
+    test("200 success GET user groups with data empty", (done) => {
      request(app)
-       .get('/roles')
+       .get('/user-groups')
        .set("access_token", validToken1)
        .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", "Role is not found");
+        expect(body).toHaveProperty("message", "User group is not found");
         done();
        })
        .catch((err) => {
          done(err);
        });
-   });
-   test("401 GET roles with invalid token", (done) => {
-     request(app)
-       .get("/roles")
-       .set("access_token", invalidToken)
-       .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(401);
-        expect(body).toHaveProperty("message", "Invalid token");
-        done();
-       })
-       .catch((err) => {
-         done(err);
-       });
-   });
-   test("401 GET roles without token", (done) => {
-     request(app)
-       .get("/roles")
-       .then((response) => {
-        const { body, status } = response;
-        expect(status).toBe(401);
-        expect(body).toHaveProperty("message", "Invalid token");
-        done();
-       })
-       .catch((err) => {
-         done(err);
-       });
-   });
- });
+      });
+      await User_Group.bulkCreate(userGroupTest);
+      test("401 GET user groups with invalid token", (done) => {
+        request(app)
+          .get("/user-groups")
+          .set("access_token", invalidToken)
+          .then((response) => {
+            const { body, status } = response;
+            expect(status).toBe(401);
+            expect(body).toHaveProperty("message", "Invalid token");
+            done();
+          })
+          .catch((err) => {
+            done(err);
+          });
+      });
+      test("401 GET user groups without token", (done) => {
+        request(app)
+          .get("/user-groups")
+          .then((response) => {
+            const { body, status } = response;
+            expect(status).toBe(401);
+            expect(body).toHaveProperty("message", "Invalid token");
+            done();
+          })
+          .catch((err) => {
+            done(err);
+          });
+        });
+        await User_Group.destroy({ truncate: true, cascade: true, restartIdentity: true});
+      });
+
+  describe("POST /user-groups", async () => {
+    const postUserGroupTest = {
+      role_id: 1,
+      privilege_id: 1
+    };
+      test("201 success POST user group", (done) => {
+      request(app)
+        .post("/user-groups")
+        .set("access_token", validToken1)
+        .send(postUserGroupTest)
+        .then((response) => {
+          const { body, status } = response;
+          expect(status).toBe(201);
+          expect(body).toHaveProperty("id", expect.any(Number));
+          expect(body).toHaveProperty("role_id", expect.any(Number));
+          expect(body).toHaveProperty("privilege_id", expect.any(Number));
+          user_group_id = body.id;
+          done();
+        })
+        .catch((err) => {
+          done(err);
+        });
+      });
+      await User_Group.destroy({ truncate: true, cascade: true, restartIdentity: true});
+      test("401 POST user group with invalid token", (done) => {
+      request(app)
+        .post("/user-groups")
+        .set("access_token", invalidToken)
+        .send(postUserGroupTest)
+        .then((response) => {
+          const { body, status } = response;
+          expect(status).toBe(401);
+          expect(body).toHaveProperty("message", "Invalid token");
+          done();
+        })
+        .catch((err) => {
+          done(err);
+        });
+      });
+      await User_Group.destroy({ truncate: true, cascade: true, restartIdentity: true});
+      test("401 POST user group without token", (done) => {
+      request(app)
+        .post("/user-groups")
+        .send(postUserGroupTest)
+        .then((response) => {
+          const { body, status } = response;
+          expect(status).toBe(401);
+          expect(body).toHaveProperty("message", "Invalid token");
+          done();
+        })
+        .catch((err) => {
+          done(err);
+        });
+        });
+        const userGroupCreated = await Role.create(postUserGroupTest);
+        user_group_id = userGroupCreated.id;
+      });
  
- describe("GET /roles/:id", () => {
-   test("200 success GET role by id", (done) => {
+ describe("GET /user-groups/:id", () => {
+   test("200 success GET user group by id", (done) => {
      request(app)
-       .get(`/roles/${role_id}`)
+       .get(`/user-groups/${user_group_id}`)
        .set("access_token", validToken1)
        .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
         expect(body).toHaveProperty("id", expect.any(Number));
-        expect(body).toHaveProperty("name", expect.any(String));
-        expect(body).toHaveProperty("description", expect.any(String));
+        expect(body).toHaveProperty("role_id", expect.any(Number));
+        expect(body).toHaveProperty("privilege_id", expect.any(Number));
         done();
        })
        .catch((err) => {
          done(err);
        });
    });
-   test("401 GET role by id with invalid token", (done) => {
+   test("401 GET user group by id with invalid token", (done) => {
      request(app)
-       .get(`/roles/${role_id}`)
+       .get(`/user-groups/${user_group_id}`)
        .set("access_token", invalidToken)
        .then((response) => {
         const { body, status } = response;
@@ -178,9 +207,9 @@ afterAll(done => {
          done(err);
        });
    });
-   test("401 GET role by id without token", (done) => {
+   test("401 GET user group by id without token", (done) => {
      request(app)
-       .get(`/roles/${role_id}`)
+       .get(`/user groups/${user_group_id}`)
        .then((response) => {
          const { body, status } = response;
          expect(status).toBe(401);
@@ -191,15 +220,14 @@ afterAll(done => {
          done(err);
        });
    });
-   test("404 GET role by id not found", (done) => {
+   test("404 GET user group by id not found", (done) => {
      request(app)
-       .get(`/roles/${role_id}`)
+       .get(`/user-groups/1000`)
        .set("access_token", validToken1)
-       .send(input)
        .then((response) => {
          const { body, status } = response;
          expect(status).toBe(404);
-         expect(body).toHaveProperty("message", "Role is not found");
+         expect(body).toHaveProperty("message", "User group is not found");
          done();
        })
        .catch((err) => {
@@ -208,68 +236,31 @@ afterAll(done => {
     });
  });
  
- describe("UPDATE /roles/:id", () => {
-    const input = {
-        name: 'Admins',
-        description: 'Super Dupper Admin'
-    }
-    test("200 success UPDATE role by id", (done) => {
+ describe("UPDATE /user-groups/:id", () => {
+    const updateUserGroupTest = {
+      "role_id": 2,
+      "privilege_id": 2
+    };
+    test("200 success UPDATE user group by id", (done) => {
      request(app)
-       .put(`/roles/${role_id}`)
+       .put(`/user-groups/${user_group_id}`)
        .set("access_token", validToken1)
-       .send(input)
+       .send(updateUserGroupTest)
        .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body).toHaveProperty("message", `Role with id ${role_id} has been updated`);
+        expect(body).toHaveProperty("message", `User group with id ${user_group_id} has been updated`);
         done();
        })
        .catch((err) => {
          done(err);
        });
     });
-    test("200 success UPDATE role by id with empty input", (done) => {
-        request(app)
-          .put(`/roles/${role_id}`)
-          .set("access_token", validToken1)
-          .then((response) => {
-           const { body, status } = response;
-           expect(status).toBe(200);
-           expect(body).toHaveProperty("message", "Everything is already uptodated");
-           done();
-          })
-          .catch((err) => {
-            done(err);
-        });
-    });
-    test("403 UPDATE role by id with unauthorized user", (done) => {
-        const input = {
-            name: 'Admins',
-            description: 'Super Dupper Admin'
-        }
-        request(app)
-        .put(`/roles/${role_id}`)
-        .set("access_token", validToken2)
-        .send(input)
-        .then((response) => {
-            const { body, status } = response;
-            expect(status).toBe(403);
-            expect(body).toHaveProperty("message", "You are not authorized");
-            done();
-        })
-        .catch((err) => {
-            done(err);
-        });
-    });
-   test("401 UPDATE role by id with invalid token", (done) => {
-        const input = {
-            name: 'Admins',
-            description: 'Super Dupper Admin'
-        } 
-        request(app)
-       .put(`/roles/${role_id}`)
+   test("401 UPDATE user group by id with invalid token", (done) => {
+      request(app)
+       .put(`/user-groups/${user_group_id}`)
        .set("access_token", invalidToken)
-       .send(input)
+       .send(updateUserGroupTest)
        .then((response) => {
         const { body, status } = response;
         expect(status).toBe(401);
@@ -280,15 +271,10 @@ afterAll(done => {
          done(err);
        });
    });
-   test("401 UPDATE role by id without token", (done) => {
-    const input = {
-        name: 'Admins',
-        description: 'Super Dupper Admin'
-    } 
+   test("401 UPDATE user group by id without token", (done) => {
     request(app)
-        .delete(`/roles/${role_id}`)
-        .set("access_token", validToken1)
-        .send(input)
+        .put(`/user-groups/${user_group_id}`)
+        .send(updateUserGroupTest)
         .then((response) => {
         const { body, status } = response;
         expect(status).toBe(401);
@@ -299,19 +285,15 @@ afterAll(done => {
             done(err);
         });
    });
-   test("404 UPDATE role by id not found", (done) => {
-    const input = {
-        name: 'Admins',
-        description: 'Super Dupper Admin'
-    } 
+   test("404 UPDATE user group by id not found", (done) => {
      request(app)
-       .put(`/roles/${role_id}`)
+       .put(`/user-groups/1000`)
        .set("access_token", validToken1)
-       .send(input)
+       .send(updateUserGroupTest)
        .then((response) => {
          const { body, status } = response;
          expect(status).toBe(404);
-         expect(body).toHaveProperty("message", "Role is not found");
+         expect(body).toHaveProperty("message", "User group is not found");
          done();
        })
        .catch((err) => {
@@ -320,38 +302,29 @@ afterAll(done => {
     });
  });
 
- describe("DELETE /roles/:id", () => {
-  test("200 success DELETE role by id", (done) => {
-   request(app)
-     .delete(`/roles/${role_id}`)
-     .set("access_token", validToken1)
-     .then((response) => {
-      const { body, status } = response;
-      expect(status).toBe(200);
-      expect(body).toHaveProperty("message", `Role with id ${role_id} has been deleted`);
-      done();
-     })
-     .catch((err) => {
-       done(err);
-     });
+ describe("DELETE /user-groups/:id", async () => {
+	test("200 success DELETE user group by id", (done) => {
+	 request(app)
+		 .delete(`/user-groups/${user_group_id}`)
+		 .set("access_token", validToken1)
+		 .then((response) => {
+			const { body, status } = response;
+			expect(status).toBe(200);
+			expect(body).toHaveProperty("message", `User group with id ${user_group_id} has been deleted`);
+			done();
+		 })
+		 .catch((err) => {
+			 done(err);
+		 });
+	});
+  const userGroupCreated = await User_Group.create({
+    role_id: 1,
+    privilege_id: 1
   });
-  test("403 DELETE role by id with unauthorized user", (done) => {
-      request(app)
-      .delete(`/roles/${role_id}`)
-      .set("access_token", validToken2)
-      .then((response) => {
-          const { body, status } = response;
-          expect(status).toBe(403);
-          expect(body).toHaveProperty("message", "You are not authorized");
-          done();
-      })
-      .catch((err) => {
-          done(err);
-      });
-  });
- test("401 DELETE role by id with invalid token", (done) => {
-      request(app)
-     .delete(`/roles/${role_id}`)
+  user_group_id = userGroupCreated.id;
+  test("401 DELETE user group by id with invalid token", (done) => {
+    request(app)
+     .delete(`/user-groups/${user_group_id}`)
      .set("access_token", invalidToken)
      .then((response) => {
       const { body, status } = response;
@@ -362,32 +335,32 @@ afterAll(done => {
      .catch((err) => {
        done(err);
      });
- });
- test("401 DELETE role by id without token", (done) => {
-  request(app)
-      .delete(`/roles/${role_id}`)
+  });
+  test("401 DELETE user group by id without token", (done) => {
+    request(app)
+        .delete(`/user-groups/${user_group_id}`)
+        .then((response) => {
+        const { body, status } = response;
+        expect(status).toBe(401);
+        expect(body).toHaveProperty("message", "Invalid token");
+        done();
+        })
+        .catch((err) => {
+            done(err);
+        });
+  });
+  test("404 DELETE user group by id not found", (done) => {
+    request(app)
+      .delete(`/user-groups/1000`)
+      .set("access_token", validToken1)
       .then((response) => {
-      const { body, status } = response;
-      expect(status).toBe(401);
-      expect(body).toHaveProperty("message", "Invalid token");
-      done();
+        const { body, status } = response;
+        expect(status).toBe(404);
+        expect(body).toHaveProperty("message", "User group is not found");
+        done();
       })
       .catch((err) => {
-          done(err);
+        done(err);
       });
- });
- test("404 DELETE role by id not found", (done) => {
-   request(app)
-     .delete(`/roles/${role_id}`)
-     .set("access_token", validToken1)
-     .then((response) => {
-       const { body, status } = response;
-       expect(status).toBe(404);
-       expect(body).toHaveProperty("message", "Role is not found");
-       done();
-     })
-     .catch((err) => {
-       done(err);
-     });
-  });
+    });
 });

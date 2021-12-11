@@ -9,7 +9,7 @@ class RoleController {
       const payload = {
         entity_name: 'Role',
         entity_id: resp.id,
-        user_id: req.user.id
+        user_id: 1 //req.user.id
       };
       const isHistoryCreated = await newHistory('createRole', payload);
       if(!isHistoryCreated) {
@@ -21,8 +21,8 @@ class RoleController {
         description: resp.description,
       });
     } catch (error) {
-      res.status(500).json(error)
-      next(error);
+      console.log(error);
+      // next(error);
     }
   }
   static async getAllRoles (req, res, next) {
@@ -36,7 +36,8 @@ class RoleController {
         res.status(200).json(resp);
     }
     } catch (error) {
-      next(error);
+      console.log(error);
+      // next(error);
     }
   }
   static async getRole (req, res, next) {
@@ -50,8 +51,8 @@ class RoleController {
       }
       res.status(200).json(resp);
     } catch (error) {
-      res.status(500).json(error)
-      next(error);
+      console.log(error);
+      // next(error);
     }
   }
   static async updateRole (req, res, next) {
@@ -69,7 +70,7 @@ class RoleController {
         const payload = {
           entity_name: 'Role',
           entity_id: resp[1][0].id,
-          user_id: req.user.id
+          user_id: 1 //req.user.id
         };
         const isHistoryCreated = await newHistory('updateRole', payload);
         if(!isHistoryCreated) {
@@ -78,7 +79,8 @@ class RoleController {
         res.status(200).json({ message: `Role with id ${id} has been updated` })
       }
     } catch (error) {
-      next(error);
+      console.log(error);
+      // next(error);
     }
   }
   static async deleteRole (req, res, next) {
@@ -92,7 +94,7 @@ class RoleController {
       const payload = {
         entity_name: 'Role',
         entity_id: foundRole.id,
-        user_id: req.user.id
+        user_id: 1 //req.user.id
       };
       const isHistoryCreated = await newHistory('deleteRole', payload);
       if(!isHistoryCreated) {
@@ -100,7 +102,8 @@ class RoleController {
       }
       res.status(200).json({ message: `Role with id ${id} has been deleted` });
     } catch (error) {
-      next(error);
+      console.log(error);
+      // next(error);
     }
   }
 }
