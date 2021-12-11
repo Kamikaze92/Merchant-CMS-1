@@ -2,8 +2,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Category from "./Pages/CategoryPage";
 import CategoryDetail from "./Pages/CategoryDetailPage";
 import CategoryTenant from "./Pages/CategoryTenantPage";
-import Sidebar from "./components/sidebar/Sidebar";
-import RegisterMerchant from "./Pages/RegisterMerchant";
+import Sidebar from "./Sidebar";
 
 import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
@@ -19,7 +18,7 @@ function App() {
       </Routes>
       <div className="App">
         {/* <RegisterMerchant /> */}
-        <RegisterVerificator />
+        {/* <RegisterVerificator /> */}
       </div>
     </>
   );
