@@ -6,7 +6,7 @@ import Users from "./Pages/Users";
 import Sidebar from "./Sidebar";
 
 import OtpInput from './Pages/OtpInput';
-
+import CheckStatus from './Pages/CheckStatus'
 import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
 
@@ -14,8 +14,11 @@ function App() {
   // <div className="App">{/* <RegisterMerchant /> */}</div>;
   return (
     <>
+      <CheckStatus />
       <OtpInput />
-      <Sidebar />
+      <RegisterMerchant />
+      <RegisterVerificator />
+      {/* <Sidebar /> */}
       <Routes>
         <Route path="/category" element={<Category />}></Route>
         <Route path="/category/detail" element={<CategoryDetail />}></Route>
