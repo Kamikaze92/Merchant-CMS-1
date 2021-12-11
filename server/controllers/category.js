@@ -30,16 +30,17 @@ module.exports = class CategoryController {
         res.status(200).json(JSON.parse(chace));
       } else {
         let response = await Category.findAll({
-          include: "sub_category",
           where: {
             parent_id: null,
             is_tenant_category: true,
           },
         });
+        console.log(response, ">>>>>>>>");
         await redis.set("categories_tenant", JSON.stringify(response));
         res.status(200).json(response);
       }
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
