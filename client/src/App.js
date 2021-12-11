@@ -5,6 +5,8 @@ import CategoryTenant from "./Pages/CategoryTenantPage";
 import Sidebar from "./components/sidebar/Sidebar";
 import RegisterMerchant from "./Pages/RegisterMerchant";
 
+import RegisterMerchant from "./Pages/RegisterMerchant";
+import RegisterVerificator from "./Pages/RegisterVerificator";
 function App() {
   // <div className="App">{/* <RegisterMerchant /> */}</div>;
   return (
@@ -15,6 +17,10 @@ function App() {
         <Route path="/category/detail" element={<CategoryDetail />}></Route>
         <Route path="/category/tenant" element={<CategoryTenant />}></Route>
       </Routes>
+      <div className="App">
+        {/* <RegisterMerchant /> */}
+        <RegisterVerificator />
+      </div>
     </>
   );
 }
