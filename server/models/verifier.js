@@ -16,9 +16,13 @@ module.exports = (sequelize, DataTypes) => {
   Verifier.init({
     institution: DataTypes.STRING,
     province_id: DataTypes.INTEGER,
-    city: DataTypes.INTEGER
+    city_id: DataTypes.INTEGER
   }, {
     sequelize,
+    paranoid: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
     modelName: 'Verifier',
   });
   return Verifier;
