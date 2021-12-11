@@ -15,8 +15,8 @@
 
 .navbar {
   height: 48px;
-  /* width: 1070px; ??? */
-  width: 1232px;
+  width: 1070px;
+  /* width: 1232px; */
   left: 208px;
   top: 0px;
   border-radius: 0px;
@@ -36,7 +36,11 @@ body {
   padding-left: 15px;
   letter-spacing: 42px;
   border: 0;
-  background-image: linear-gradient(to left, black 70%, rgba(255, 255, 255, 0) 0%);
+  background-image: linear-gradient(
+    to left,
+    black 70%,
+    rgba(255, 255, 255, 0) 0%
+  );
   background-position: bottom;
   background-size: 50px 1px;
   background-repeat: repeat-x;
@@ -46,12 +50,12 @@ body {
   outline: unset;
 }
 
-#divInner{
+#divInner {
   left: 0;
   position: sticky;
 }
 
-#divOuter{
-  width: 190px; 
+#divOuter {
+  width: 190px;
   overflow: hidden;
 }
