@@ -1,4 +1,5 @@
 const { Privilege } = require('../models');
+const newHistory = require('../helpers/historyInstance');
 
 class PrivilegeController {
     static async createPrivilege (req, res, next) {
@@ -8,15 +9,19 @@ class PrivilegeController {
             const payload = {
                 entity_name: 'Privilege',
                 entity_id: resp.id,
-                user_id: req.user.id
+                user_id: 1 //req.user.id
               };
               const isHistoryCreated = await newHistory('createPrivilege', payload);
               if(!isHistoryCreated) {
                 throw { name: 'fail_create_history' };
               }
-            res.status(201).json({ message: 'New privilege has been added' })
+              res.status(201).json({
+                id: resp.id,
+                name: resp.name
+              });
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
     static async getAllPrivilege (req, res, next) {
@@ -30,7 +35,8 @@ class PrivilegeController {
                 res.status(200).json(resp);
             }
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
     static async getPrivilegeById (req, res, next) {
@@ -44,7 +50,8 @@ class PrivilegeController {
             }
             res.status(200).json(resp);
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
     static async deletePrivilege (req, res, next) {
@@ -58,7 +65,7 @@ class PrivilegeController {
             const payload = {
                 entity_name: 'Role',
                 entity_id: privilegeFound.id,
-                user_id: req.user.id
+                user_id: 1 //req.user.id
               };
               const isHistoryCreated = await newHistory('deletePrivilege', payload);
               if(!isHistoryCreated) {
@@ -66,7 +73,8 @@ class PrivilegeController {
               }
             res.status(200).json({ message: 'Privilege has been deleted' })
         } catch (error) {
-            next(error);
+            console.log(error);
+            // next(error);
         }
     }
 }
