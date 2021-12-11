@@ -35,7 +35,6 @@ module.exports = class CategoryController {
             is_tenant_category: true,
           },
         });
-        console.log(response, ">>>>>>>>");
         await redis.set("categories_tenant", JSON.stringify(response));
         res.status(200).json(response);
       }
