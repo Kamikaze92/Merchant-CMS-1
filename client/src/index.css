@@ -23,3 +23,96 @@
   background-color: rgba(216, 249, 252, 0.15);
   justify-content: space-between;
 }
+
+#partitioned {
+  padding-left: 15px;
+  letter-spacing: 42px;
+  border: 0;
+  background-image: linear-gradient(to left, black 70%, rgba(255, 255, 255, 0) 0%);
+  background-position: bottom;
+  background-size: 50px 1px;
+  background-repeat: repeat-x;
+  background-position-x: 35px;
+  width: 220px;
+  min-width: 220px;
+  outline: unset;
+}
+
+#divInner{
+  left: 0;
+  position: sticky;
+}
+
+#divOuter{
+  width: 190px; 
+  overflow: hidden;
+}
+
+#cardOtp {
+  background-color: white;
+  border: 5px;
+  border-radius: 10px;
+  box-shadow: 0px 24px 24px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+#otpPage {
+  background-color: #094C6F;
+  font-family: Roboto;
+}
+
+#checkPage {
+  background-color: #094C6F;
+  font-family: Roboto;
+}
+
+#wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0px;
+  position: absolute;
+  width: 208px;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  background: #ffffff;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#wrapper #content-wrapper {
+  background-color: #f8f9fc;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#wrapper #content-wrapper #content {
+  flex: 1 0 auto;
+}
+
+#inputForm {
+  background: #EEEEEE;
+  border-radius: 4px;
+}
+
+#reason {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  position: static;
+  left: 32px;
+  top: 320px;
+  background: #EEEEEE;
+  border-radius: 12px;
+}
+
+#reason-text {
+  flex: none;
+  order: 3;
+  align-self: stretch;
+  flex-grow: 0;
+  margin: 24px 0px;
+}

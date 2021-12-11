@@ -1,32 +1,6 @@
 import {useEffect, useState} from "react"
 
-const OtpPage = {
-    backgroundColor: "#094C6F",
-    fontFamily: 'Roboto',
-  };
-  const Card = {
-    backgroundColor: "white",
-    border: "5px",
-    borderRadius: "10px",
-    boxShadow: "0px 24px 24px rgba(0, 0, 0, 0.25)",
-    borderRadius: "12px",
-    padding: "32px"
-  };
-
-  const OtpInput = {
-    paddingLeft: "15px",
-    letterSpacing: "42px",
-    border: 0,
-    backgroundImage: "linear-gradient(to left, black 70%, rgba(255, 255, 255, 0) 0%)",
-    backgroundPosition: "bottom",
-    backgroundSize: "50px 1px",
-    backgroundRepeat: "repeat-x",
-    backgroundPositionX: "35px",
-    width: "220px",
-    minWidth: "220px",
-  }
-  
-  export default function RegisterMerchant() {
+export default function OtpInput() {
     const [seconds, setSeconds] = useState(0)
     const [minutes, setMinutes] = useState(2)
   
@@ -50,11 +24,11 @@ const OtpPage = {
     })
 
     return (
-      <div style={OtpPage}>
+      <div id="otpPage">
         <div className="register-form">
           <div className="container">
             <div className="row" style={{ justifyContent: "center" }}>
-              <div className="col-6 mb-5 mt-5" style={Card}>
+              <div className="col-8 mb-5 mt-5" id="cardOtp">
                 <div style={{ textAlign: "center" }}>
                   <img
                     src="https://www.pedulilindungi.id/assets/logo-with-text.svg"
@@ -65,15 +39,15 @@ const OtpPage = {
                   <img 
                     src="https://ik.imagekit.io/fjaskqdnu0xp/logo-email_Vztzgz4bl.png?updatedAt=1639203405172"
                     alt="email-logo"
-                    style={{height: "80px", width: "80px", padding: 0 }} 
+                    style={{height: "100px", width: "100px", padding: 0 }} 
                   />
-                  <h4 style={{fontSize: 18, fontColor: "#0B4C6F"}} className="mb-5">Verifikasi Email</h4>
+                  <h4 style={{fontSize: 18, fontColor: "#0B4C6F"}} className="mb-2"><strong>Verifikasi Email</strong></h4>
                   <h6 style={{fontSize: 12}}>Masukan 6 digit kode verifikasi yang telah kami kirimkan ke email</h6>
                 </div>
                 <form className="justify-content-center">
                 <div id="divOuter">
                   <div id="divInner">
-                      <input id="partitioned" className="mt-5 mb-3" type="text" maxLength="6"/>
+                      <input id="partitioned" className="mt-5 mb-3" type="text" maxlength="6"/>
                   </div>
                 </div>
                 </form>
@@ -86,7 +60,7 @@ const OtpPage = {
                 >
                   <h8 className="my-3">
                     Jika anda tidak menerima email, silahkan 
-                    cek folder spam anda, atau kirim ulang kode verifikasi
+                    cek folder spam anda, atau <br/> kirim ulang kode verifikasi
                     {seconds == 0 && minutes == 0 ? (
                         <a href="#" className="text-decoration-none mb-3 mx-1">Resend OTP</a>
                         ) : (
