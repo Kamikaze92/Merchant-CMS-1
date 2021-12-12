@@ -522,40 +522,48 @@ module.exports = class UserController {
 
   static async approveUser(req, res, next) {
     try {
-      const {id, token} = req.params
-      const payload = verifyData(token)
-      let params = {
-        approved_at: new Date()
-      }
-      await User.update(params,{
+      const { id, token } = req.params;
+
+      // if token was invalid its throw error.
+      verifyData(token);
+      await User.update({
+        approved_at: new Date(),
+      }, {
         where: {id}
-      })
-      res.status(201).json({ 
+      });
+
+      // !TODO : create history.
+
+      res.status(200).json({ 
         message: 'User has been approved.',
-        id: id
-      })
-    } catch (err) {
-      next(err)
-    }
-  }
+        id,
+      });
+    } catch (error) {
+      next(error);
+    };
+  };
 
   static async userCreatePassword(req, res, next){
     try {
-      const { id } = req.params
-      const { password, password2 } = req.body
-      if(password !== password2){
-        throw {name: "password_not_match"}
-      }
+      const { id } = req.params;
+      const { password, confirmPassword } = req.body;
+      if (password !== confirmPassword) {
+        throw {
+          name: "password_not_match"
+        };
+      };
       //create hooks beforeUpdate to hash new password
-      let params = { password }
-      await User.update(params, {
-        where: { id }
-      })
-      res.status(201).json({ 
-        message: 'Password registered. Please attempt login.'
-      })
-    } catch (err) {
-      next(err)
-    }
-  }
+      await User.update({ password }, {
+        where: { id },
+      });
+
+      // !TODO : create history.
+
+      res.status(200).json({ 
+        message: 'Password registered. You can login now.'
+      });
+    } catch (error) {
+      next(error);
+    };
+  };
 };
