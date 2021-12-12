@@ -113,30 +113,37 @@ module.exports = class AuthController {
       // if(!isHistoryCreated) {
       //     throw { name: 'fail_create_history' };
       // }
-
       // if transaction successfull, send the OTP.
       t.afterCommit(() => {
         // using padStart so it will be always 6 digit.
         const OTP = String(Math.floor(Math.random() * 999999));
-        transporter.sendMail(mailOtp(userTransaction.email, OTP), (error) => {
-          if(error){
-            // !need to rework error name.
-            throw {
-              name: 'error_send_otp',
-            }
-          } else{
-            console.log('otp to email sent.')
-            redis.set(`${userTransaction.id}`, OTP, 'ex', 120)
-            res.status(201).json({
-              message: `OTP was sent to ${userTransaction.email}.`,
-              id: userTransaction.id,
-              token: emailToken
-            });
-          };
+        transporter.sendMail(mailOtp(userTransaction.email, OTP), async (error) => {
+          try {
+            if(error){
+              // !need to rework error name.
+              console.log(error, 'dapet error');
+              throw {
+                name: 'error_send_otp',
+              }
+            } else{
+              console.log('otp to email sent.')
+              await redis.set(`${userTransaction.id}`, OTP, 'ex', 120);
+              res.status(201).json({
+                message: `OTP was sent to ${userTransaction.email}.`,
+                id: userTransaction.id,
+                token: emailToken
+              });
+            };
+          } catch (error) {
+            console.log(error, 'error nya ini');
+            next(error);
+          }
+          console.log("callback triggered");
         });
       });
       await t.commit();
     } catch (error) {
+      console.log(error)
       await t.rollback();
       next(error);
     }
