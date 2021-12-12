@@ -10,6 +10,7 @@ import CheckStatus from './Pages/CheckStatus'
 import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
 import ActiveMerchant from "./Pages/ActiveMerchant"
+import MerchantDetail from './Pages/MerchantDetail';
 function App() {
   // <div className="App">{/* <RegisterMerchant /> */}</div>;
   return (
@@ -18,7 +19,8 @@ function App() {
       <OtpInput />
       <RegisterMerchant />
       <RegisterVerificator /> */}
-      <ActiveMerchant />
+      {/* <ActiveMerchant /> */}
+      <MerchantDetail />
       <Routes>
         <Route path="/category" element={<Category />}></Route>
         <Route path="/category/detail" element={<CategoryDetail />}></Route>
