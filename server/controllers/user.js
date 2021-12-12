@@ -249,8 +249,6 @@ module.exports = class UserController {
             require: true, // REQUIRED!. because if not have verifier it should return empty array!.
           },
         ],
-        limit,
-        offset,
       });
       if (!response) {
         throw { name: "user_not_found" };

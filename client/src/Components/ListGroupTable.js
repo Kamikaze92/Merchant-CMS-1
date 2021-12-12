@@ -1,18 +1,22 @@
-import Navbar from "../Components/Navbar";
+const layoutBorder = {
+    borderRadius: 5,
+    padding: "16px",
+    backgroundColor: "white",
+    marginTop: 20,
+    marginLeft: 30,
+    marginRight: 30,
+  };
 
 export default function ListGroupPage () {
     return (
         <>
-          <Navbar></Navbar>
-          <div className="container">
-            <div className="row">
-                <p>Administrasi - Group</p>
-                <p style={{ fontWeight: 'bold', fontSize: '20px' }}>Daftar Group Pengguna</p>
-            </div>
+          <div className="container-fluid">
+            <div className="border" style={layoutBorder}>
             <div className="row">
                 <div className="col d-flex justify-content-center">
                     <div className="col-5 d-flex align-items-center">
-                        <input class="form-control me-2" placeholder="Cari Nama Grup"/>
+                        <input className="form-control me-2" 
+                        placeholder="Cari Nama Grup"/>
                         <div style={{ height: '38px' }}>
                             <p className="btn" style={{ color: '#f8f8f8', backgroundColor: '#229BD8' }}>Cari</p>
                         </div>
@@ -20,28 +24,24 @@ export default function ListGroupPage () {
                 </div>
             </div>
           </div>
-  
-          <div className="container mt-5">
-            <div className="row">
-                <div className="col d-flex align-items-center bd-highlight mb-3">
-                    <div className="me-auto bd-highlight" style={{ height: '20px' }}>
-                        <p style={{ fontWeight: 'bold' }}>Akun Grup Baru</p>
-                    </div>
-                    <div className="d-flex align-items-center p-2 bd-highlight" style={{ color: '#f8f8f8', backgroundColor: '#229BD8', height: '40px' }}>
-                        <i className="bi bi-plus-lg"></i>
-                        <p className="m-2">Tambah Pengguna</p>
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <table class="table">
+          </div>
+          <div className="border p-3 mt-4 mb-4" style={layoutBorder}>
+              <div
+                className="d-flex flex-row justify-content-between mb-3"
+                style={{ alignItems: "center" }}
+              >
+                <h6><strong>Akun Grup Baru</strong></h6>
+                <button className="btn btn-default">+ Tambah Data</button>
+              </div>
+                <div>
+                <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <th scope="row"><p style={{ fontWeight: 'bold' }}>Nama Grup</p></th>
-                            <th><p style={{ fontWeight: 'bold' }}>Deskripsi</p></th>
-                            <th><p style={{ fontWeight: 'bold' }}>Jumlah Pengguna</p></th>
-                            <th><p style={{ fontWeight: 'bold' }}>Hak Akses</p></th>
-                            <th><p style={{ fontWeight: 'bold' }}>Aksi</p></th>
+                            <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Nama Grup</th>
+                            <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Deskripsi</th>
+                            <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Jumlah Pengguna</th>
+                            <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Hak Akses</th>
+                            <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Aksi</th>
                         </tr>
                         <tr>
                             <td scope="row">Admin</td>
@@ -90,13 +90,7 @@ export default function ListGroupPage () {
                             <td>Untuk Merchant</td>
                             <td>1000</td>
                             <td>Merchant Feature</td>
-                            <td>
-                                <div className="d-flex align-items-center bd-highlight mb-3"> 
-                                    <i class="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
-                                    <div style={{ height: "20px" }}>
-                                        <p className="ms-2 me-4  bd-highlight">Detail</p>
-                                    </div>
-                                </div>
+                            <td><a href="#"><i class='bx bx-list-ul' ></i> Detail</a>
                             </td>
                         </tr>
                     </tbody>

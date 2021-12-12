@@ -113,39 +113,46 @@ module.exports = class AuthController {
       // if(!isHistoryCreated) {
       //     throw { name: 'fail_create_history' };
       // }
-
       // if transaction successfull, send the OTP.
       t.afterCommit(() => {
         // using padStart so it will be always 6 digit.
         const OTP = String(Math.floor(Math.random() * 999999));
-        transporter.sendMail(mailOtp(userTransaction.email, OTP), (error) => {
-          if(error){
-            // !need to rework error name.
-            throw {
-              name: 'error_send_otp',
-            }
-          } else{
-            console.log('otp to email sent.')
-            redis.set(`${userTransaction.id}`, OTP, 'ex', 120)
-            res.status(201).json({
-              message: `OTP was sent to ${userTransaction.email}.`,
-              id: userTransaction.id,
-              token: emailToken
-            });
+        transporter.sendMail(mailOtp(userTransaction.email, OTP), async (error) => {
+          try {
+            if(error){
+              // !need to rework error name.
+              throw {
+                name: 'error_send_otp',
+              };
+            } else{
+              const otpToken = jwtSign({
+                id: userTransaction.id,
+                email: userTransaction.email,
+              });
+              await redis.set(`${userTransaction.id}`, OTP, 'ex', 120);
+              res.status(201).json({
+                message: `OTP was sent to ${userTransaction.email}.`,
+                id: userTransaction.id,
+                token: otpToken,
+              });
+            };
+          } catch (error) {
+            next(error);
           };
         });
       });
       await t.commit();
     } catch (error) {
+      console.log(error)
       await t.rollback();
       next(error);
-    }
-  }
+    };
+  };
 
   static async verifyUser(req, res, next){
     //ambil otp dan email dari redis
     try {
-      const {otp} = req.body
+      const {otp} = req.body;
       const redisOtp = await redis.get(`${req.params.id}`)
       if(redisOtp !== otp){
         throw {name: 'invalid_otp'}
@@ -168,18 +175,35 @@ module.exports = class AuthController {
 
   static async resendOtp(req, res, next){
     try {
+      const { id, token } = req.params;
+      const user = await User.findByPk(id);
+      
+      if (!user) {
+        throw { name: 'not_found' };
+      };
+      
       const OTP = String(Math.floor(Math.random() * 999999));
-      transporter.sendMail(mailOtp(userTransaction.email, OTP), async (error) => {
-        if(error){
-          throw {
-            message: 'error Send OTP',
-          }
-        } else{
-          console.log('OTP resend to email.')
-          await redis.set("otp", OTP)
-          res.status(201).json({
-            message: `OTP was sent.`,
-          });
+      transporter.sendMail(mailOtp(user.email, OTP), async (error) => {
+        try {
+          if(error){
+            // !need to rework error name.
+            throw {
+              name: 'error_send_otp',
+            };
+          } else{
+            const otpToken = jwtSign({
+              id: user.id,
+              email: user.email,
+            });
+            await redis.set(`${user.id}`, OTP, 'ex', 120);
+            res.status(200).json({
+              message: `OTP was sent to ${user.email}.`,
+              id: user.id,
+              token: otpToken,
+            });
+          };
+        } catch (error) {
+          next(error);
         };
       });
     } catch (err) {

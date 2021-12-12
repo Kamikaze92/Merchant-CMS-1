@@ -1,5 +1,5 @@
-import Sidebar from "../Components/Sidebar";
-import Navbar from "../Components/Navbar";
+import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
 const heading = {
   fontFamily: "Roboto",
   fontWeight: "bold",
@@ -36,14 +36,10 @@ const detailData = {
 export default function MerchantDetail() {
   return (
     <>
-      <Navbar />
-      <div className="container">
+      <div className="container mt-5">
         <div className="row">
-          <Sidebar />
-        </div>
-        <div className="row">
-          <div className="d-flex flex-row" style={{ marginLeft: "50%" }}>
-            <div className="d-flex flex-column">
+          <div className="d-flex flex-row">
+            <div className="d-flex flex-column" style={{ marginLeft: 500 }}>
               <h3 style={heading}>Informasi Pengelola QR Code</h3>
               <div style={{padding: 10}}>
                 <div>
@@ -79,19 +75,6 @@ export default function MerchantDetail() {
                   </div>
                 </div>
               </div>
-              {/* <p>Email  : Akbar@gmail.com</p>
-            <p>Nama  : Akbar Kurnia Hernadi</p>
-            <p>No. HP  :</p>
-            <p>Kategori  : </p>
-            <p>Sub-Kategori  : Restoran</p>
-            <p>Kategori Tenant  : -</p>
-            <p>Nama Mall/Gedung  : -</p>
-            <p>Nama Tempat  : -</p>
-            <p>Instansi Pengampu  : Negri Wakanda</p>
-            <p>Alamat : Jl.Mambu,No.XX</p>
-            <p>Provinsi  : Jawa Tengah</p>
-            <p>Kota  : Sidoarjo</p> */}
-              {/* </div> */}
             </div>
           </div>
         </div>
