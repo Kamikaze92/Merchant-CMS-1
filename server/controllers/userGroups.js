@@ -7,10 +7,10 @@ class UserGroupsController {
             const roleFound = await Role.findByPk(role_id);
             const privileFound = await Privilege.findByPk(privilege_id);
             if(!roleFound) {
-                throw { name: 'Role is not found' };
+                throw { name: 'role_not_found' };
             }
             if(!privileFound) {
-                throw { name: 'Privilege is not found' };
+                throw { name: 'privilege_not_found' };
             }
             const resp = await User_Group.create({ role_id, privilege_id });
             const payload = {
@@ -20,7 +20,7 @@ class UserGroupsController {
               };
               const isHistoryCreated = await newHistory('createUserGroup', payload);
               if(!isHistoryCreated) {
-                throw { name: 'Fail create history' };
+                throw { name: 'fail_create_history' };
               }
             res.status(201).json({ message: 'User Group has been added' });
         } catch (error) {
@@ -50,7 +50,7 @@ class UserGroupsController {
                 exclude: ['createdAt', 'updatedAt'] } 
             });
             if(!resp) {
-                throw { name: 'Data is not found' };
+                throw { name: 'userGroup_not_found' };
             }
             res.status(200).json(resp);
         } catch (error) {
@@ -64,7 +64,7 @@ class UserGroupsController {
             const { role_id, privilege_id } = req.body;
             const foundUserGroup = await User_Group.findByPk(id);
             if(!foundUserGroup) {
-                throw { name: 'Data is not found' };
+                throw { name: 'userGroup_not_found' };
             }
             const resp = await User_Group.update({ role_id, privilege_id }, { where: { id }, returning: true });
             if(!resp[1]) {
@@ -77,7 +77,7 @@ class UserGroupsController {
                 };
                 const isHistoryCreated = await newHistory('updateUserGroup', payload);
                 if(!isHistoryCreated) {
-                    throw { name: 'Fail create history' };
+                    throw { name: 'fail_create_history' };
                 }
             res.status(200).json({ message: `User Group with id ${id} has been updated` })
             }
@@ -91,7 +91,7 @@ class UserGroupsController {
             const { id } = req.params;
             const foundUserGroup = await User_Group.findByPk(id);
             if(!foundUserGroup) {
-                throw { name: 'Data is not found' };
+                throw { name: 'userGroup_not_found' };
             }
             await User_Group.destroy({ where: { id } });
             const payload = {
@@ -101,7 +101,7 @@ class UserGroupsController {
             };
             const isHistoryCreated = await newHistory('deleteUserGroup', payload);
             if(!isHistoryCreated) {
-                throw { name: 'Fail create history' };
+                throw { name: 'fail_create_history' };
             }
             res.status(200).json({ message: `User Group with id ${id} has been deleted` });
         } catch (error) {

@@ -13,7 +13,7 @@ class RoleController {
       };
       const isHistoryCreated = await newHistory('createRole', payload);
       if(!isHistoryCreated) {
-        throw { name: 'Fail create history' };
+        throw { name: 'fail_create_history' };
       }
       res.status(201).json({
         id: resp.id,
@@ -47,7 +47,7 @@ class RoleController {
         { exclude: ['createdAt', 'updatedAt'] } 
       });
       if(!resp) {
-        throw { name: 'Data is not found' };
+        throw { name: 'role_not_found' };
       }
       res.status(200).json(resp);
     } catch (error) {
@@ -61,7 +61,7 @@ class RoleController {
       const { name, description } = req.body;
       const foundRole = await Role.findByPk(id);
       if(!foundRole) {
-        throw { name: 'Data is not found' };
+        throw { name: 'role_not_found' };
       }
       const resp = await Role.update({ name, description }, { where: { id }, returning: true });
       if(!resp[1]) {
@@ -74,7 +74,7 @@ class RoleController {
         };
         const isHistoryCreated = await newHistory('updateRole', payload);
         if(!isHistoryCreated) {
-          throw { name: 'Fail create history' };
+          throw { name: 'fail_create_history' };
         }
         res.status(200).json({ message: `Role with id ${id} has been updated` })
       }
@@ -88,7 +88,7 @@ class RoleController {
       const { id } = req.params;
       const foundRole = await Role.findByPk(id);
       if(!foundRole) {
-        throw { name: 'Data is not found' };
+        throw { name: 'role_not_found' };
       }
       await Role.destroy({ where: { id } });
       const payload = {
@@ -98,7 +98,7 @@ class RoleController {
       };
       const isHistoryCreated = await newHistory('deleteRole', payload);
       if(!isHistoryCreated) {
-        throw { name: 'Fail create history' };
+        throw { name: 'fail_create_history' };
       }
       res.status(200).json({ message: `Role with id ${id} has been deleted` });
     } catch (error) {

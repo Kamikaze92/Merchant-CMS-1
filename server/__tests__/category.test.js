@@ -391,7 +391,7 @@ describe("Test API for Categories", () => {
         const { body, status } = response;
         console.log(body, "111");
         expect(status).toBe(200);
-        expect(body.SubCategory.length).toBeGreaterThanOrEqual(0);
+        expect(body.sub_category.length).toBeGreaterThanOrEqual(0);
         done();
       })
       .catch((err) => {
@@ -416,11 +416,11 @@ describe("Test API for Categories", () => {
   test("200 deleted category success", (done) => {
     request(app)
       // category id hardcord
-      .delete(`/categories/11`)
+      .delete(`/categories/82`)
       .then((response) => {
         const { body, status } = response;
         expect(status).toBe(200);
-        expect(body.message).toBe(`Category with id 11 has been deleted`);
+        expect(body.message).toBe(`Category with id 82 has been deleted`);
         done();
       })
       .catch((err) => {
