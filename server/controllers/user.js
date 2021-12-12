@@ -1,6 +1,6 @@
 const { getPagination, getPagingData } = require("../helpers/pagination");
 const  newHistory = require('../helpers/historyInstance');
-const { User, Role, Verificator, sequelize, History, Verifier, Merchant, City } = require("../models");
+const { User, Role, Verificator, sequelize, History, Category, Verifier, Merchant, City } = require("../models");
 const { Op } = require("sequelize");
 const {jwtSign, verifyData} = require('../helpers/jwt')
 const {transporter, mailActivation} = require('../helpers/nodemailer')
@@ -183,7 +183,13 @@ module.exports = class UserController {
           {
             model: Merchant,
             require: true, // REQUIRED!. because if not have merchant it should return empty array!.
-          },
+            include: [
+              {
+                model: Category,
+                require: true, // REQUIRED!. because merchant should have category!.
+              },
+            ]
+          }
         ],
         limit,
         offset,
@@ -468,32 +474,49 @@ module.exports = class UserController {
 
   static async sendActivationLink(req, res, next){
     try {
-      const {id} = req.params;
-      const foundUser = await User.findOne({id});
-      const params = {
-        approve_by: req.user.email
-      }
-      await User.update()
-      const payload = {
-        id: foundUser.id,
-        email: foundUser.email
-      };
-      const token = jwtSign(payload);
-      let link = `http://localhost:3000/${foundUser.id}/${token}`
-      transporter.sendMail(mailActivation(foundUser.email, link), (err) => {
-        if(err){
+      const { id } = req.params;
+
+      // not only check on id but need to make sure its still not approved 
+      // to prevent false positive.
+      const user = await User.findOne({
+        where: {
+          id,
+          approved_by: {
+            [Op.eq]: null,
+          }
+        }
+      });
+
+      // update user approved_by
+      const response = await User.update({
+        approved_by: req.user.id,
+      }, {
+        where: { id: user.id },
+      });
+
+      // !TODO : create history.
+
+      // generate token, fot activation later.
+      const token = jwtSign({
+        id: response.id,
+        email: response.email,
+      });
+
+      let link = `${process.env.SERVER_URL}/${response.id}/${token}`
+      transporter.sendMail(mailActivation(user.email, link), (error) => {
+        if(error){
           throw {
             message: 'error Send OTP',
           }
         } else{
           console.log(`email sent to ${response.email}`)
-          res.status(201).json({ 
-            message: 'Activation link has been sent to your email'
-          })
-        }
-      })
-    } catch (err) {
-      next(err)
+          res.status(200).json({ 
+            message: 'Activation link has been sent to your email',
+          });
+        };
+      });
+    } catch (error) {
+      next(error);
     }
   }
 
