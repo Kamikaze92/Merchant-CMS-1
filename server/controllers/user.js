@@ -118,10 +118,8 @@ module.exports = class UserController {
       // if super admin all filter are passed.
       // TODO : this one get from authentication when ready.
       // remove later.
-      const verifier = {
-        province_id: 170,
-        city_id: 2,
-      }
+      const verifier = req.user.Verifier;
+      // const role = req.user.Role.name;
       // const role = 'Admin';
       const role = 'Verifikator';
       //=========
@@ -212,10 +210,8 @@ module.exports = class UserController {
       // if super admin all filter are passed.
       // TODO : this one get from authentication when ready.
       // remove later.
-      const verifier = {
-        province_id: 170,
-        city_id: null,
-      }
+      const verifier = req.user.Verifier;
+      
       // const role = 'Admin';
       const role = 'Verifikator';
       //=========
