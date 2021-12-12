@@ -1,13 +1,15 @@
 import { Form } from "react-bootstrap";
 
 const RegisterPage = {
-  backgroundColor: "#0B4C6F"
+  backgroundColor: "#094C6F",
 };
 const RegisterForm = {
   backgroundColor: "white",
   border: "5px",
   borderRadius: "10px",
   padding: 20,
+  boxShadow: "0px 24px 24px rgba(0, 0, 0, 0.25)",
+  borderRadius: "12px"
 };
 const RegisterHeading = {
   color: "#0B4C6F",
@@ -17,9 +19,21 @@ const RegisterHeading = {
 };
 const FormText = {
   color: "black",
-  fontWeight: "300",
-  fontFamily: "Source Sans Pro",
+  fontWeight: "600",
+  fontSize: "14px",
+  fontFamily: 'Roboto',
+  marginTop: 10,
+  marginBottom: 10,
 };
+
+const RegisterFooter = {
+  color: "#229BD8",
+  textAlign: "center",
+  fontWeight: "200",
+  fontSize: 12,
+  marginTop: 10,
+  marginBottom: 10
+}
 
 export default function RegisterMerchant() {
   return (
@@ -27,7 +41,7 @@ export default function RegisterMerchant() {
       <div className="register-form">
         <div className="container">
           <div className="row" style={{ justifyContent: "center" }}>
-            <div className="col-6 mb-5 mt-5" style={RegisterForm}>
+            <div className="col-7 mb-5 mt-5" style={RegisterForm}>
               <div style={{ textAlign: "center" }}>
                 <img
                   src="https://www.pedulilindungi.id/assets/logo-with-text.svg"
@@ -47,6 +61,7 @@ export default function RegisterMerchant() {
                       Nama Lengkap
                     </label>
                     <input
+                      id="inputForm"
                       type="text"
                       className="form-control"
                       name="full_name"
@@ -58,6 +73,7 @@ export default function RegisterMerchant() {
                       Email
                     </label>
                     <input
+                      id="inputForm"
                       type="text"
                       className="form-control"
                       name="email"
@@ -69,6 +85,7 @@ export default function RegisterMerchant() {
                       Nomor HP
                     </label>
                     <input
+                      id="inputForm"
                       type="number"
                       className="form-control"
                       name="phone_number"
@@ -99,7 +116,7 @@ export default function RegisterMerchant() {
                       Kategori Tenant
                     </label>
                     <div className="input-group ">
-                      <select class="form-select">
+                      <select class="form-select" id="inputForm">
                         {/**Sampel */}
                         <option selected disabled>
                           Pilih Kategori
@@ -115,7 +132,7 @@ export default function RegisterMerchant() {
                       Sub-Kategori
                     </label>
                     <div className="input-group ">
-                      <select class="form-select">
+                      <select class="form-select" id="inputForm">
                         {/**Sampel */}
                         <option selected disabled>
                           Pilih Sub-Kategori
@@ -132,6 +149,7 @@ export default function RegisterMerchant() {
                       Perbelanjaan
                     </label>
                     <input
+                      id="inputForm"
                       type="text"
                       className="form-control"
                       name="" //Belum tau Variable
@@ -142,6 +160,7 @@ export default function RegisterMerchant() {
                       Nama Tempat / Nama Gedung
                     </label>
                     <input
+                      id="inputForm"
                       type="text"
                       className="form-control"
                       name="" //Belum tau Variable
@@ -152,6 +171,7 @@ export default function RegisterMerchant() {
                       Nama Institusi Pengampu
                     </label>
                     <input
+                      id="inputForm"
                       type="text"
                       className="form-control"
                       name="" //Belum tau Variable
@@ -162,6 +182,7 @@ export default function RegisterMerchant() {
                       Alamat
                     </label>
                     <input
+                      id="inputForm"
                       type="text"
                       className="form-control"
                       name="" //Belum tau Variable
@@ -172,7 +193,7 @@ export default function RegisterMerchant() {
                       Provinsi
                     </label>
                     <div className="input-group ">
-                      <select class="form-select">
+                      <select class="form-select" id="inputForm">
                         {/**Sampel */}
                         <option selected disabled>
                           Pilih Kategori
@@ -188,7 +209,7 @@ export default function RegisterMerchant() {
                       Kota
                     </label>
                     <div className="input-group ">
-                      <select class="form-select">
+                      <select class="form-select" id="inputForm">
                         {/**Sampel */}
                         <option selected disabled>
                           Pilih Kategori
@@ -210,21 +231,13 @@ export default function RegisterMerchant() {
                   </button>
                 </div>
               </form>
-              <div
-                className="mt-2"
-                style={{
-                  textAlign: "center",
-                  color: "#0277bd",
-                  fontWeight: "400",
-                  fontFamily: 'Source Sans Pro'
-                }}
-              >
-                <h6>
-                  Sudah punya akun? <a href="#"><strong>Login</strong></a>
+              <div style={RegisterFooter} className="mt-3">
+                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
+                  Sudah punya akun? <a href="#"  className="text-info text-decoration-none"><strong>Login</strong></a>
                 </h6>
-                <h6>
+                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
                   Sudah melakukan registrasi?{" "}
-                  <a href="#"><strong>Periksa status registrasi akun anda</strong></a>
+                  <a href="#" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></a>
                 </h6>
               </div>
             </div>

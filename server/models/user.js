@@ -1,6 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 const { getSalt } = require("../helpers/bcrypt");
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -10,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasOne(models.Merchant, {
+        foreignKey: 'user_id',
+      });
+      User.belongsTo(models.Verifier, {
+        foreignKey: 'verifier_id',
+      })
     }
   }
   User.init(
@@ -29,7 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: {
+          args: true,
+          msg: "Email must be unique",
+        },
         validate: {
           notNull: {
             msg: "Email is required",
