@@ -34,15 +34,12 @@ module.exports = {
       },
       category_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
       },
       tenant_category_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
       },
       parent_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
       },
       created_at: {
         allowNull: false,

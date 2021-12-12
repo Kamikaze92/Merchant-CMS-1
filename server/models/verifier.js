@@ -1,7 +1,6 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Verifier extends Model {
     /**
@@ -11,14 +10,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Verifier.hasOne(models.User, {
+        foreignKey: 'verifier_id',
+      });
     }
   };
   Verifier.init({
     institution: DataTypes.STRING,
     province_id: DataTypes.INTEGER,
-    city: DataTypes.INTEGER
+    city_id: DataTypes.INTEGER
   }, {
     sequelize,
+    paranoid: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
     modelName: 'Verifier',
   });
   return Verifier;

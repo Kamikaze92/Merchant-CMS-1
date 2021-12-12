@@ -1,32 +1,35 @@
 const { verifyData } = require('../helpers/jwt');
-const { User } = require('../models');
+const { User, Verifier } = require('../models');
 
 const authentication = async (req, res, next) => {
   try {
     const { access_token } = req.headers;
 
-    if (!access_token) {
-      throw { name: 'not_authenticated' };
-    }
-
-    const user = verifyData(access_token);
-    const foundUser = await User.findOne({
-      where: { id: user.id, email: user.email },
+    if (!access_token) throw { name: 'not_authenticated' };
+    const payload = verifyData(access_token);
+    const user = await User.findOne({
+      where: {
+        id: payload.id,
+        email: payload.email
+      },
+      include: [
+        {
+          model: Verifier,
+          require: false,
+        },
+        // {
+        //   model: Role,
+        //   require: true,
+        // }
+      ]
     });
+    if (!user) throw { name: 'invalid_token' };
 
-    if (!foundUser) {
-      throw { name: 'invalid_token' };
-    }
-
-    req.user = {
-      id: foundUser.id,
-      email: foundUser.email,
-      role: foundUser.role,
-    };
-
+    // better inject all for future needs.
+    req.user = user;
     next();
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
