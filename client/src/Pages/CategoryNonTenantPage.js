@@ -9,8 +9,6 @@ import CategoryDetail from "./CategoryDetailPage";
 import {
   getAllCategoriesNonTenant,
   createCategoryNonTenant,
-  updateCategoryNonTenant,
-  deleteCategoryNonTenant,
 } from "../store/actions/category";
 let page = 1;
 let pagination = 5;
@@ -41,8 +39,6 @@ export default function CategoryNonTenant(props) {
     } else {
       if (payload.name === "Tambah Kategori") {
         dispatch(createCategoryNonTenant(input));
-      } else {
-        dispatch(deleteCategoryNonTenant(payload.payload));
       }
     }
   };
@@ -200,7 +196,7 @@ export default function CategoryNonTenant(props) {
                                 : 0}
                             </td>
                             <td>
-                              <a onClick={() => navigate("/category/detail")}>
+                              <a onClick={() => navigate(`/category/${el.id}`)}>
                                 <img src="../../public/assets/images/detail.png"></img>
                                 Detail
                               </a>
@@ -223,7 +219,7 @@ export default function CategoryNonTenant(props) {
                               : 0}
                           </td>
                           <td>
-                            <a onClick={() => navigate("/category/detail")}>
+                            <a onClick={() => navigate(`/category/${el.id}`)}>
                               <img src="../../public/assets/images/detail.png"></img>
                               Detail
                             </a>

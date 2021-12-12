@@ -14,8 +14,8 @@ import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
 import LoginPage from "./Pages/LoginPage";
 import ActiveMerchant from "./Pages/ActiveMerchant";
-
-import MerchantApproval from "./Pages/MerchantApproval";
+import Navbar from "./Components/Navbar";
+// import MerchantApproval from "./Pages/MerchantApproval";
 import MerchantDetail from "./Pages/MerchantDetail";
 
 import ErrorPage from "./Pages/ErrorPage";
@@ -24,6 +24,8 @@ function App() {
   // <div className="App">{/* <RegisterMerchant /> */}</div>;
   return (
     <>
+      <Navbar />
+      <Sidebar />
       {/* <CheckStatus />
       <OtpInput />
       <RegisterMerchant />
@@ -38,10 +40,10 @@ function App() {
           element={<RegisterVerificator />}
         ></Route>
         <Route path="/category" element={<CategoryNonTenant />}></Route>
-        <Route path="/category/:id" element={<CategoryDetail />}></Route>
         <Route path="/category/tenant" element={<CategoryTenant />}></Route>
+        <Route path="/category/:id" element={<CategoryDetail />}></Route>
         <Route path="/approval/">
-          <Route path="merchant" element={<MerchantApproval />}></Route>
+          {/* <Route path="merchant" element={<MerchantApproval />}></Route> */}
           <Route path="verifier" element={<Users />}></Route>
         </Route>
         <Route path="/user-detail" element={<UserDetail />}></Route>

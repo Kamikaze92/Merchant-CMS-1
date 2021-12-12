@@ -54,6 +54,8 @@ export default function categoryReducer(state = initialState, action) {
       let nonTenant = state.non_tenant.filter(
         (el) => el.id != action.payload.id
       );
+      console.log(nonTenant, "masuk nonn");
+      console.log([...nonTenant, action.payload]);
       return {
         ...state,
         non_tenant: [...nonTenant, action.payload],

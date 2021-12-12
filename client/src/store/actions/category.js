@@ -142,16 +142,14 @@ export function createCategoryNonTenant(data) {
   };
 }
 
-export function updateCategoryNonTenant(id, name) {
+export function updateCategoryNonTenant(id, data) {
   return async (dispatch, getState) => {
     try {
       dispatch(getLoading(CATEGORY_LOADING, true));
       let response = await axios({
         method: "put",
         url: `/categories/${id}`,
-        data: {
-          name,
-        },
+        data,
       });
       dispatch({
         type: CATEGORY_NON_TENANT_UPDATE,
