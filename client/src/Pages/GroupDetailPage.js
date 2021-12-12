@@ -1,5 +1,5 @@
 export default function GroupDetailPage () {
     return (
-        <h1>GroupDetailPage</h1>
+        <h1>Group Detail Page</h1>
     )
-}
+} 
