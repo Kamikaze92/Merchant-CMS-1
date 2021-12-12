@@ -18,7 +18,10 @@ function App() {
       <OtpInput />
       <RegisterMerchant />
       <RegisterVerificator /> */}
-      <ActiveMerchant />
+      {/* <CheckStatus /> */}
+      {/* <ActiveMerchant /> */}
+      {/* <OtpInput /> */}
+      <OtpInput />
       <Routes>
         <Route path="/category" element={<Category />}></Route>
         <Route path="/category/detail" element={<CategoryDetail />}></Route>

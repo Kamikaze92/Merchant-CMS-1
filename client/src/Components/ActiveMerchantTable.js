@@ -9,12 +9,7 @@ const layoutBorder = {
 export default function ActiveMerchantTable() {
   return (
     <>
-      <div className="container-fluid mt-5" style={{backgroundColor: "#F6FBFF"}}>
-          <div className="">
-            <p>
-              <strong>Daftar Akun Pengelola QR</strong>
-            </p>
-          </div>
+      <div className="container-fluid mt-3">
           <div className="">
             <div className="border" style={layoutBorder}>
               <h6 style={{ fontSize: 14 }}>Status Pendaftaran</h6>
