@@ -11,10 +11,13 @@ import OtpInput from "./Pages/OtpInput";
 import CheckStatus from "./Pages/CheckStatus";
 import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
+import LoginPage from "./Pages/LoginPage";
 import ActiveMerchant from "./Pages/ActiveMerchant";
 
 import MerchantApproval from "./Pages/MerchantApproval";
 import MerchantDetail from './Pages/MerchantDetail';
+
+import ErrorPage from "./Pages/ErrorPage";
 
 function App() {
   // <div className="App">{/* <RegisterMerchant /> */}</div>;
@@ -28,6 +31,7 @@ function App() {
       {/* <MerchantDetail /> */}
       <Routes>
         <Route path="/register-merchant" element={<RegisterMerchant />}></Route>
+        <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/register-verifier" element={<RegisterVerificator />}></Route>
         <Route path="/category" element={<CategoryNonTenant />}></Route>
         <Route path="/category/detail" element={<CategoryDetail />}></Route>
@@ -38,6 +42,8 @@ function App() {
         <Route path="/group-detail" element={<GroupDetail />}></Route>
 
         <Route path="/users" element={<Users />}></Route>
+
+        <Route path="/errors" element={<ErrorPage />}></Route>
       </Routes>
       <div className="App">
         {/* <RegisterMerchant /> */}
