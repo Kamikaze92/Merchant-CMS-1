@@ -1,17 +1,14 @@
-
-import { DropdownButton, Dropdown } from 'react-bootstrap';
 const image = {
-  width: "135.02px",
-  height: "32px",
-  left: "36px",
-  top: "16px",
-  position: "absolut",
-  marginTop: 30,
-  marginLeft: 20,
-};
-export default function Sidebar() {
-  return (
-    <div class="l-navbar show" id="nav-bar">
+    width: "150px",
+    height: "34px",
+    left: "36px",
+    top: "16px",
+    marginTop: 30,
+    marginLeft: 30,
+  };
+export default function Sidebar2(){
+    return(
+        <div class="l-navbar show" id="nav-bar">
             <nav class="nav">
                 <div>
                     <div className="mb-4">
@@ -54,6 +51,6 @@ export default function Sidebar() {
                     </div>
                 </div>
             </nav>
-      </div>
-  );
+        </div>
+    )
 }
