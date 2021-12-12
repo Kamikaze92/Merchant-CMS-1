@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken')
-require('dotenv').config()
-const privateKey = process.env.JWTKEY
+const jwt = require('jsonwebtoken');
+
+const privateKey = process.env.JWTKEY;
 
 let jwtSign = (data) => {
     return jwt.sign(data, privateKey)

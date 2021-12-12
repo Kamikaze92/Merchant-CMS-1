@@ -11,8 +11,8 @@ const image = {
 };
 export default function Sidebar() {
   return (
-    <div class="l-navbar show" id="nav-bar">
-            <nav class="nav">
+    <div className="l-navbar show" id="nav-bar">
+            <nav className="nav">
                 <div>
                     <div className="mb-4">
                     <img
@@ -20,36 +20,43 @@ export default function Sidebar() {
                     src="https://www.pedulilindungi.id/assets/logo-with-text.svg"
                     ></img>
                     </div>
-                    <div class="nav__list">
-                        <a href="#" class="nav__link active">
-                            <i class='bx bx-user nav__icon' ></i>
-                            <span class="nav__name">Persetujuan Akun Pengguna</span>
+                    <div className="nav__list">
+                        <a href="#" className="nav__link active" title="Persetujuan Akun Pengguna">
+                            <i className='bx bx-user nav__icon' ></i>
+                            <span className="nav__name">Persetujuan Akun Pengguna</span>
                         </a>
                         
-                        <a href="#" class="nav__link">
-                            <i class='bx bx-user nav__icon' ></i>
-                            <span class="nav__name">Persetujuan Akun Verifikator</span>
+                        <a href="#" className="nav__link" title="Persetujuan Akun Verifikator">
+                            <i className='bx bx-user nav__icon' ></i>
+                            <span className="nav__name">Persetujuan Akun Verifikator</span>
                         </a>
 
-                        <a href="#" class="nav__link">
-                            <i class='bx bx-user nav__icon' ></i>
-                            <span class="nav__name">Daftar Akun Pengelola QR Code</span>
+                        <a href="#" className="nav__link" title="Daftar Akun Pengelola QR Code">
+                            <i className='bx bx-user nav__icon' ></i>
+                            <span className="nav__name">Daftar Akun Pengelola QR Code</span>
                         </a>
-                        <div className="dropdown">
-                        <a href="#" class="nav__link dropdown-toggle"
-                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class='bx bxs-cog nav__icon' ></i>
-                            <span class="nav__name">Administrasi</span>
+                        <a className="nav__link" id="dropdown__linktop">
+                            <i className='bx bxs-cog nav__icon' ></i>
+                            <span className="nav__name">Administrasi</span>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                        </div>
-                        <a href="#" class="nav__link">
-                            <i class='bx bx-log-out nav__icon' ></i>
-                            <span class="nav__name">Keluar Akun</span>
+                        <a href="#" className="dropdown__link">
+                            <span className="nav__name">Pengguna</span>
+                        </a>
+                        <a href="#" className="dropdown__link">
+                            <span className="nav__name">Grup</span>
+                        </a>
+                        <a href="#" className="dropdown__link">
+                            <span className="nav__name">Kategori & Sub-Kategori</span>
+                        </a>
+                        <a href="#" className="dropdown__link">
+                            <span className="nav__name">Kategori Tenant</span>
+                        </a>
+                        <a href="#" className="dropdown__link" id="dropdown__link">
+                            <span className="nav__name">Ubah Password</span>
+                        </a>
+                        <a href="#" className="nav__link">
+                            <i className='bx bx-log-out nav__icon' ></i>
+                            <span className="nav__name">Keluar Akun</span>
                         </a>
                     </div>
                 </div>

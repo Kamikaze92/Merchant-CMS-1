@@ -107,12 +107,6 @@ module.exports = class UserController {
 
   static async getUserMerchant(req, res, next) {
     try {
-      // search digunakan untuk mencari nama atau email
-      // filter digunakan untuk berdasarkan grup sepertinya mmasih belum tau
-      const { page, size, search, filter } = req.query;
-      if (+page < 1) page = 1;
-      if (+size < 1) size = 10;
-
       //=========
       // const { Verifier } = req.user;
       // if super admin all filter are passed.
@@ -162,20 +156,9 @@ module.exports = class UserController {
         }
       }
 
-      if (search) {
-        conditions = {
-          ...conditions,
-          [Op.or]: [
-            { email: { [Op.iLike]: `%${search}%` } },
-            { full_name: { [Op.iLike]: `%${search}%` } },
-          ],
-        };
-      };
-
-      const { limit, offset } = getPagination(page, size);
-      const response = await User.findAndCountAll({
+      const response = await User.findAll({
         where: conditions,
-        order: [["full_name", "ASC"]],
+        order: [["created_at", "ASC"]],
         attributes: {
           exclude: ["password"],
         },
@@ -191,13 +174,11 @@ module.exports = class UserController {
             ]
           }
         ],
-        limit,
-        offset,
       });
       if (!response) {
         throw { name: "user_not_found" };
       }
-      res.status(200).json(getPagingData(response, page, limit));
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -205,12 +186,6 @@ module.exports = class UserController {
 
   static async getUserVerifier(req, res, next) {
     try {
-      // search digunakan untuk mencari nama atau email
-      // filter digunakan untuk berdasarkan grup sepertinya mmasih belum tau
-      const { page, size, search, filter } = req.query;
-      if (+page < 1) page = 1;
-      if (+size < 1) size = 10;
-
       //=========
       // const { Verifier } = req.user;
       // if super admin all filter are passed.
@@ -257,22 +232,12 @@ module.exports = class UserController {
         cities = cities.map(e => e.id);
         conditions = {
           ...conditions,
+          '$Verifier.province_id$': verifier.province_id,
           '$Verifier.city_id$': { [Op.in]: cities },
         }
       }
 
-      if (search) {
-        conditions = {
-          ...conditions,
-          [Op.or]: [
-            { email: { [Op.iLike]: `%${search}%` } },
-            { full_name: { [Op.iLike]: `%${search}%` } },
-          ],
-        };
-      };
-
-      const { limit, offset } = getPagination(page, size);
-      const response = await User.findAndCountAll({
+      const response = await User.findAll({
         where: conditions,
         order: [['created_at', 'DESC']],
         attributes: {
@@ -290,7 +255,7 @@ module.exports = class UserController {
       if (!response) {
         throw { name: "user_not_found" };
       }
-      res.status(200).json(getPagingData(response, page, limit));
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }

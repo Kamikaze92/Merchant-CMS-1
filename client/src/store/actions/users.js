@@ -1,14 +1,18 @@
 import {
-  SET_USERS_SUCCESS,
-  CREATE_USER_SUCCESS,
-  DELETE_USER_SUCCESS,
+  SET_USERS_MERCHANT_SUCCESS,
+  APPROVE_MERCHANT_SUCCESS,
+  // CREATE_MERCHANT_SUCCESS,
+  DELETE_MERCHANT_SUCCESS,
+  SET_USERS_VERIFIER_SUCCESS,
+  APPROVE_VERIFIER_SUCCESS,
+  DELETE_VERIFIER_SUCCESS,
   USER_LOADING,
   USER_ERROR,
 } from '../actionType/users';
 import axios from 'axios';
 
-// TODO: this should set MERCHANT.
-export const setUsers = () => async (dispatch) => {
+// * MERCHANT.
+export const setUserMerchants = () => async (dispatch) => {
   dispatch({
     type: USER_LOADING,
     payload: true,
@@ -24,7 +28,7 @@ export const setUsers = () => async (dispatch) => {
     });
     if (response.status === 200) {
       dispatch({
-        type: SET_USERS_SUCCESS,
+        type: SET_USERS_MERCHANT_SUCCESS,
         payload: response.data,
       });
     } else {
@@ -38,7 +42,7 @@ export const setUsers = () => async (dispatch) => {
   };
 }
 
-export const approveUser = (payload) => async (dispatch) => {
+export const approveUserMerchant = (payload, currentState) => async (dispatch) => {
   dispatch({
     type: USER_LOADING,
     payload: true,
@@ -53,11 +57,13 @@ export const approveUser = (payload) => async (dispatch) => {
       },
     });
     if (response.status === 200) {
+      const newPayload = currentState.filter(state => state.id !== payload);
       dispatch({
-        type: USER_LOADING,
-        payload: false,
+        type: APPROVE_MERCHANT_SUCCESS,
+        payload: newPayload,
       });
-      return Promise.resolve(response);
+      // for notification.
+      return Promise.resolve(response); 
     } else {
       throw new Error(`HTTP error! status: ${response.status}`);
     };
@@ -69,7 +75,7 @@ export const approveUser = (payload) => async (dispatch) => {
   };
 }
 
-export const deleteUser = (payload) => async (dispatch) => {
+export const deleteUserMerchant = (payload, currentState) => async (dispatch) => {
   dispatch({
     type: USER_LOADING,
     payload: true,
@@ -84,9 +90,10 @@ export const deleteUser = (payload) => async (dispatch) => {
       },
     });
     if (response.status === 200) {
+      const newPayload = currentState.filter(state => state.id !== payload);
       dispatch({
-        type: USER_LOADING,
-        payload: false,
+        type: DELETE_MERCHANT_SUCCESS,
+        payload: newPayload,
       });
       return Promise.resolve(response);
     } else {
@@ -100,7 +107,7 @@ export const deleteUser = (payload) => async (dispatch) => {
   };
 }
 
-export const createUser = (payload) => async (dispatch) => {
+export const createUserMerchant = (payload) => async (dispatch) => {
   dispatch({
     type: USER_LOADING,
     payload: true,
@@ -118,7 +125,7 @@ export const createUser = (payload) => async (dispatch) => {
     console.log(response);
     if (response.status === 201) {
       // dispatch({
-      //   type: CREATE_USER_SUCCESS,
+      //   type: CREATE_MERCHANT_SUCCESS,
       //   payload: response.data,
       // });
     }
@@ -129,4 +136,100 @@ export const createUser = (payload) => async (dispatch) => {
     //   payload: error,
     // });
   }
+}
+
+// * VERIFIER.
+export const setUserVerifiers = () => async (dispatch) => {
+  dispatch({
+    type: USER_LOADING,
+    payload: true,
+  });
+  try {
+    const response = await axios({
+      url: `${process.env.REACT_APP_BASE_URL}/users/verifiers`,
+      method: 'GET',
+      headers: {
+        access_token: localStorage.getItem('access_token'),
+        'Content-Type': 'application/json',
+      },
+    });
+    if (response.status === 200) {
+      dispatch({
+        type: SET_USERS_VERIFIER_SUCCESS,
+        payload: response.data,
+      });
+    } else {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    };
+  } catch (error) {
+    dispatch({
+      type: USER_ERROR,
+      payload: error,
+    });
+  };
+}
+
+export const approveUserVerifier = (payload, currentState) => async (dispatch) => {
+  dispatch({
+    type: USER_LOADING,
+    payload: true,
+  });
+  try {
+    const response = await axios({
+      url: `${process.env.REACT_APP_BASE_URL}/users/activation/${payload}`,
+      method: 'POST',
+      headers: {
+        access_token: localStorage.getItem('access_token'),
+        'Content-Type': 'application/json',
+      },
+    });
+    if (response.status === 200) {
+      const newPayload = currentState.filter(state => state.id !== payload);
+      dispatch({
+        type: APPROVE_VERIFIER_SUCCESS,
+        payload: newPayload,
+      });
+      // for notification.
+      return Promise.resolve(response); 
+    } else {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    };
+  } catch (error) {
+    dispatch({
+      type: USER_ERROR,
+      payload: error,
+    });
+  };
+}
+
+export const deleteUserVerifier = (payload, currentState) => async (dispatch) => {
+  dispatch({
+    type: USER_LOADING,
+    payload: true,
+  });
+  try {
+    const response = await axios({
+      url: `${process.env.REACT_APP_BASE_URL}/users/${payload}`,
+      method: 'DELETE',
+      headers: {
+        access_token: localStorage.getItem('access_token'),
+        'Content-Type': 'application/json',
+      },
+    });
+    if (response.status === 200) {
+      const newPayload = currentState.filter(state => state.id !== payload);
+      dispatch({
+        type: DELETE_VERIFIER_SUCCESS,
+        payload: newPayload,
+      });
+      return Promise.resolve(response);
+    } else {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    };
+  } catch (error) {
+    dispatch({
+      type: USER_ERROR,
+      payload: error,
+    });
+  };
 }
