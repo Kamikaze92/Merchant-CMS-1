@@ -36,7 +36,10 @@ function App() {
         <Route path="/category" element={<CategoryNonTenant />}></Route>
         <Route path="/category/detail" element={<CategoryDetail />}></Route>
         <Route path="/category/tenant" element={<CategoryTenant />}></Route>
-
+        <Route path="/approval/">
+          <Route path="merchant" element={<MerchantApproval />}></Route>
+          <Route path="verifier" element={<Users />}></Route>
+        </Route>
         <Route path="/user-detail" element={<UserDetail />}></Route>
         <Route path="/group-list" element={<ListGroup />}></Route>
         <Route path="/group-detail" element={<GroupDetail />}></Route>
