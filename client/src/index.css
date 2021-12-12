@@ -27,8 +27,8 @@
 }
 
 body {
-  background-color: rgb(247, 252, 255);
-  background-color: rgba(216, 249, 252, 0.15);
+  background-color: rgb(247, 252, 255) !important;
+  /* background-color: rgba(216, 249, 252, 0.15) !important; */
   justify-content: space-between;
 }
 
@@ -70,12 +70,12 @@ body {
 }
 
 #otpPage {
-  background-color: #094C6F;
+  background-color: #094c6f;
   font-family: Roboto;
 }
 
 #checkPage {
-  background-color: #094C6F;
+  background-color: #094c6f;
   font-family: Roboto;
 }
 
@@ -95,16 +95,16 @@ body {
 }
 
 .btn-default {
-  background-color: #229BD8;
-  color: #ffffff
+  background-color: #229bd8;
+  color: #ffffff;
 }
 
 #link-birumuda {
-  font-style: #229BD8;
+  font-style: #229bd8;
 }
 
 #inputForm {
-  background: #EEEEEE;
+  background: #eeeeee;
   border-radius: 4px;
 }
 
@@ -116,7 +116,7 @@ body {
   position: static;
   left: 32px;
   top: 320px;
-  background: #EEEEEE;
+  background: #eeeeee;
   border-radius: 12px;
 }
 
@@ -156,44 +156,46 @@ body {
   bottom: 0px;
 }
 
-#table-bg{
-  background-color: #F6FBFF
+#table-bg {
+  background-color: #f6fbff;
 }
 
 /*===== VARIABLES CSS =====*/
-:root{
+:root {
   /*===== Colors =====*/
   --first-color: white;
   --first-color-light: black;
   --white-color: black;
   /*===== Font and typography =====*/
-  --body-font: 'Roboto';
+  --body-font: "Roboto";
   --normal-font-size: 1rem;
-  
+
   /*===== z index =====*/
   --z-fixed: 100;
 }
 
 /*===== BASE =====*/
-*,::before,::after{
+*,
+::before,
+::after {
   box-sizing: border-box;
 }
 
-body{
+body {
   position: relative;
   margin: var(--header-height) 0 0 0;
   padding: 0 1rem;
   font-family: var(--body-font);
   font-size: var(--normal-font-size);
-  transition: .5s;
+  transition: 0.5s;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
 /*===== HEADER =====*/
-.header{
+.header {
   width: 100%;
   height: var(--header-height);
   position: fixed;
@@ -205,16 +207,16 @@ a{
   padding: 0 1rem;
   background-color: var(--white-color);
   z-index: var(--z-fixed);
-  transition: .5s;
+  transition: 0.5s;
 }
 
-.header__toggle{
+.header__toggle {
   color: var(--first-color);
   font-size: 1.5rem;
   cursor: pointer;
 }
 
-.header__img{
+.header__img {
   width: 35px;
   height: 35px;
   display: flex;
@@ -223,24 +225,24 @@ a{
   overflow: hidden;
 }
 
-.header__img img{
+.header__img img {
   width: 40px;
 }
 
 /*===== NAV =====*/
-.l-navbar{
+.l-navbar {
   position: fixed;
   top: 0;
   left: -30%;
   width: var(--nav-width);
   height: 100vh;
   background-color: var(--first-color);
-  padding: .5rem 1rem 0 0;
-  transition: .5s;
+  padding: 0.5rem 1rem 0 0;
+  transition: 0.5s;
   z-index: var(--z-fixed);
 }
 
-.nav{
+.nav {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -248,60 +250,61 @@ a{
   overflow: hidden;
 }
 
-.nav__logo, .nav__link{
+.nav__logo,
+.nav__link {
   display: grid;
   grid-template-columns: max-content max-content;
   align-items: center;
   column-gap: 1rem;
-  padding: .5rem 0 .5rem 1.5rem;
+  padding: 0.5rem 0 0.5rem 1.5rem;
 }
 
-.nav__logo{
+.nav__logo {
   margin-bottom: 2rem;
 }
 
-.nav__logo-icon{
+.nav__logo-icon {
   font-size: 1.25rem;
   color: var(--white-color);
 }
 
-.nav__logo-name{
+.nav__logo-name {
   color: var(--white-color);
   font-weight: 700;
 }
 
-.nav__link{
+.nav__link {
   position: relative;
   color: var(--first-color-light);
   margin-bottom: 1.5rem;
-  transition: .3s;
+  transition: 0.3s;
 }
 
-.nav__link:hover{
+.nav__link:hover {
   color: gray;
 }
 
-.nav__icon{
+.nav__icon {
   font-size: 1.25rem;
 }
 
 /*Show navbar movil*/
-.show{
+.show {
   left: 0;
 }
 
 /*Add padding body movil*/
-.body-pd{
+.body-pd {
   padding-left: calc(var(--nav-width) + 1rem);
 }
 
 /*Active links*/
-.active{
-  color: #229BD8;
+.active {
+  color: #229bd8;
 }
 
-.active::before{
-  content: '';
+.active::before {
+  content: "";
   position: absolute;
   left: 0;
   width: 2px;
@@ -310,33 +313,33 @@ a{
 }
 
 /* ===== MEDIA QUERIES=====*/
-@media screen and (min-width: 768px){
-  body{
+@media screen and (min-width: 768px) {
+  body {
     margin: calc(var(--header-height) + 1rem) 0 0 0;
     padding-left: calc(var(--nav-width) + 2rem);
   }
 
-  .header{
+  .header {
     height: calc(var(--header-height) + 1rem);
     padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
   }
 
-  .header__img{
+  .header__img {
     width: 40px;
     height: 40px;
   }
 
-  .header__img img{
+  .header__img img {
     width: 45px;
   }
 
-  .l-navbar{
+  .l-navbar {
     left: 0;
     padding: 1rem 1rem 0 0;
   }
-  
+
   /*Show navbar desktop*/
-  .show{
+  .show {
     width: 300px;
     display: flex;
     align-items: stretch;
@@ -344,10 +347,7 @@ a{
   }
 
   /*Add padding body desktop*/
-  .body-pd{
+  .body-pd {
     padding-left: calc(var(--nav-width) + 188px);
   }
 }
-
-
-
