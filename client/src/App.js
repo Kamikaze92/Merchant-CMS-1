@@ -1,5 +1,5 @@
 import { Routes, Route, Link } from "react-router-dom";
-import Category from "./Pages/CategoryPage";
+import CategoryNonTenant from "./Pages/CategoryNonTenantPage";
 import CategoryDetail from "./Pages/CategoryDetailPage";
 import CategoryTenant from "./Pages/CategoryTenantPage";
 import Users from "./Pages/Users";
@@ -14,10 +14,10 @@ function App() {
   // <div className="App">{/* <RegisterMerchant /> */}</div>;
   return (
     <>
-      <OtpInput />
+      {/* <OtpInput /> */}
       <Sidebar />
       <Routes>
-        <Route path="/category" element={<Category />}></Route>
+        <Route path="/category" element={<CategoryNonTenant />}></Route>
         <Route path="/category/detail" element={<CategoryDetail />}></Route>
         <Route path="/category/tenant" element={<CategoryTenant />}></Route>
         <Route path="/users" element={<Users />}></Route>
