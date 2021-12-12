@@ -1,5 +1,5 @@
 import { Routes, Route, Link } from "react-router-dom";
-import Category from "./Pages/CategoryPage";
+import CategoryNonTenant from "./Pages/CategoryNonTenantPage";
 import CategoryDetail from "./Pages/CategoryDetailPage";
 import CategoryTenant from "./Pages/CategoryTenantPage";
 import ListGroup from "./Pages/ListGroupPage";
@@ -7,11 +7,12 @@ import GroupDetail from "./Pages/GroupDetailPage";
 import Users from "./Pages/Users";
 import Sidebar from "./Components/Sidebar";
 
-import OtpInput from './Pages/OtpInput';
-import CheckStatus from './Pages/CheckStatus'
+import OtpInput from "./Pages/OtpInput";
+import CheckStatus from "./Pages/CheckStatus";
 import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
 import ActiveMerchant from "./Pages/ActiveMerchant";
+
 import MerchantApproval from "./Pages/MerchantApproval";
 import MerchantDetail from './Pages/MerchantDetail';
 
