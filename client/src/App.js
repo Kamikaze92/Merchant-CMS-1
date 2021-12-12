@@ -10,6 +10,10 @@ import CheckStatus from "./Pages/CheckStatus";
 import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
 import ActiveMerchant from "./Pages/ActiveMerchant";
+
+import MerchantApproval from "./Pages/MerchantApproval";
+import MerchantDetail from './Pages/MerchantDetail';
+
 function App() {
   // <div className="App">{/* <RegisterMerchant /> */}</div>;
   return (
@@ -18,12 +22,18 @@ function App() {
       <OtpInput />
       <RegisterMerchant />
       <RegisterVerificator /> */}
-      <ActiveMerchant />
+      {/* <ActiveMerchant /> */}
+      <MerchantDetail />
       <Routes>
-        <Route path="/category" element={<CategoryNonTenant />}></Route>
+        <Route path="/register-merchant" element={<RegisterMerchant />}></Route>
+        <Route path="/register-verifier" element={<RegisterVerificator />}></Route>
+        <Route path="/category" element={<Category />}></Route>
         <Route path="/category/detail" element={<CategoryDetail />}></Route>
         <Route path="/category/tenant" element={<CategoryTenant />}></Route>
-        <Route path="/users" element={<Users />}></Route>
+        <Route path="/approval/">
+          <Route path="merchant" element={<MerchantApproval />}></Route>
+          <Route path="verifier" element={<Users />}></Route>
+        </Route>
       </Routes>
       <div className="App">
         {/* <RegisterMerchant /> */}

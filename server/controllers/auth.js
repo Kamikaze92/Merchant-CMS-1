@@ -8,32 +8,35 @@ module.exports = class AuthController {
   // your code goes here
   static async userLogin (req,res,next) {
     try {
-        const {email, password} = req.body
-        let response = await User.findOne({
-            where: {email}
-        })
-        if(response && comparePassword(password, response.password)){
-          if(!response.approve_at){
-              throw {name: "not_authenticated"}
-          } 
-          else {
-              const access_token = jwtSign({
-                id: response.id,
-                email: response.email
-              })
-              res.status(200).json({
-                access_token: access_token
-              })
-            }
-          }
-        else{
-            throw {name: 'invalid_user'}
-        }
-    } 
-    catch (err) {
-        next(err)
-    }
-  }
+      const { email, password } = req.body;
+
+      let response = await User.findOne({
+        where: { email },
+      });
+
+      if(response && comparePassword(password, response.password)){
+        if(!response.approved_at){
+          throw {
+            name: "not_authenticated",
+          };
+        } else {
+          const access_token = jwtSign({
+            id: response.id,
+            email: response.email,
+          });
+          res.status(200).json({
+            access_token: access_token,
+          });
+        };
+      } else {
+        throw {
+          name: 'invalid_user',
+        };
+      };
+    } catch (error) {
+      next(error);
+    };
+  };
 
   /**
    * Because the merchant registration process and the verifier are the same.
@@ -58,27 +61,37 @@ module.exports = class AuthController {
         province_id,
         city_id,
       } = req.body;
+      
+      // guard
+      if (user_type !== 'Merchant' && user_type !== 'Verifier' ) {
+        throw {
+          name: 'errorUserType',
+          mgs: 'user type should be "Merchant" or "Verifier"',
+        }
+      }
+
+      // for verifier
+      let verifierTransaction = null;
+      if (user_type === 'Verifier') {
+        verifierTransaction = await Verifier.create({
+          institution,
+          province_id: province_id || null,
+          city_id: city_id || null,
+        }, { transaction: t });
+      };
+
       // user transaction
       const userTransaction = await User.create({
         full_name,
         email,
         phone_number,
         password: 'random',
+        verifier_id: verifierTransaction?.id || null,
       }, { transaction: t });
 
-      // for verifier
-      if (user_type === 'Verifier') {
-        // Insert verifier data.
-        await Verifier.create({
-          institution,
-          province_id,
-          city_id,
-        });
-
-        // Insert 
-      };
-
-      // merchant transaction 
+      // merchant transaction.
+      // should chose one, category_id or tenant_category_id.
+      // cannot both.
       if (user_type === 'Merchant') {
         await Merchant.create({
           user_id: userTransaction.id,
@@ -93,16 +106,14 @@ module.exports = class AuthController {
           parent_id,
         }, { transaction: t });
       }
-      // create params token
-      const emailToken = jwtSign({
-        id: userTransaction.id,
-        email: userTransaction.email
-      })
-      // create history
-      const isHistoryCreated = await newHistory('createUser', userTransaction);
-      if(!isHistoryCreated) {
-          throw { name: 'fail_create_history' };
-      }
+
+      // !TODO: create history
+      //  still error, should use transaction ?
+      // const isHistoryCreated = await newHistory('createUser', userTransaction);
+      // if(!isHistoryCreated) {
+      //     throw { name: 'fail_create_history' };
+      // }
+
       // if transaction successfull, send the OTP.
       t.afterCommit(() => {
         // using padStart so it will be always 6 digit.
