@@ -126,10 +126,15 @@ module.exports = class AuthController {
                 name: 'error_send_otp',
               };
             } else{
+              const otpToken = jwtSign({
+                id: userTransaction.id,
+                email: userTransaction.email,
+              });
               await redis.set(`${userTransaction.id}`, OTP, 'ex', 120);
               res.status(201).json({
                 message: `OTP was sent to ${userTransaction.email}.`,
                 id: userTransaction.id,
+                token: otpToken,
               });
             };
           } catch (error) {
@@ -147,7 +152,7 @@ module.exports = class AuthController {
   static async verifyUser(req, res, next){
     //ambil otp dan email dari redis
     try {
-      const {otp} = req.body
+      const {otp} = req.body;
       const redisOtp = await redis.get(`${req.params.id}`)
       if(redisOtp !== otp){
         throw {name: 'invalid_otp'}
