@@ -15,11 +15,19 @@
 
 .navbar {
   height: 48px;
-  width: 1232px;
+  width: 1070px;
+  /* width: 1232px; */
   left: 208px;
   top: 0px;
   border-radius: 0px;
   padding: 0px, 16px, 0px, 16px;
+  background-color: #ffffff;
+  border-bottom: 2px solid rgb(247, 247, 247);
+  justify-content: space-between;
+}
+
+body {
+  background-color: rgb(247, 252, 255);
   background-color: rgba(216, 249, 252, 0.15);
   justify-content: space-between;
 }
@@ -28,7 +36,11 @@
   padding-left: 15px;
   letter-spacing: 42px;
   border: 0;
-  background-image: linear-gradient(to left, black 70%, rgba(255, 255, 255, 0) 0%);
+  background-image: linear-gradient(
+    to left,
+    black 70%,
+    rgba(255, 255, 255, 0) 0%
+  );
   background-position: bottom;
   background-size: 50px 1px;
   background-repeat: repeat-x;
@@ -38,13 +50,13 @@
   outline: unset;
 }
 
-#divInner{
+#divInner {
   left: 0;
   position: sticky;
 }
 
-#divOuter{
-  width: 190px; 
+#divOuter {
+  width: 190px;
   overflow: hidden;
 }
 
