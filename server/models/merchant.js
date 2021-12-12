@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Merchant.belongsTo(models.SubCategory, {foreignKey: 'subcategory_id'})
+      Merchant.belongsTo(models.Category, {
+        foreignKey: 'category_id'},
+      );
     }
   };
   Merchant.init({
@@ -20,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     postal_code: DataTypes.STRING,
     province_id: DataTypes.INTEGER,
     city_id: DataTypes.INTEGER,
+    place_name: DataTypes.STRING,
     category_id: DataTypes.INTEGER,
     tenant_category_id: DataTypes.INTEGER,
     parent_id: DataTypes.INTEGER
