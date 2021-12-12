@@ -473,7 +473,9 @@ module.exports = class UserController {
       const params = {
         approve_by: req.user.email
       }
-      await User.update()
+      await User.update(params,
+        {where: {id}
+      })
       const payload = {
         id: foundUser.id,
         email: foundUser.email
