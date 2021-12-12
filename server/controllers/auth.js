@@ -121,24 +121,24 @@ module.exports = class AuthController {
           try {
             if(error){
               // !need to rework error name.
-              console.log(error, 'dapet error');
               throw {
                 name: 'error_send_otp',
-              }
+              };
             } else{
-              console.log('otp to email sent.')
+              const otpToken = jwtSign({
+                id: userTransaction.id,
+                email: userTransaction.email,
+              });
               await redis.set(`${userTransaction.id}`, OTP, 'ex', 120);
               res.status(201).json({
                 message: `OTP was sent to ${userTransaction.email}.`,
                 id: userTransaction.id,
-                token: emailToken
+                token: otpToken,
               });
             };
           } catch (error) {
-            console.log(error, 'error nya ini');
             next(error);
-          }
-          console.log("callback triggered");
+          };
         });
       });
       await t.commit();
@@ -146,13 +146,13 @@ module.exports = class AuthController {
       console.log(error)
       await t.rollback();
       next(error);
-    }
-  }
+    };
+  };
 
   static async verifyUser(req, res, next){
     //ambil otp dan email dari redis
     try {
-      const {otp} = req.body
+      const {otp} = req.body;
       const redisOtp = await redis.get(`${req.params.id}`)
       if(redisOtp !== otp){
         throw {name: 'invalid_otp'}
