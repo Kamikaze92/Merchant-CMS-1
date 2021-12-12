@@ -175,18 +175,35 @@ module.exports = class AuthController {
 
   static async resendOtp(req, res, next){
     try {
+      const { id, token } = req.params;
+      const user = await User.findByPk(id);
+      
+      if (!user) {
+        throw { name: 'not_found' };
+      };
+      
       const OTP = String(Math.floor(Math.random() * 999999));
-      transporter.sendMail(mailOtp(userTransaction.email, OTP), async (error) => {
-        if(error){
-          throw {
-            message: 'error Send OTP',
-          }
-        } else{
-          console.log('OTP resend to email.')
-          await redis.set("otp", OTP)
-          res.status(201).json({
-            message: `OTP was sent.`,
-          });
+      transporter.sendMail(mailOtp(user.email, OTP), async (error) => {
+        try {
+          if(error){
+            // !need to rework error name.
+            throw {
+              name: 'error_send_otp',
+            };
+          } else{
+            const otpToken = jwtSign({
+              id: user.id,
+              email: user.email,
+            });
+            await redis.set(`${user.id}`, OTP, 'ex', 120);
+            res.status(200).json({
+              message: `OTP was sent to ${user.email}.`,
+              id: user.id,
+              token: otpToken,
+            });
+          };
+        } catch (error) {
+          next(error);
         };
       });
     } catch (err) {
