@@ -28,7 +28,7 @@ export default function OtpInput() {
         <div className="register-form">
           <div className="container">
             <div className="row" style={{ justifyContent: "center" }}>
-              <div className="col-8 mb-5 mt-5" id="cardOtp">
+              <div className="col-7 mb-5 mt-5" id="cardOtp">
                 <div style={{ textAlign: "center" }}>
                   <img
                     src="https://www.pedulilindungi.id/assets/logo-with-text.svg"
@@ -49,6 +49,15 @@ export default function OtpInput() {
                   <div id="divInner">
                       <input id="partitioned" className="mt-5 mb-3" type="text" maxlength="6"/>
                   </div>
+                </div>
+                <div className="d-grid gap-2 col-12 mt-3">
+                  <button
+                    className="btn"
+                    type="submit"
+                    style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
+                  >
+                    Register
+                  </button>
                 </div>
                 </form>
                 <div
