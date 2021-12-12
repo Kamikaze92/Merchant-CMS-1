@@ -1,5 +1,5 @@
 const RegisterPage = {
-  backgroundColor: "#094C6F",
+  backgroundColor: "#094C6F"
 };
 const RegisterForm = {
   backgroundColor: "white",

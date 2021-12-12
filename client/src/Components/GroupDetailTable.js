@@ -1,25 +1,14 @@
-import Navbar from "../Components/Navbar";
+import Navbar from "./Navbar";
 
 export default function GroupDetailPage () {
     return (
         <>
-          <Navbar></Navbar>
           <div className="container">
-            <div className="row">
-              <div className="col-2">
-                <div className="row">
-                  <div className="d-flex align-items-center">
-                    <i className="bi bi-arrow-left me-3"></i>
-                    <p className="text-nowrap" style={{ height: '10px' }}>Detail Group</p>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div className="row card mt-4">
             <p className="fw-bolder p-3" style={{ color: '#f8f8f8', backgroundColor: '#229BD8' }}>Informasi Pengguna</p>
               <div className="d-flex flex-row">
                 <div>
-                    <div className="d-flex flex-row">
+                    <div className="d-flex flex-row p-3">
                       <div className="d-flex flex-column fw-bolder">
                         <p>Email</p>
                         <p>Deskripsi</p>
@@ -27,10 +16,10 @@ export default function GroupDetailPage () {
                         <p>Dibuat Pada</p>
                       </div>
                       <div className="d-flex flex-column ms-4">
-                        <p>:Admin</p>
-                        <p>:Untuk Administrator</p>
-                        <p>:Super Admin</p>
-                        <p>:26 Oktober 2021 10:00:59</p>
+                        <p>: Admin</p>
+                        <p>: Untuk Administrator</p>
+                        <p>: Super Admin</p>
+                        <p>: 26 Oktober 2021 10:00:59</p>
                       </div>
                     </div>
                 </div>

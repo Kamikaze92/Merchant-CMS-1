@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserMerchants, createUserMerchant, approveUserMerchant, deleteUserMerchant } from '../store/actions/users';
-import Sidebar from "../Components/Sidebar";
-import Navbar from "../Components/Navbar";
 import DataTable from 'react-data-table-component';
 
 const columns = (buttonHandlers) => [
@@ -53,7 +51,7 @@ const columns = (buttonHandlers) => [
   },
 ];
 
-export default function UserMerchantApproval() {
+export default function MerchantApprovalTable() {
   const dispatch = useDispatch();
   const { usersMerchant, isLoading, error } = useSelector(state => state.users);
   const [ selectedRows, setSelectedRows ] = useState(false);
@@ -114,11 +112,8 @@ export default function UserMerchantApproval() {
   } else {
     return (
       <>
-        <Navbar />
-        {/* <Sidebar /> */}
-        <div id="container-fluid">
-          <div className="row">
-            <div className="col-12">
+        <div id="container-fluid mt-3">
+          <div className="">
               <div>
                 <DataTable
                   // columns={columns}
@@ -151,9 +146,7 @@ export default function UserMerchantApproval() {
               </div>
             </div>
           </div>
-        </div>
       </>
-    
     )
   };
 };

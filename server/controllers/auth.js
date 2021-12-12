@@ -113,7 +113,6 @@ module.exports = class AuthController {
       // if(!isHistoryCreated) {
       //     throw { name: 'fail_create_history' };
       // }
-
       // if transaction successfull, send the OTP.
       t.afterCommit(() => {
         // using padStart so it will be always 6 digit.
@@ -144,6 +143,7 @@ module.exports = class AuthController {
       });
       await t.commit();
     } catch (error) {
+      console.log(error)
       await t.rollback();
       next(error);
     };
