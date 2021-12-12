@@ -20,6 +20,9 @@ const initialState = {
   error: null,
   loading: false,
   successDeleted: false,
+  updated: false,
+  createdSub: false,
+  updatedSub: false,
 };
 
 export default function categoryReducer(state = initialState, action) {
@@ -51,50 +54,19 @@ export default function categoryReducer(state = initialState, action) {
         non_tenant: [...state.non_tenant, action.payload],
       };
     case CATEGORY_NON_TENANT_UPDATE:
-      let nonTenant = state.non_tenant.filter(
-        (el) => el.id != action.payload.id
-      );
-      console.log(nonTenant, "masuk nonn");
-      console.log([...nonTenant, action.payload]);
       return {
         ...state,
-        non_tenant: [...nonTenant, action.payload],
+        updated: action.payload,
       };
     case SUB_CATEGORY_CREATE:
-      let category = [];
-      state.non_tenant.forEach((el) => {
-        if (el.id == action.payload.parent_id) {
-          let tmp = el;
-          tmp.sub_category.push(action.payload);
-          category.push(tmp);
-        } else {
-          category.push(el);
-        }
-      });
       return {
         ...state,
-        non_tenant: [...category],
+        createdSub: action.payload,
       };
     case SUB_CATEGORY_UPDATE:
-      let subCreated = state.non_tenant.filter(
-        (el) => el.id != action.payload.parent_id
-      );
-      let index = state.non_tenant.findIndex(
-        (el) => el.id == action.payload.parent_id
-      );
-      let tmp = state.non_tenant[index];
-      let result = [];
-      if (tmp.length) {
-        let data = tmp.sub_category.filter((el) => el == action.payload.id);
-        data.sub_category.push(action.payload);
-        result.push(data);
-      } else {
-        tmp.sub_category.push(action.payload);
-        result.push(tmp);
-      }
       return {
         ...state,
-        non_tenant: [...result, ...subCreated],
+        updatedSub: action.payload,
       };
     case CATEGORY_DELETE_TENANT:
       let tenantDeleted = state.tenant.filter((el) => el.id !== action.payload);
@@ -113,7 +85,7 @@ export default function categoryReducer(state = initialState, action) {
     case CATEGORY_DELETE_SUB_CATEGORY:
       return {
         ...state,
-        successDeleted: false,
+        successDeleted: action.payload,
       };
     case CATEGORY_LOADING:
       return {

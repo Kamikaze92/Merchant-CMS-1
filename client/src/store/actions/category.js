@@ -153,9 +153,13 @@ export function updateCategoryNonTenant(id, data) {
       });
       dispatch({
         type: CATEGORY_NON_TENANT_UPDATE,
-        payload: response.data,
+        payload: true,
       });
       dispatch(getLoading(CATEGORY_LOADING, false));
+      dispatch({
+        type: CATEGORY_NON_TENANT_UPDATE,
+        payload: false,
+      });
     } catch (error) {
       dispatch(getError(CATEGORY_ERROR, error));
       dispatch(getLoading(CATEGORY_LOADING, false));
@@ -182,19 +186,84 @@ export function deleteCategoryNonTenant(id) {
   };
 }
 
-// export function name(params) {
-//   return (dispatch, getState) => {
-//     try {
-//     } catch (error) {}
-//   };
-// }
+export function deleteSubCategory(id) {
+  return async (dispatch, getState) => {
+    try {
+      let response = await axios({
+        method: "delete",
+        url: `/categories/${id}`,
+      });
+      dispatch({
+        type: CATEGORY_DELETE_SUB_CATEGORY,
+        payload: true,
+      });
+      dispatch(getLoading(CATEGORY_LOADING, false));
+      dispatch({
+        type: CATEGORY_DELETE_SUB_CATEGORY,
+        payload: false,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error, "apa error");
+      dispatch(getError(CATEGORY_ERROR, error));
+      dispatch(getLoading(CATEGORY_LOADING, false));
+    }
+  };
+}
 
-// export function name(params) {
-//   return (dispatch, getState) => {
-//     try {
-//     } catch (error) {}
-//   };
-// }
+export function createNewSubCategory(id, data) {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(getLoading(CATEGORY_LOADING, true));
+      let response = await axios({
+        method: "post",
+        url: `categories/sub/${id}`,
+        data,
+      });
+      dispatch({
+        type: SUB_CATEGORY_CREATE,
+        payload: true,
+      });
+      dispatch(getLoading(CATEGORY_LOADING, true));
+      dispatch({
+        type: SUB_CATEGORY_CREATE,
+        payload: false,
+      });
+    } catch (error) {
+      console.log(error.response.data);
+      dispatch(getError(CATEGORY_ERROR, error));
+      dispatch(getLoading(CATEGORY_LOADING, false));
+    }
+  };
+}
+
+export function updateSubCategory(id, { name }) {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(getLoading(CATEGORY_LOADING, true));
+      let response = await axios({
+        method: "put",
+        url: `categories/sub/${id}`,
+        data: {
+          name,
+          parent_id: 1,
+        },
+      });
+      dispatch({
+        type: SUB_CATEGORY_UPDATE,
+        payload: true,
+      });
+      dispatch(getLoading(CATEGORY_LOADING, true));
+      dispatch({
+        type: SUB_CATEGORY_UPDATE,
+        payload: false,
+      });
+    } catch (error) {
+      dispatch(getError(CATEGORY_ERROR, error));
+      dispatch(getLoading(CATEGORY_LOADING, false));
+    }
+  };
+}
 
 // export function name(params) {
 //   return (dispatch, getState) => {
