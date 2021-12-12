@@ -11,6 +11,7 @@ import RegisterMerchant from "./Pages/RegisterMerchant";
 import RegisterVerificator from "./Pages/RegisterVerificator";
 import ActiveMerchant from "./Pages/ActiveMerchant";
 import MerchantApproval from "./Pages/MerchantApproval";
+import MerchantDetail from './Pages/MerchantDetail';
 
 function App() {
   // <div className="App">{/* <RegisterMerchant /> */}</div>;
@@ -21,6 +22,7 @@ function App() {
       <RegisterMerchant />
       <RegisterVerificator /> */}
       {/* <ActiveMerchant /> */}
+      <MerchantDetail />
       <Routes>
         <Route path="/register-merchant" element={<RegisterMerchant />}></Route>
         <Route path="/register-verifier" element={<RegisterVerificator />}></Route>
