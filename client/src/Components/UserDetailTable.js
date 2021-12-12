@@ -1,23 +1,11 @@
-import Sidebar from "../Components/Sidebar";
-import Navbar from "../Components/Navbar";
 
 export default function UserDetailPage(props) {
     return (
       <>
-        <Navbar></Navbar>
         <div className="container">
-          <div className="row">
-            <div className="col-2">
-              <div className="row">
-                <div className="d-flex align-items-center">
-                  <i className="bi bi-arrow-left me-3"></i>
-                  <p className="text-nowrap" style={{ height: '10px' }}>Detail Pengguna</p>
-                </div>
-              </div>
-            </div>
-          </div>
           <div className="row card mt-4">
-          <p className="fw-bolder p-3" style={{ color: '#f8f8f8', backgroundColor: '#229BD8' }}>Informasi Pengguna</p>
+          <p className="fw-bolder p-3" style={{ color: '#FFFFFF', backgroundColor: '#229BD8' }}>
+            Informasi Pengguna</p>
             <div className="d-flex flex-row">
               <div>
                   <div className="d-flex flex-row">
@@ -28,10 +16,10 @@ export default function UserDetailPage(props) {
                       <p>Instansi</p>
                     </div>
                     <div className="d-flex flex-column ms-4">
-                      <p>:Email@gmail.com</p>
-                      <p>:Test Satu Dua Tiga</p>
-                      <p>:0811234567890</p>
-                      <p>:DTO</p>
+                      <p>:  Email@gmail.com</p>
+                      <p>:  Test Satu Dua Tiga</p>
+                      <p>:  0811234567890</p>
+                      <p>:  DTO</p>
                     </div>
                   </div>
               </div>
@@ -43,11 +31,11 @@ export default function UserDetailPage(props) {
           <div className="row">
             <div className="col me-2">
             <div className="row card mt-4">
-            <div className="mb-3 d-flex align-items-center bd-highlight mb-3" style={{ color: '#f8f8f8', backgroundColor: '#229BD8' }}> 
+            <div className="mb-3 d-flex align-items-center bd-highlight mb-3" style={{ color: '#FFFFFF', backgroundColor: '#229BD8' }}> 
                   <p className="fw-bolder m-3 me-auto  bd-highlight">Grup Pengguna</p>
-                  <i className="bi bi-plus-lg  bd-highlight" style={{ color: '#f8f8f8' }}></i>
+                  <i className="bi bi-plus-lg  bd-highlight" style={{ color: '#FFFFFF' }}></i>
                   <p className="m-3  bd-highlight">Tambah</p>
-                  <i className="bi bi-trash  bd-highlight" style={{ color: '#f8f8f8' }}></i>
+                  <i className="bi bi-trash  bd-highlight" style={{ color: '#FFFFFF' }}></i>
                   <p className="m-3  bd-highlight">Hapus</p>
               </div>
               <div className="px-3 mb-3">

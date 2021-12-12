@@ -3,7 +3,7 @@ import { Form } from "react-bootstrap";
 import axios from 'axios';
 
 const RegisterPage = {
-  backgroundColor: "#094C6F",
+  backgroundColor: "#094C6F"
 };
 const RegisterForm = {
   backgroundColor: "white",
