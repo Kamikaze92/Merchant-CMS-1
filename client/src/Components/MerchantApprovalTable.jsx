@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserMerchants, createUserMerchant, approveUserMerchant, deleteUserMerchant } from '../store/actions/users';
-// import DataTable from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 
 const columns = (buttonHandlers) => [
   {
