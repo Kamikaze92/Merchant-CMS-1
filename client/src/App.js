@@ -17,9 +17,11 @@ import ActiveMerchantDetail from "./Pages/ActiveMerchantDetail";
 import ErrorPage from "./Pages/ErrorPage";
 import ListGroupDetail from "./Pages/ListGroupDetail";
 import ChangePassword from "./Pages/ChangePassword";
+import AccountVerified from "./Pages/AccountVerified";
 import { RequireAuth, HasToken } from './Components/RequireAuth';
 import Dashboard from './Pages/Dashboard';
 import ForgotPassword from './Pages/ForgotPassword';
+
 function App() {
   return (
     <>
@@ -45,6 +47,7 @@ function App() {
         </Route>
         <Route path="/register-verifier" element={<HasToken><RegisterVerificator /></HasToken>}></Route>
         <Route path="/register-merchant" element={<HasToken><RegisterMerchant /></HasToken>}></Route>
+        <Route path="/account-verified" element={<HasToken><AccountVerified /></HasToken>}></Route>
         <Route path="/login" element={<HasToken><LoginPage /></HasToken>}></Route>
         <Route path="/otp-verification/:id/:token" element={<HasToken><OtpInput /></HasToken>}></Route>
         <Route path="/check-status" element={<HasToken><CheckStatus /></HasToken>}></Route>

@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { useState, useEffect } from "react";
-import { useNavigate, Link} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const LoginPageStyle = {
   backgroundColor: "#094C6F",
+  backgroundSize: "cover",
+  width: "100%",
   minHeight: '100vh',
 };
 const LoginForm = {
@@ -133,13 +135,17 @@ export default function LoginPage() {
                 </div>
               </form>
               <div style={LoginFooter} className="mt-3">
-                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
+                <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
+                  Daftar sebagai verifikator 
+                    <Link to="/register-verifier"  className="text-info text-decoration-none mx-2"><strong>di sini</strong></Link>
+                </h3>
+                <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
                   Belum punya akun? <Link to="/register-merchant"  className="text-info text-decoration-none"><strong>Register</strong></Link>
-                </h6>
-                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
+                </h3>
+                <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
                   Sudah melakukan registrasi?{" "}
                   <Link to="/check-status" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></Link>
-                </h6>
+                </h3>
               </div>
             </div>
           </div>
