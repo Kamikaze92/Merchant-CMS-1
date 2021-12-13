@@ -30,7 +30,7 @@ function App() {
         <Route path="/register-merchant" element={<RegisterMerchant />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/otp-verification" element={<OtpInput />}></Route>
-        <Route path="/check-status" element={<CheckStatus />}></Route>
+        <Route path="/register-merchant" element={<CheckStatus />}></Route>
 
         {/* Table utama */}
         <Route path="/merchants" element={<MerchantApproval />}></Route>
