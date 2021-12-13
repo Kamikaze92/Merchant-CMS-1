@@ -76,6 +76,7 @@ function App() {
           <Route path="/categories/tenant" element={<CategoryTenant />}></Route>
           <Route path="/categories/:id" element={<CategoryNonTenantDetail />}></Route>
         </Route>
+        
         <Route path="/register-verifier" element={<HasToken><RegisterVerificator /></HasToken>}></Route>
         <Route path="/register-merchant" element={<HasToken><RegisterMerchant /></HasToken>}></Route>
         <Route path="/account-verified" element={<HasToken><AccountVerified /></HasToken>}></Route>

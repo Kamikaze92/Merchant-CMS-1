@@ -43,6 +43,7 @@ const RegisterFooter = {
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const [formEmail, setFormEmail] = useState({
+    url: `${window.location.hostname}/set-password/${id}/${token}`,
     email: "",
   });
   const inputEmail = (e) => {
@@ -56,10 +57,13 @@ export default function ForgotPassword() {
     try {
       e.preventDefault();
       const response = await axios({
-        url: `${process.env.REACT_APP_BASE_URL}/forgot-password`,
+        url: `http://localhost:3000/forgot-password`,
         method: "POST",
         data: formEmail,
       })
+      if(response.status == 200){
+        //redirect ke page link
+      }
       console.log(response.data.message)
       navigate("/login")
     } catch (error) {

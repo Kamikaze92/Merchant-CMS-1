@@ -132,6 +132,10 @@ export default function LoginPage() {
                   >
                     Login
                   </button>
+                  <h3 style={{ fontColor: '#229BD8', fontSize: 16}}>
+                    Lupa Password
+                    <Link to="/register-verifier"  className="text-info text-decoration-none mx-2"><strong>di sini</strong></Link>
+                  </h3>
                 </div>
               </form>
               <div style={LoginFooter} className="mt-3">
