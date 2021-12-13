@@ -47,7 +47,6 @@ export default function CheckStatus() {
   const fetchStatus = async (e) => {
     e.preventDefault()
     try {
-      console.log(formInput, '<<<<') 
       const response = await axios({
         url: `http://localhost:3000/check-status`,
         method: 'post',

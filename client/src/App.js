@@ -21,6 +21,7 @@ import AccountVerified from "./Pages/AccountVerified";
 import { RequireAuth, HasToken } from './Components/RequireAuth';
 import Dashboard from './Pages/Dashboard';
 import ForgotPassword from './Pages/ForgotPassword';
+import SetPassword from "./Pages/SetPassword";
 
 function App() {
   return (
@@ -34,6 +35,36 @@ function App() {
           <Route path="/verifiers" element={<UserVerifierApproval />}></Route>
           <Route path="/active-merchants" element={<ActiveMerchant />}></Route>
           <Route path="/active-merchants/detail" element={<ActiveMerchantDetail />}></Route>
+        {/* auth */}
+        <Route
+          path="/register-verifier"
+          element={<RegisterVerificator />}
+        ></Route>
+        <Route path="/register-merchant" element={<RegisterMerchant />}></Route>
+        <Route path="/login" element={<LoginPage />}></Route>
+        <Route path="/otp-verification" element={<OtpInput />}></Route>
+        <Route path="/account-verified" element={<AccountVerified />}></Route>
+        <Route path="/check-status" element={<CheckStatus />}></Route>
+        <Route path="/set-password/:id/:token" element={<SetPassword />}></Route>
+
+        {/* Table utama */}
+        <Route path="/merchants" element={<MerchantApproval />}></Route>
+        <Route path="/verifiers" element={<UserVerifierApproval />}></Route>
+        <Route path="/active-merchants" element={<ActiveMerchant />}></Route>
+        <Route
+          path="/active-merchants/detail"
+          element={<ActiveMerchantDetail />}
+        ></Route>
+
+        {/* users, usergroup, category */}
+        <Route path="/users" element={<Users />}></Route>
+        <Route path="/users/detail" element={<UserDetail />}></Route>
+        <Route path="/group-list" element={<ListGroup />}></Route>
+        <Route path="/group-list/detail" element={<ListGroupDetail />}></Route>
+        <Route path="/change-password" element={<ChangePassword />}></Route>
+        <Route path="/categories" element={<CategoryNonTenant />}></Route>
+        <Route path="/categories/:id" element={<CategoryNonTenantDetail />}></Route>
+        <Route path="/categories/tenant" element={<CategoryTenant />}></Route>
 
           {/* users, usergroup, category */}
           <Route path="/users" element={<Users />}></Route>
