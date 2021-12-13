@@ -57,7 +57,7 @@ export default function ForgotPassword() {
     try {
       e.preventDefault();
       const response = await axios({
-        url: `http://localhost:3000/forgot-password`,
+        url: `${process.env.REACT_APP_BASE_URL}/forgot-password`,
         method: "POST",
         data: formEmail,
       })
