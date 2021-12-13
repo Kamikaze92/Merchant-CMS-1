@@ -13,7 +13,10 @@ import {
 import { Modal, Button, Form } from "react-bootstrap";
 export default function CategoryDetail(props) {
   const { id } = useParams();
-  const [input, setInput] = useState();
+  const [input, setInput] = useState({
+    name: "",
+    description: "",
+  });
   const navigate = useNavigate();
   const {
     non_tenant,
@@ -47,18 +50,42 @@ export default function CategoryDetail(props) {
         payload: null,
         show: false,
       });
+      setInput({
+        name: "",
+        description: "",
+      });
     } else {
       if (payload.name === "Edit Kategori") {
         dispatch(updateCategoryNonTenant(payload.payload, input));
+        setInput({
+          name: "",
+          description: "",
+        });
       } else if (payload.name === "Hapus Kategori") {
         dispatch(deleteCategoryNonTenant(payload.payload));
-        navigate("/category");
+        setInput({
+          name: "",
+          description: "",
+        });
+        navigate("/categories");
       } else if (payload.name === "Tambah Sub Kategori") {
         dispatch(createNewSubCategory(payload.payload, input));
+        setInput({
+          name: "",
+          description: "",
+        });
       } else if (payload.name === "Hapus Sub Kategori") {
         dispatch(deleteSubCategory(payload.payload));
+        setInput({
+          name: "",
+          description: "",
+        });
       } else if (payload.name === "Edit Sub Kategori") {
         dispatch(updateSubCategory(payload.payload, input));
+        setInput({
+          name: "",
+          description: "",
+        });
       }
     }
   };
@@ -77,11 +104,15 @@ export default function CategoryDetail(props) {
 
   useEffect(async () => {
     if (updated || createdSub || successDeleted || updatedSub) {
-      console.log("masuk haahh");
       let response = await axios({
         url: `/categories/${id}`,
       });
       setData(response.data);
+      setShow({
+        name: null,
+        payload: null,
+        show: false,
+      });
     }
   }, [updated, createdSub, successDeleted, updatedSub]);
   return (
@@ -89,7 +120,10 @@ export default function CategoryDetail(props) {
       <FormPage data={show} />
 
       <div className="container1">
-        <div className="row card mt-4" style={{ width: "990px" }}>
+        <div
+          className="row card mt-4"
+          style={{ width: "990px", marginLeft: "-230px" }}
+        >
           <div
             className="mb-3 d-flex align-items-center bd-highlight mb-3"
             style={{
@@ -160,7 +194,7 @@ export default function CategoryDetail(props) {
           <div className="col me-2">
             <div
               className="row card mt-4"
-              style={{ width: "990px", marginLeft: "-20px" }}
+              style={{ width: "990px", marginLeft: "-250px" }}
             >
               <div
                 className="mb-3 d-flex align-items-center bd-highlight mb-3"
@@ -249,7 +283,10 @@ export default function CategoryDetail(props) {
                                     onClick={() =>
                                       handleShow({
                                         name: "Edit Sub Kategori",
-                                        payload: el.id,
+                                        payload: {
+                                          category_id: data.id,
+                                          sub_category_id: el.id,
+                                        },
                                         categoryName: "",
                                         show: true,
                                       })
@@ -314,7 +351,7 @@ export default function CategoryDetail(props) {
         <Modal.Body>
           {name === "Hapus Kategori" || name === "Hapus Sub Kategori" ? (
             <>
-              <Form.Label>delete</Form.Label>
+              <Form.Label>Hapus Kategory</Form.Label>
             </>
           ) : null}
           {name === "Tambah Sub Kategori" ? (
@@ -324,8 +361,7 @@ export default function CategoryDetail(props) {
                 onChange={inputName}
                 name="name"
                 type="text"
-                // defaultValue={nameUpdate}
-                // value={nameUpdate}
+                value={input.name}
                 className="form-control"
                 placeholder="Name"
                 aria-label="Name"
@@ -341,7 +377,7 @@ export default function CategoryDetail(props) {
                 name="name"
                 type="text"
                 // defaultValue={nameUpdate}
-                // value={nameUpdate}
+                value={input.name}
                 className="form-control"
                 placeholder="Name"
                 aria-label="Name"
@@ -355,7 +391,7 @@ export default function CategoryDetail(props) {
                     name="description"
                     type="text"
                     // defaultValue={nameUpdate}
-                    // value={nameUpdate}
+                    value={input.description}
                     className="form-control"
                     placeholder="Deskripsi"
                     aria-label="Deskripsi"

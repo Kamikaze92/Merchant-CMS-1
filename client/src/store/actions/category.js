@@ -237,16 +237,16 @@ export function createNewSubCategory(id, data) {
   };
 }
 
-export function updateSubCategory(id, { name }) {
+export function updateSubCategory(payload, { name }) {
   return async (dispatch, getState) => {
     try {
       dispatch(getLoading(CATEGORY_LOADING, true));
       let response = await axios({
         method: "put",
-        url: `categories/sub/${id}`,
+        url: `categories/sub/${payload.sub_category_id}`,
         data: {
           name,
-          parent_id: 1,
+          parent_id: payload.category_id,
         },
       });
       dispatch({

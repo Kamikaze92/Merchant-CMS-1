@@ -1,10 +1,12 @@
+import axios from 'axios';
 import { useState, useEffect } from "react";
-import {Link} from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom";
+
 const LoginPageStyle = {
   backgroundColor: "#094C6F",
   backgroundSize: "cover",
   width: "100%",
-  height: "100vh"
+  minHeight: '100vh',
 };
 const LoginForm = {
   backgroundColor: "white",
@@ -40,6 +42,7 @@ const LoginFooter = {
 
 export default function LoginPage() {
   document.body.style = `background: ${LoginPageStyle.backgroundColor}`;
+  const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: ''
@@ -54,9 +57,26 @@ export default function LoginPage() {
     });
   }
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
-    console.log('login Feature');  
+    try {
+      const response = await axios({
+        url: `${process.env.REACT_APP_BASE_URL}/login`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: loginForm,
+      });
+      if (response.status === 200) {
+        localStorage.setItem('access_token', response.data.access_token);
+        navigate('/merchants');
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <div style={ LoginPageStyle }>
@@ -110,28 +130,21 @@ export default function LoginPage() {
                     type="submit"
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
                   >
-                    Register
+                    Login
                   </button>
                 </div>
               </form>
               <div style={LoginFooter} className="mt-3">
                 <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
                   Daftar sebagai verifikator 
-                  <Link to="/register-verifier">
-                  <a href="#"  className="text-info text-decoration-none mx-2"><strong>di sini</strong></a>
-                  </Link>
+                    <Link to="/register-verifier"  className="text-info text-decoration-none mx-2"><strong>di sini</strong></Link>
                 </h3>
                 <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
-                  Daftar sebagai merchant 
-                  <Link to="/register-merchant">
-                  <a href="#"  className="text-info text-decoration-none mx-2"><strong>di sini</strong></a>
-                  </Link>
+                  Belum punya akun? <Link to="/register-merchant"  className="text-info text-decoration-none"><strong>Register</strong></Link>
                 </h3>
                 <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
                   Sudah melakukan registrasi?{" "}
-                  <Link to='/check-status'>
-                  <a href="#" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></a>
-                  </Link>
+                  <Link to="/check-status" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></Link>
                 </h3>
               </div>
             </div>
