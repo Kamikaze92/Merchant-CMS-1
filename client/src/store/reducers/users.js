@@ -6,6 +6,8 @@ import {
   SET_USERS_VERIFIER_SUCCESS,
   APPROVE_VERIFIER_SUCCESS,
   DELETE_VERIFIER_SUCCESS,
+  SET_ACTIVE_MERCHANTS,
+  SET_ACTIVE_MERCHANT,
   USER_LOADING,
   USER_ERROR,
 } from '../actionType/users';
@@ -13,6 +15,8 @@ import {
 const initialState = {
   usersMerchant: [],
   usersVerifier: [],
+  activeMerchants: [],
+  activeMerchant: {},
   isLoading: false,
   error: null,
 }
@@ -55,6 +59,18 @@ export default function items(state = initialState, action) {
         usersVerifier: action.payload,
         isLoading: false,
       };
+    case SET_ACTIVE_MERCHANTS:
+      return {
+        ...state,
+        activeMerchants: action.payload,
+        isLoading: false,
+      } 
+    case SET_ACTIVE_MERCHANT:
+      return {
+        ...state,
+        activeMerchant: action.payload,
+        isLoading: false,
+      }
     case USER_LOADING:
       return {
         ...state,

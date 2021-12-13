@@ -65,6 +65,7 @@ function App() {
         <Route path="/categories" element={<CategoryNonTenant />}></Route>
         <Route path="/categories/:id" element={<CategoryNonTenantDetail />}></Route>
         <Route path="/categories/tenant" element={<CategoryTenant />}></Route>
+        <Route path="/active-merchants/:id" element={<ActiveMerchantDetail />}></Route>
 
           {/* users, usergroup, category */}
           <Route path="/users" element={<Users />}></Route>
