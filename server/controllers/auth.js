@@ -149,27 +149,29 @@ module.exports = class AuthController {
     };
   };
 
-  static async verifyUser(req, res, next){
+  static async verifyUser(req, res, next) {
     //ambil otp dan email dari redis
     try {
-      const {otp} = req.body;
-      const redisOtp = await redis.get(`${req.params.id}`)
-      if(redisOtp !== otp){
-        throw {name: 'invalid_otp'}
+      const { otp } = req.body;
+      const redisOtp = await redis.get(`${req.params.id}`);
+      if (redisOtp !== otp) {
+        throw { name: 'invalid_otp' };
       }
-      const {id} = req.params
+
+      const { id } = req.params;
       const response = await User.update(
-        {verified_at: new Date ()},
-        {where: id}
-      )
-      if(!response){
-        throw {name: "not_authenticated"}
+        { verified_at: new Date() },
+        { where: { id } },
+      );
+      if (!response) {
+        throw { name: 'not_authenticated' };
       }
-      res.status(201).json({
-        message: 'Registration success! Please check your email by 3x24 for verification process.'
-      })
-    } catch (err) {
-      next(err)
+      res.status(200).json({
+        message:
+          'Registration success! Please check your email by 3x24 for verification process.',
+      });
+    } catch (error) {
+      next(error);
     }
   }
 

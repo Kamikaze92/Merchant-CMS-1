@@ -165,11 +165,14 @@ module.exports = class CategoryController {
           name: "category_not_found",
         };
       }
-      if (response.parent_id === null && is_tenant_category === false) {
+      if (
+        response.parent_id === null &&
+        response.is_tenant_category === false
+      ) {
         await redis.del("categories_non_tenant");
       }
 
-      if (response.parent_id === null && is_tenant_category === true) {
+      if (response.parent_id === null && response.is_tenant_category === true) {
         await redis.del("categories_tenant");
       }
 
@@ -183,6 +186,7 @@ module.exports = class CategoryController {
         message: `Category with id ${id} has been deleted`,
       });
     } catch (error) {
+      console.log(error, ">>");
       next(error);
     }
   }
