@@ -1,3 +1,6 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import axios from '../config/server'
 import {Link} from 'react-router-dom'
 const RegisterPage = {
   backgroundColor: "#094C6F",
@@ -38,7 +41,151 @@ const RegisterFooter = {
 }
 
 export default function RegisterVerificator() {
-  return (
+  let navigate = useNavigate();
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [isLoading, setLoading] = useState(false)
+  const [isProvince, setIsProvince] = useState(false)
+  const [isCity, setIsCity] = useState(false)
+  const [isCityFlag, setIsCityFlag] = useState(false)
+  const [formData, setFormData] = useState({
+    user_type: 'Verifier',
+    full_name: '',
+    email: '',
+    phone_number: '',
+    province_id: null,
+    city_id: null,
+    institution: '',
+    Verifier: ''
+  });
+    useEffect(async() => {
+      if (!provinces.length) {
+        const { data } = await axios({
+          url: `${process.env.REACT_APP_BASE_URL}/provinces`,
+          method: 'GET',
+        });
+        setProvinces([
+          ...data,
+        ]);
+      }
+      if (formData.province_id) {
+        const prov = provinces.filter(e => e.id === +formData.province_id)[0];
+        setCities([
+          ...prov.Cities,
+        ])
+      }
+      if (formData.Verifier && formData.Verifier === 'Kab/Kota' && formData.province_id) {
+        setIsCityFlag(true)
+      }
+    }, [formData.province_id]);
+    useEffect(() => {
+      if (formData.Verifier && formData.Verifier === 'Provinsi') {
+        console.log('provin?');
+        setIsProvince(true)
+        setIsCity(false)
+        setIsCityFlag(false)
+      } else if (formData.Verifier && formData.Verifier === 'Kab/Kota') {
+        setIsProvince(false)
+        setIsCity(true)
+        if (formData.province_id) {
+          setIsCityFlag(true)
+        } else {
+          setIsCityFlag(false)
+        }
+      }
+    }, [formData.Verifier])
+    const handleFormDataChange = (e) => {
+      const { name, value } = e.target;
+      if (name === 'Verifier' && value === 'Provinsi') {
+        setIsProvince(true)
+        setIsCity(false)
+        setIsCityFlag(false)
+      } else if (name === 'Verifier' && value === 'Kab/Kota') {
+        setIsProvince(false)
+        setIsCity(true)
+        if (formData.province_id) {
+          setIsCityFlag(true)
+        } else {
+          setIsCityFlag(false)
+        }
+      }
+      let obj = {
+        ...formData,
+        [name]: value
+      }
+      if (name === 'province_id') {
+        obj['city_id'] = 'disabled'
+      }
+      setFormData(obj);
+    }
+
+    const handleFormSubmit = async (e) => {
+      setLoading(true)
+      e.preventDefault()
+      try {
+        let obj = {
+          user_type: formData.user_type,
+          full_name: formData.full_name,
+          email: formData.email,
+          phone_number: formData.phone_number,
+          province_id: formData.province_id,
+          city_id: formData.Verifier==="Kab/Kota"?formData.city_id: null,
+          institution: formData.institution
+        }
+        if (!obj['full_name']) {
+          throw {
+            message: 'Name is required'
+          }
+        }
+        if (!obj['email']) {
+          throw {
+            message: 'Email is required'
+          }
+        }
+        if (!obj['phone_number']) {
+          throw {
+            message: 'Mobile phone is required'
+          }
+        }
+        if (!obj['institution']) {
+          throw {
+            message: 'Institution is required'
+          }
+        }
+
+        if (!obj['province_id']) {
+          throw {
+            message: 'Province is required'
+          }
+        }
+        if (formData.Verifier === "Kab/Kota") {
+          if (!obj['city_id'] || obj['city_id'] === 'disabled') {
+            throw {
+              message: 'City is required'
+            }
+            
+          }
+        }
+        
+        let response = await axios({
+          method: 'post',
+          url:'register',
+          data: obj
+        })
+        console.log(response.data);
+        setLoading(false)
+        navigate('otp-verification/${response.data.id}/${response.data.token}')
+      } catch (error) {
+        if (error.message && !error.response.data) {
+          setLoading(false)
+        } else {
+          console.log(error.response.data.message, '>>>>>>');
+          setLoading(false)
+        }
+        setLoading(false)
+      }
+    }
+     return (
     <div style={RegisterPage}>
       <div className="register-form">
         <div className="container">
@@ -55,7 +202,7 @@ export default function RegisterVerificator() {
                   Register Akun Verificator QR Code PeduliLindungi
                 </h4>
               </div>
-              <form>
+              <form onSubmit={handleFormSubmit}>
                 {/* <!--Email--> */}
                 <div className="px-1 py-1">
                   <div>
@@ -63,6 +210,8 @@ export default function RegisterVerificator() {
                       Nama Lengkap
                     </label>
                     <input
+                    onChange={handleFormDataChange}
+                    value={formData.full_name}
                       type="text"
                       className="form-control"
                       name="full_name"
@@ -74,7 +223,9 @@ export default function RegisterVerificator() {
                       Email
                     </label>
                     <input
-                      type="text"
+                      value={formData.email}
+                      onChange={handleFormDataChange}
+                      type="email"
                       className="form-control"
                       name="email"
                       placeholder="Email"
@@ -85,6 +236,8 @@ export default function RegisterVerificator() {
                       Nomor HP
                     </label>
                     <input
+                    value={formData.phone_number}
+                      onChange={handleFormDataChange}
                       type="number"
                       className="form-control"
                       name="phone_number"
@@ -96,9 +249,12 @@ export default function RegisterVerificator() {
                       Instansi
                     </label>
                     <input
-                      type="number"
+                    value={formData.institution}
+                      onChange={handleFormDataChange}
+                      type="text"
                       className="form-control"
-                      name="phone_number"
+                      name="institution"
+                      placeholder="Instansi"
                     />
                   </div>
                   <div className="mt-2">
@@ -106,52 +262,55 @@ export default function RegisterVerificator() {
                       Kategori Pengguna
                     </label>
                     <div className="input-group ">
-                      <select class="form-select">
+                      <select onChange={handleFormDataChange} className="form-select" name="Verifier">
                         {/**Sampel */}
-                        <option selected disabled>
+                        <option value="disabled" selected disabled>
                           Pilih Kategori
                         </option>
-                        <option value="1">Admin</option>
-                        <option value="2">Verifikator Provinsi</option>
-                        <option value="3">Verifikator Kab/Kota</option>
-                        <option value="3">Merchant</option>
+                        <option value="Provinsi">Verifikator Provinsi</option>
+                        <option value="Kab/Kota">Verifikator Kab/Kota</option>
                       </select>
                     </div>
                   </div>
-                  <div className="mt-2">
-                    <label className="form-label" style={FormText}>
-                      Provinsi
-                    </label>
-                    <div className="input-group ">
-                      <select class="form-select">
-                        {/**Sampel */}
-                        <option selected disabled>
-                          Pilih Kategori
-                        </option>
-                        <option value="1">Sumatera Barat</option>
-                        <option value="2">Sumatera Utara</option>
-                        <option value="3">Sumatera Selatan</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="mt-2">
-                    <label className="form-label" style={FormText}>
-                      Kota
-                    </label>
-                    <div className="input-group ">
-                      <select class="form-select">
-                        {/**Sampel */}
-                        <option selected disabled>
-                          Pilih Kota
-                        </option>
-                        <option value="1">Padang</option>
-                        <option value="2">Medan</option>
-                        <option value="3">Sumedang</option>
-                      </select>
-                    </div>
-                  </div>
+                  {
+                    isCity? 
+                    <SelectProvinces provinces={provinces}/>
+                    :isProvince? <SelectProvinces provinces={provinces}/> : null
+                  }
+
+                  {
+                    isCityFlag?
+                     <div className="mt-2">
+                     <label className="form-label" style={FormText}>
+                       Kota
+                     </label>
+                     <div className="input-group ">
+                       <select className="form-select" value={formData.city_id} onChange={handleFormDataChange} name="city_id">
+                         {/**Sampel */}
+                         <option value="disabled" selected disabled>
+                           Pilih Kota
+                         </option>
+                         {
+                           cities?cities.map(el => {
+                             return <option key={el.id} value={el.id}>
+                             {el.name}
+                           </option>
+                           }): null
+                         }
+                         
+                       </select>
+                     </div>
+                   </div> : null
+ 
+                  }
+                  
                 </div>
-                <div className="d-grid gap-2 col-12 mt-3">
+                {
+                  isLoading? <div className="d-grid gap-2 col-12 mt-3">
+                  <button className="btn" type="button" disabled>
+                  <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                  Loading...
+                </button></div>:<div className="d-grid gap-2 col-12 mt-3">
                   <button
                     className="btn"
                     type="submit"
@@ -160,18 +319,23 @@ export default function RegisterVerificator() {
                     Masuk
                   </button>
                 </div>
+                }
               </form>
               <div style={RegisterFooter} className="mt-3">
                 <h6 style={{ fontColor: '#229BD8', fontSize: 14}}>
                   Sudah punya akun? 
                   <Link to="/login">
-                  <a href="#"  className="text-info text-decoration-none"><strong>Login</strong></a>
+                  <p style={{display:'inline'}} className="text-info text-decoration-none"><strong>
+                    Login
+                    </strong></p>
                   </Link>
                 </h6>
                 <h6 style={{ fontColor: '#229BD8', fontSize: 14}}>
                   Sudah melakukan registrasi?{" "}
                   <Link to="/check-status">
-                  <a href="#" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></a>
+                  <p style={{display:'inline'}} className="text-info text-decoration-none"><strong>
+                    Periksa status registrasi akun anda
+                    </strong></p>
                   </Link>
                 </h6>
               </div>
@@ -181,4 +345,25 @@ export default function RegisterVerificator() {
       </div>
     </div>
   );
+  
+  function SelectProvinces({provinces}) {
+    return <div className="mt-2">
+    <label className="form-label" style={FormText}>
+      Provinsi
+    </label>
+    <div className="input-group ">
+      <select onChange={handleFormDataChange} value={formData.province_id} className="form-select" name="province_id">
+        {/**Sampel */}
+        <option value="disabled" selected disabled>
+          Pilih Kategori
+        </option>
+        { provinces?.map(province => {
+          return (<option value={province.id} key={province.id}>{province.name}</option>)
+        })}
+      </select>
+    </div>
+  </div>
+
+  }
+
 }
