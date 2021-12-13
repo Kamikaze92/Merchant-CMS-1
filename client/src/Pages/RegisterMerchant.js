@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 
 const RegisterPage = {
   backgroundColor: "#094C6F"
@@ -38,6 +39,7 @@ const RegisterFooter = {
 }
 
 export default function RegisterMerchant() {
+  let navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [tenantCategories, setTenantCategories] = useState([]);
@@ -109,19 +111,17 @@ export default function RegisterMerchant() {
     });
   }
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = async (e) => {
     e.preventDefault();
-    console.log('submit');
     try { 
-      axios({
+      const response = await axios({
         url: `${process.env.REACT_APP_BASE_URL}/register`,
         method: 'POST',
         data: formData,
-      }).then(({ data }) => {
-        // if success, redirect / render OTP verification
-        console.log(data);
       })
+      if (response.status === 201 ) navigate(`/register-merchant/${response.data.id}/${response.data.token}`);
     } catch (error) {
+      console.log(error);
       // error
     }
   }
@@ -215,7 +215,7 @@ export default function RegisterMerchant() {
                         aria-label="radio 1"
                         label="Ya"
                         name="tenant"
-                        checked={isTenant == 'true'}
+                        checked={isTenant === 'true'}
                         value="true"
                         onChange={handleIsTenant}
                       />
@@ -411,11 +411,11 @@ export default function RegisterMerchant() {
               </form>
               <div style={RegisterFooter} className="mt-3">
                 <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
-                  Sudah punya akun? <a href="#"  className="text-info text-decoration-none"><strong>Login</strong></a>
+                  Sudah punya akun? <Link to="/login"  className="text-info text-decoration-none"><strong>Login</strong></Link>
                 </h6>
                 <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
                   Sudah melakukan registrasi?{" "}
-                  <a href="#" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></a>
+                  <Link to="/check-merchant-status" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></Link>
                 </h6>
               </div>
             </div>
