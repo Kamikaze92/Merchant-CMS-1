@@ -1,3 +1,4 @@
+export const SET_USERS_SUCCESS = 'users/set';
 export const SET_USERS_MERCHANT_SUCCESS = 'users/merchant/set';
 export const APPROVE_MERCHANT_SUCCESS = 'user/merchant/approve';
 export const CREATE_MERCHANT_SUCCESS = 'user/merchant/create';

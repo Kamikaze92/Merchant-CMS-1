@@ -1,4 +1,5 @@
 import {
+  SET_USERS_SUCCESS,
   SET_USERS_MERCHANT_SUCCESS,
   APPROVE_MERCHANT_SUCCESS,
   // CREATE_MERCHANT_SUCCESS,
@@ -11,6 +12,37 @@ import {
 } from "../actionType/users";
 import axios from "axios";
 
+// * ALL USERS NOT VERIFIED YET
+export const setUser = () => async (dispatch) => {
+  dispatch({
+    type: USER_LOADING,
+    payload: true,
+  });
+  try {
+    const response = await axios({
+      url: `${process.env.REACT_APP_BASE_URL}/users`,
+      method: "GET",
+      headers: {
+        access_token: localStorage.getItem("access_token"),
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      console.log(response.data);
+      dispatch({
+        type: SET_USERS_SUCCESS,
+        payload: response.data,
+      });
+    } else {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    dispatch({
+      type: USER_ERROR,
+      payload: error,
+    });
+  }
+}
 // * MERCHANT.
 export const setUserMerchants = () => async (dispatch) => {
   dispatch({

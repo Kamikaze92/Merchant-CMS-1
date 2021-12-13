@@ -1,4 +1,5 @@
 import {
+  SET_USERS_SUCCESS,
   SET_USERS_MERCHANT_SUCCESS,
   APPROVE_MERCHANT_SUCCESS,
   // CREATE_MERCHANT_SUCCESS,
@@ -11,6 +12,7 @@ import {
 } from '../actionType/users';
 
 const initialState = {
+  users: [],
   usersMerchant: [],
   usersVerifier: [],
   isLoading: false,
@@ -19,6 +21,12 @@ const initialState = {
 
 export default function items(state = initialState, action) {
   switch (action.type) {
+    case SET_USERS_SUCCESS:
+      return {
+        ...state,
+        users: action.payload,
+        isLoading: false,
+      };
     case SET_USERS_MERCHANT_SUCCESS:
       return {
         ...state,
