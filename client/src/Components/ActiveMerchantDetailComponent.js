@@ -1,5 +1,10 @@
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
+import {useParams, useLocation} from "react-router-dom"
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+
 const heading = {
   fontFamily: "Roboto",
   fontWeight: "bold",
@@ -33,7 +38,10 @@ const detailData = {
   lineHeight: "22px",
   fontSize: "14px",
 };
+
 export default function MerchantDetail() {
+  const {state} = useLocation()
+
   return (
     <>
       <div className="container mt-5">
@@ -59,18 +67,18 @@ export default function MerchantDetail() {
                       <p>Kota :</p>
                     </div>
                     <div className="d-flex flex-column" style={detailData}>
-                      <p>Akbar@gmail.com</p>
-                      <p>Akbar Kurnia</p>
-                      <p> 0812312312</p>
-                      <p>Makanan & Minuman</p>
-                      <p>Restoran</p>
+                      <p>{state.email}</p>
+                      <p>{state.full_name}</p>
+                      <p>{state.phone_number}</p>
+                      <p>{state.Merchant.Category?.name?state.Merchant.Category.name: "-" }</p>
+                      <p>{state.Merchant.tenant_category_id? state.Merchant.tenant_category_id : "-"}</p>
                       <p>-</p>
                       <p>-</p>
-                      <p>-</p>
-                      <p>Negri Wakanda</p>
-                      <p>Jl.Mambu,No.xx</p>
-                      <p>Jawa tengah</p>
-                      <p>Sidoarjo</p>
+                      <p>{state.Merchant.place_name}</p>
+                      <p>{state.Merchant.institution}</p>
+                      <p>{state.Merchant.address}</p>
+                      <p>{state.Merchant.province_id}</p>
+                      <p>{state.Merchant.city_id}</p>
                     </div>
                   </div>
                 </div>

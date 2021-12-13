@@ -1,3 +1,9 @@
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActiveMerchants } from '../store/actions/users';
+import { useNavigate, Link } from 'react-router-dom';
+
+
 const layoutBorder = {
   borderRadius: 5,
   padding: "16px",
@@ -7,6 +13,28 @@ const layoutBorder = {
   marginRight: 24,
 };
 export default function ActiveMerchantTable() {
+  const dispatch = useDispatch();
+  const {activeMerchants, isLoading, error} = useSelector((state) => state.users);
+  console.log(activeMerchants)
+  
+  useEffect(() => dispatch(setActiveMerchants()), [])
+  
+  if(isLoading) {
+    return (
+      <div>
+        <h1>Loading ...</h1>
+      </div>
+    )
+  }
+
+  if(error) {
+    return (
+      <div>
+        <h1>Error...</h1>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="container-fluid mt-3">
@@ -62,46 +90,19 @@ export default function ActiveMerchantTable() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Andi Sugandi</td>
-                      <td>testdaftar@gmail.com</td>
-                      <td>Restoran</td>
-                      <td>Restoran Asik</td>
-                      <td>Jl.buntu no.xx, kota bandung jawa barat</td>
-                      <td><a href="#"><i class='bx bx-list-ul' ></i> Detail</a></td>
-                    </tr>
-                    <tr>
-                      <td>Andi Sugandi</td>
-                      <td>testdaftar@gmail.com</td>
-                      <td>Restoran</td>
-                      <td>Restoran Asik</td>
-                      <td>Jl.buntu no.xx, kota bandung jawa barat</td>
-                      <td><a href="#"><i class='bx bx-list-ul' ></i> Detail</a></td>
-                    </tr>
-                    <tr>
-                      <td>Andi Sugandi</td>
-                      <td>testdaftar@gmail.com</td>
-                      <td>Restoran</td>
-                      <td>Restoran Asik</td>
-                      <td>Jl.buntu no.xx, kota bandung jawa barat</td>
-                      <td><a href="#"><i class='bx bx-list-ul' ></i> Detail</a></td>
-                    </tr>
-                    <tr>
-                      <td>Andi Sugandi</td>
-                      <td>testdaftar@gmail.com</td>
-                      <td>Restoran</td>
-                      <td>Restoran Asik</td>
-                      <td>Jl.buntu no.xx, kota bandung jawa barat</td>
-                      <td><a href="#"><i class='bx bx-list-ul' ></i> Detail</a></td>
-                    </tr>
-                    <tr>
-                      <td>Andi Sugandi</td>
-                      <td>testdaftar@gmail.com</td>
-                      <td>Restoran</td>
-                      <td>Restoran Asik</td>
-                      <td>Jl.buntu no.xx, kota bandung jawa barat</td>
-                      <td><a href="#"><i class='bx bx-list-ul'></i> Detail</a></td>
-                    </tr>
+                    {activeMerchants?.map((merchant) => {
+                      return (
+                      <tr>
+                        <td>{merchant.full_name}</td>
+                        <td>{merchant.email}</td>
+                        <td>{merchant.Merchant.Category?.name}</td>
+                        <td>{merchant.Merchant.place_name}</td>
+                        <td>{merchant.Merchant.address}</td>
+                        <td><Link state={merchant} to={`/active-merchants/${merchant.id}`}><i class='bx bx-list-ul' ></i> Detail</Link>
+                        </td>
+                      </tr>)
+                      
+                    })}
                   </tbody>
                 </table>
               </div>

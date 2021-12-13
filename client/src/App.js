@@ -33,7 +33,7 @@ function App() {
           <Route path="/merchants" element={<MerchantApproval />}></Route>
           <Route path="/verifiers" element={<UserVerifierApproval />}></Route>
           <Route path="/active-merchants" element={<ActiveMerchant />}></Route>
-          <Route path="/active-merchants/detail" element={<ActiveMerchantDetail />}></Route>
+          <Route path="/active-merchants/:id" element={<ActiveMerchantDetail />}></Route>
 
           {/* users, usergroup, category */}
           <Route path="/users" element={<Users />}></Route>
