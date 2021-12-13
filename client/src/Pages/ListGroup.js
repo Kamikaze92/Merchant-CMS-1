@@ -25,7 +25,7 @@ export default function ListGroup(){
                 <div className="bg-white border-top p-4">Administrasi - Grup
                 <br/><h4 className="mt-2"><strong>Daftar Grup Pengguna</strong></h4></div>
                 {
-                    isLoading ? <h1>Loadng...</h1>
+                    isLoading ? <h1>Loading...</h1>
                     :
                 <div className="vh-100">
                     {

@@ -121,6 +121,7 @@ module.exports = class UserController {
       // New Merchant User.
       let conditions = {
         verifier_id: null,
+        verified_at: null,
         approved_at: null,
         approved_by: null,
         is_rejected: null,
@@ -200,6 +201,7 @@ module.exports = class UserController {
       // New Verifier User.
       let conditions = {
         verifier_id: { [Op.ne]: null },
+        verified_at: null,
         approved_at: null,
         approved_by: null,
         is_rejected: null,
@@ -259,6 +261,85 @@ module.exports = class UserController {
     }
   }
 
+  static async getActiveUserMerchant(req, res, next) {
+    try {
+      //=========
+      // const { Verifier } = req.user;
+      // if super admin all filter are passed.
+      // TODO : this one get from authentication when ready.
+      // remove later.
+      const verifier = req.user.Verifier;
+      // const role = req.user.Role.name;
+      // const role = 'Admin';
+      const role = 'Verifikator';
+      //=========
+
+      // New Merchant User.
+      let conditions = {
+        verifier_id: null,
+        verified_at: { [Op.ne]: null },
+        approved_at: { [Op.ne]: null },
+        approved_by: { [Op.ne]: null },
+        is_rejected: null,
+        deleted_at: null,
+      };
+
+      // Filter for list merchant.
+      /**
+       * Should throw error if.
+       * not admin and 
+       * verifier null or
+       * province null (because verifier should have province)
+       */
+      if (role !== 'Admin' && (!verifier || !verifier.province_id)) {
+        // TODO : throw error, because should have verifier.
+        throw {
+          name: 'NotAuthorized',
+          msg: '',
+        }
+      };
+
+      if (role !== 'Admin' && verifier.city_id) {
+        conditions = {
+          ...conditions,
+          '$Merchant.city_id$': verifier.city_id,
+        }
+      }
+
+      if (role !== 'Admin' && verifier.province_id) {
+        conditions = {
+          ...conditions,
+          '$Merchant.province_id$': verifier.province_id,
+        }
+      }
+
+      const response = await User.findAll({
+        where: conditions,
+        order: [["created_at", "ASC"]],
+        attributes: {
+          exclude: ["password"],
+        },
+        include: [
+          {
+            model: Merchant,
+            require: true, // REQUIRED!. because if not have merchant it should return empty array!.
+            include: [
+              {
+                model: Category,
+                require: true, // REQUIRED!. because merchant should have category!.
+              },
+            ]
+          }
+        ],
+      });
+      if (!response) {
+        throw { name: "user_not_found" };
+      }
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
   // create user
   static async createUser(req, res, next) {
     const t = await sequelize.transaction();
