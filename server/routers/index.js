@@ -15,7 +15,7 @@ router.use('/', authRouter);
 router.use('/', provinceRouter);
 router.use('/categories', categoryRouter);
 
-// router.use(authentication);
+router.use(authentication);
 
 router.use('/roles', roleRouter);
 router.use('/privileges', privilegeRouter);
