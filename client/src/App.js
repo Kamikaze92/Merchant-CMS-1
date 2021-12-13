@@ -27,6 +27,7 @@ function App() {
         {/* auth Router Guard*/}
         <Route path="/" element={<RequireAuth><Dashboard/></RequireAuth>}>
           {/* Table utama */}
+          <Route index element={<MerchantApproval />}></Route>
           <Route path="/merchants" element={<MerchantApproval />}></Route>
           <Route path="/verifiers" element={<UserVerifierApproval />}></Route>
           <Route path="/active-merchants" element={<ActiveMerchant />}></Route>
@@ -45,10 +46,23 @@ function App() {
         <Route path="/register-verifier" element={<HasToken><RegisterVerificator /></HasToken>}></Route>
         <Route path="/register-merchant" element={<HasToken><RegisterMerchant /></HasToken>}></Route>
         <Route path="/login" element={<HasToken><LoginPage /></HasToken>}></Route>
-        <Route path="/otp-verification" element={<HasToken><OtpInput /></HasToken>}></Route>
+        <Route path="/otp-verification/:id/:token" element={<HasToken><OtpInput /></HasToken>}></Route>
         <Route path="/check-status" element={<HasToken><CheckStatus /></HasToken>}></Route>
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/errors" element={<ErrorPage />}></Route>
+        <Route
+          path="*"
+          element={
+            <center style={{ marginTop: "100px" }}>
+              <img src="https://i.gifer.com/XOsX.gif" alt="duckWalk" /> Oops
+              page not found, go to dashboard
+              <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+                {" "}
+                Click here.
+              </Link>
+            </center>
+          }
+        />
       </Routes>
       <div className="App">
       </div>
