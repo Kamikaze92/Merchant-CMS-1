@@ -38,8 +38,8 @@ function App() {
           <Route path="/group-list/detail" element={<ListGroupDetail />}></Route>
           <Route path="/change-password" element={<ChangePassword />}></Route>
           <Route path="/categories" element={<CategoryNonTenant />}></Route>
-          <Route path="/categories/:id" element={<CategoryNonTenantDetail />}></Route>
           <Route path="/categories/tenant" element={<CategoryTenant />}></Route>
+          <Route path="/categories/:id" element={<CategoryNonTenantDetail />}></Route>
         </Route>
         <Route path="/register-verifier" element={<RegisterVerificator />}></Route>
         <Route path="/register-merchant" element={<RegisterMerchant />}></Route>
