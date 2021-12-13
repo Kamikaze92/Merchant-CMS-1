@@ -10,5 +10,6 @@ router.post('/otp-verification/:id/:token', verifyMiddleware, AuthController.ver
 router.post('/resend-otp/:id/:token', AuthController.resendOtp)
 router.post('/forgot-password/:id/:token', AuthController.forgotPassword);
 router.patch('/reset-password/:id/:token', resetPasswordMiddleware, AuthController.resetPassword);
+router.post('/check-status', AuthController.checkStatus)
 
 module.exports = router;

@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
-
+import {Link} from "react-router-dom"
 const LoginPageStyle = {
   backgroundColor: "#094C6F",
+  backgroundSize: "cover",
+  width: "100%",
+  height: "100vh"
 };
 const LoginForm = {
   backgroundColor: "white",
@@ -112,13 +115,24 @@ export default function LoginPage() {
                 </div>
               </form>
               <div style={LoginFooter} className="mt-3">
-                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
-                  Belum punya akun? <a href="#"  className="text-info text-decoration-none"><strong>Register</strong></a>
-                </h6>
-                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
+                <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
+                  Daftar sebagai verifikator 
+                  <Link to="/register-verifier">
+                  <a href="#"  className="text-info text-decoration-none mx-2"><strong>di sini</strong></a>
+                  </Link>
+                </h3>
+                <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
+                  Daftar sebagai merchant 
+                  <Link to="/register-merchant">
+                  <a href="#"  className="text-info text-decoration-none mx-2"><strong>di sini</strong></a>
+                  </Link>
+                </h3>
+                <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
                   Sudah melakukan registrasi?{" "}
+                  <Link to='/check-status'>
                   <a href="#" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></a>
-                </h6>
+                  </Link>
+                </h3>
               </div>
             </div>
           </div>

@@ -17,6 +17,7 @@ import ActiveMerchantDetail from "./Pages/ActiveMerchantDetail";
 import ErrorPage from "./Pages/ErrorPage";
 import ListGroupDetail from "./Pages/ListGroupDetail";
 import ChangePassword from "./Pages/ChangePassword";
+import AccountVerified from "./Pages/AccountVerified";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/register-merchant" element={<RegisterMerchant />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
         <Route path="/otp-verification" element={<OtpInput />}></Route>
+        <Route path="/account-verified" element={<AccountVerified />}></Route>
         <Route path="/check-status" element={<CheckStatus />}></Route>
 
         {/* Table utama */}

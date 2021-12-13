@@ -1,5 +1,9 @@
+import {Link} from 'react-router-dom'
 const RegisterPage = {
-  backgroundColor: "#094C6F"
+  backgroundColor: "#094C6F",
+  backgroundSize: "cover",
+  width: "100%",
+  height: "100vh"
 };
 const RegisterForm = {
   backgroundColor: "white",
@@ -158,12 +162,17 @@ export default function RegisterVerificator() {
                 </div>
               </form>
               <div style={RegisterFooter} className="mt-3">
-                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
-                  Sudah punya akun? <a href="#"  className="text-info text-decoration-none"><strong>Login</strong></a>
+                <h6 style={{ fontColor: '#229BD8', fontSize: 14}}>
+                  Sudah punya akun? 
+                  <Link to="/login">
+                  <a href="#"  className="text-info text-decoration-none"><strong>Login</strong></a>
+                  </Link>
                 </h6>
-                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
+                <h6 style={{ fontColor: '#229BD8', fontSize: 14}}>
                   Sudah melakukan registrasi?{" "}
+                  <Link to="/check-status">
                   <a href="#" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></a>
+                  </Link>
                 </h6>
               </div>
             </div>

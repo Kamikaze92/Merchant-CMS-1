@@ -262,4 +262,35 @@ module.exports = class AuthController {
       next(err)
     }
   }
+
+  static async checkStatus(req,res,next){
+    try {
+      const {email} = req.body
+      console.log(email)
+      if(!req.body.email){
+        throw {name: 'email_not_found'}
+      }
+      const response = await User.findOne({where: {email}})
+      let statusMessage = ''
+      if(!response){
+        statusMessage = 'Email Tidak Ditemukan'
+      } else if(!response.verified_at){
+        statusMessage = 'Email Tidak Ditemukan'
+      } else if(response.is_rejected == true){
+        statusMessage = 'Ditolak'
+      } else if(response.approved_at && response.approved_by && response.verified_at ) {
+        statusMessage = 'Sudah Aktif'
+      } else if(!response.approved_at && !response.approved_by){
+        statusMessage = 'Menunggu Proses Persetujuan Akun'
+      } else if(!response.approved_at) {
+        statusMessage = 'Sudah Disetujui'
+      } 
+      res.status(200).json({
+        status: statusMessage
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
 }
+

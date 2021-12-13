@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
 const RegisterPage = {
-  backgroundColor: "#094C6F"
+  backgroundColor: "#094C6F",
+  height: "130vh"
 };
 const RegisterForm = {
   backgroundColor: "white",
@@ -410,12 +411,12 @@ export default function RegisterMerchant() {
                 </div>
               </form>
               <div style={RegisterFooter} className="mt-3">
-                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
+                <h6 style={{ fontColor: '#229BD8', fontSize: 14}}>
                   Sudah punya akun? <Link to="/login"  className="text-info text-decoration-none"><strong>Login</strong></Link>
                 </h6>
-                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
+                <h6 style={{ fontColor: '#229BD8', fontSize: 14}}>
                   Sudah melakukan registrasi?{" "}
-                  <Link to="/check-merchant-status" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></Link>
+                  <Link to="/check-status" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></Link>
                 </h6>
               </div>
             </div>
