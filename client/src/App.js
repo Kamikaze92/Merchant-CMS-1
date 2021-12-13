@@ -17,8 +17,9 @@ import ActiveMerchantDetail from "./Pages/ActiveMerchantDetail";
 import ErrorPage from "./Pages/ErrorPage";
 import ListGroupDetail from "./Pages/ListGroupDetail";
 import ChangePassword from "./Pages/ChangePassword";
-import { RequireAuth } from './Components/RequireAuth';
+import { RequireAuth, HasToken } from './Components/RequireAuth';
 import Dashboard from './Pages/Dashboard';
+import ForgotPassword from './Pages/ForgotPassword';
 function App() {
   return (
     <>
@@ -41,11 +42,12 @@ function App() {
           <Route path="/categories/tenant" element={<CategoryTenant />}></Route>
           <Route path="/categories/:id" element={<CategoryNonTenantDetail />}></Route>
         </Route>
-        <Route path="/register-verifier" element={<RegisterVerificator />}></Route>
-        <Route path="/register-merchant" element={<RegisterMerchant />}></Route>
-        <Route path="/login" element={<LoginPage />}></Route>
-        <Route path="/otp-verification" element={<OtpInput />}></Route>
-        <Route path="/check-status" element={<CheckStatus />}></Route>
+        <Route path="/register-verifier" element={<HasToken><RegisterVerificator /></HasToken>}></Route>
+        <Route path="/register-merchant" element={<HasToken><RegisterMerchant /></HasToken>}></Route>
+        <Route path="/login" element={<HasToken><LoginPage /></HasToken>}></Route>
+        <Route path="/otp-verification" element={<HasToken><OtpInput /></HasToken>}></Route>
+        <Route path="/check-status" element={<HasToken><CheckStatus /></HasToken>}></Route>
+        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/errors" element={<ErrorPage />}></Route>
       </Routes>
       <div className="App">
