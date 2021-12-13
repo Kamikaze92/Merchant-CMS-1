@@ -1,7 +1,11 @@
-import { Form } from "react-bootstrap";
-
+import {useState} from "react"
+import axios from 'axios'
+import {Link} from "react-router-dom"
 const RegisterPage = {
   backgroundColor: "#094C6F",
+  backgroundSize: "cover",
+  width: "100%",
+  minHeight: "100vh"
 };
 const RegisterForm = {
   backgroundColor: "white",
@@ -26,16 +30,37 @@ const FormText = {
   marginBottom: 10,
 };
 
-const RegisterFooter = {
-  color: "#229BD8",
-  textAlign: "center",
-  fontWeight: "200",
-  fontSize: 12,
-  marginTop: 10,
-  marginBottom: 10
-}
+export default function CheckStatus() {
+  const [status, setStatus] = useState();
+  const [formInput, setFormInput] = useState({
+    email: '',
+  })
 
-export default function RegisterMerchant() {
+  const changeFormInput = (e) => {
+      const value = e.target.value;
+      const field = e.target.name;
+      setFormInput({
+          ...formInput,
+          [field]: value
+      })
+  }
+  const fetchStatus = async (e) => {
+    e.preventDefault()
+    try {
+      console.log(formInput, '<<<<') 
+      const response = await axios({
+        url: `http://localhost:3000/check-status`,
+        method: 'post',
+        data: formInput,
+      })
+      setStatus(response.data.status)
+      console.log(response)
+    } catch (error) {
+      console.log(error);
+      // error
+    }
+  }
+
   return (
     <div style={RegisterPage}>
       <div className="register-form">
@@ -53,7 +78,7 @@ export default function RegisterMerchant() {
                   Periksa Status Akun
                 </h4>
               </div>
-              <form>
+              <form method="get" onSubmit={fetchStatus}>
                 <div className="px-1 py-1">
                     <div>
                         <label className="form-label" style={FormText}>
@@ -65,6 +90,8 @@ export default function RegisterMerchant() {
                         className="form-control"
                         name="email"
                         placeholder="Alamat Email"
+                        value={formInput.email}
+                        onChange={changeFormInput}
                         />
                     </div>
                     <div className="d-grid gap-2 col-12 mt-3">
@@ -72,18 +99,22 @@ export default function RegisterMerchant() {
                             className="btn"
                             type="submit"
                             style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
+                            
                         >
                             Periksa
                         </button>
                     </div>
                 </div>
               </form>
-              <div id="reason" className="mt-3">
-                <div>
+              {status === "Menunggu Proses Persetujuan Akun" && (
+                <div id="reason" className="mt-3">
+                  <div>
                     <strong>Menunggu Proses Persetujuan Akun</strong><br/>
                     Mohon Menunggu 2x24 jam untuk penyetujuan akun
+                  </div>
                 </div>
-              </div>
+              )}
+              {status === "Sudah Disetujui" && (
               <div id="reason" className="mt-3">
                 <div>
                     <strong>Sudah Disetujui</strong><br/>
@@ -92,28 +123,45 @@ export default function RegisterMerchant() {
                      untuk mengirimkan ulang email aktivasi
                 </div>
               </div>
+              )}
+              {status === "Sudah Aktif" && (
               <div id="reason" className="mt-3">
                 <div>
                     <strong>Sudah Aktif</strong><br/>
                     Akun anda sudah aktif, harap login melalui
+                    <Link to={'/login'}>
                     <a href="#" className="text-dark mx-1 text-decoration-none"><strong>Halaman ini</strong></a> 
+                    </Link>
                 </div>
               </div>
+              )}
+              {status === "Ditolak" && (
               <div id="reason" className="mt-3">
                 <div>
                     <strong>Ditolak</strong><br/>
-                    Pembuatan akun anda ditolak karena [alasan penolakan]. Jika Anda masih membutuhkan akun, harap registrasi ulang 
+                    Pembuatan akun anda ditolak karena [alasan penolakan]. Jika Anda masih membutuhkan akun, harap registrasi ulang
+                    <Link to="/login">
                     <a href="#" className="text-dark mx-1 text-decoration-none"><strong>di sini</strong></a>
+                    </Link> 
                 </div>
               </div>
+              )}
+              {status === "Email Tidak Ditemukan" && (
               <div id="reason" className="mt-3">
                 <div>
                     <strong>Email Tidak Ditemukan</strong><br/>
                     Email Anda belum terdaftar di sistem kami, harap lakukan registrasi
+                    <Link to="/login">
                     <a href="#" className="text-dark mx-1 text-decoration-none"><strong>di sini</strong></a>
+                    </Link>
                 </div>
               </div>
-              <div className="mb-4"></div>
+              )}
+              <div className="mb-4 text-center mt-4">
+                <Link to="/login">
+                  <a href="#" className="text-info text-decoration-none"><strong>Kembali ke Login</strong></a>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
