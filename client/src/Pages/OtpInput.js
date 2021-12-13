@@ -30,13 +30,13 @@ export default function OtpInput() {
             <div className="row" style={{ justifyContent: "center" }}>
               <div className="col-7 mb-5 mt-5" id="cardOtp">
                 <div style={{ textAlign: "center" }}>
-                  <img
+                  <img className="img-fluid"
                     src="https://www.pedulilindungi.id/assets/logo-with-text.svg"
                     alt="Peduli-lindungi-logo"
                     style={{ height: "70px", width: "200px" }}
                   />
                   <h6 style={{ fontSize: 12, color: "#0277bd" }}>Merchant CMS</h6>
-                  <img 
+                  <img className="img-fluid"
                     src="https://ik.imagekit.io/fjaskqdnu0xp/logo-email_Vztzgz4bl.png?updatedAt=1639203405172"
                     alt="email-logo"
                     style={{height: "100px", width: "100px", padding: 0 }} 

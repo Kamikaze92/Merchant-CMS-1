@@ -15,7 +15,7 @@ export default function Sidebar() {
             <nav className="nav">
                 <div>
                     <div className="mb-4">
-                    <img
+                    <img className="img-fluid"
                     style={image}
                     src="https://www.pedulilindungi.id/assets/logo-with-text.svg"
                     ></img>

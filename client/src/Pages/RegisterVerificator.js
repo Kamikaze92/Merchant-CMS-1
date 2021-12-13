@@ -41,7 +41,7 @@ export default function RegisterVerificator() {
           <div className="row" style={{ justifyContent: "center" }}>
             <div className="col-7 mb-5 mt-5" style={RegisterForm}>
               <div style={{ textAlign: "center" }}>
-                <img
+                <img className="img-fluid"
                   src="https://www.pedulilindungi.id/assets/logo-with-text.svg"
                   alt="Peduli-lindungi-logo"
                   style={{ height: "70px", width: "200px" }}
