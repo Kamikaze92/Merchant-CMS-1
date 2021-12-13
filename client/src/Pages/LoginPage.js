@@ -1,7 +1,10 @@
+import axios from 'axios';
 import { useState, useEffect } from "react";
+import { useNavigate, Link} from "react-router-dom";
 
 const LoginPageStyle = {
   backgroundColor: "#094C6F",
+  minHeight: '100vh',
 };
 const LoginForm = {
   backgroundColor: "white",
@@ -37,6 +40,7 @@ const LoginFooter = {
 
 export default function LoginPage() {
   document.body.style = `background: ${LoginPageStyle.backgroundColor}`;
+  const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: ''
@@ -51,9 +55,26 @@ export default function LoginPage() {
     });
   }
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
-    console.log('login Feature');  
+    try {
+      const response = await axios({
+        url: `${process.env.REACT_APP_BASE_URL}/login`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: loginForm,
+      });
+      if (response.status === 200) {
+        localStorage.setItem('access_token', response.data.access_token);
+        navigate('/merchants');
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <div style={ LoginPageStyle }>
@@ -107,17 +128,17 @@ export default function LoginPage() {
                     type="submit"
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
                   >
-                    Register
+                    Login
                   </button>
                 </div>
               </form>
               <div style={LoginFooter} className="mt-3">
                 <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
-                  Belum punya akun? <a href="#"  className="text-info text-decoration-none"><strong>Register</strong></a>
+                  Belum punya akun? <Link to="/register-merchant"  className="text-info text-decoration-none"><strong>Register</strong></Link>
                 </h6>
                 <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
                   Sudah melakukan registrasi?{" "}
-                  <a href="#" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></a>
+                  <Link to="/check-status" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></Link>
                 </h6>
               </div>
             </div>
