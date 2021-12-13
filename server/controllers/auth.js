@@ -215,17 +215,20 @@ module.exports = class AuthController {
 
   static async forgotPassword(req, res, next){
       try {
-        const { email } = req.body;
+        const { email, url } = req.body;
         const response = await User.findOne({ where: { email } });
         if(!email) {
           throw { name: 'email_not_found' }
+        }
+        if(!response){
+          throw { name: 'user_not_found'}
         }
         const payload = {
             id: response.id,
             email: response.email
         };
         const token = signPasswordLink(payload, response.password);
-        let link = `http://localhost:3000/${response.id}/${token}`
+        let link = `${url}/${response.id}/${token}`
         transporter.sendMail(resetPasswordMail(response.email, link), (err) => {
           if(err){
             throw {

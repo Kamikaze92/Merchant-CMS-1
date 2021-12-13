@@ -43,6 +43,7 @@ const RegisterFooter = {
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const [formEmail, setFormEmail] = useState({
+    url: `${window.location.hostname}/set-password/${id}/${token}`,
     email: "",
   });
   const inputEmail = (e) => {
@@ -60,6 +61,9 @@ export default function ForgotPassword() {
         method: "POST",
         data: formEmail,
       })
+      if(response.status == 200){
+        //redirect ke page link
+      }
       console.log(response.data.message)
       navigate("/login")
     } catch (error) {
