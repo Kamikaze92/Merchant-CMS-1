@@ -8,32 +8,35 @@ module.exports = class AuthController {
   // your code goes here
   static async userLogin (req,res,next) {
     try {
-        const {email, password} = req.body
-        let response = await User.findOne({
-            where: {email}
-        })
-        if(response && comparePassword(password, response.password)){
-          if(!response.approve_at){
-              throw {name: "not_authenticated"}
-          } 
-          else {
-              const access_token = jwtSign({
-                id: response.id,
-                email: response.email
-              })
-              res.status(200).json({
-                access_token: access_token
-              })
-            }
-          }
-        else{
-            throw {name: 'invalid_user'}
-        }
-    } 
-    catch (err) {
-        next(err)
-    }
-  }
+      const { email, password } = req.body;
+
+      let response = await User.findOne({
+        where: { email },
+      });
+
+      if(response && comparePassword(password, response.password)){
+        if(!response.approved_at){
+          throw {
+            name: "not_authenticated",
+          };
+        } else {
+          const access_token = jwtSign({
+            id: response.id,
+            email: response.email,
+          });
+          res.status(200).json({
+            access_token: access_token,
+          });
+        };
+      } else {
+        throw {
+          name: 'invalid_user',
+        };
+      };
+    } catch (error) {
+      next(error);
+    };
+  };
 
   /**
    * Because the merchant registration process and the verifier are the same.
@@ -58,27 +61,37 @@ module.exports = class AuthController {
         province_id,
         city_id,
       } = req.body;
+      
+      // guard
+      if (user_type !== 'Merchant' && user_type !== 'Verifier' ) {
+        throw {
+          name: 'errorUserType',
+          mgs: 'user type should be "Merchant" or "Verifier"',
+        }
+      }
+
+      // for verifier
+      let verifierTransaction = null;
+      if (user_type === 'Verifier') {
+        verifierTransaction = await Verifier.create({
+          institution,
+          province_id: province_id || null,
+          city_id: city_id || null,
+        }, { transaction: t });
+      };
+
       // user transaction
       const userTransaction = await User.create({
         full_name,
         email,
         phone_number,
         password: 'random',
+        verifier_id: verifierTransaction?.id || null,
       }, { transaction: t });
 
-      // for verifier
-      if (user_type === 'Verifier') {
-        // Insert verifier data.
-        await Verifier.create({
-          institution,
-          province_id,
-          city_id,
-        });
-
-        // Insert 
-      };
-
-      // merchant transaction 
+      // merchant transaction.
+      // should chose one, category_id or tenant_category_id.
+      // cannot both.
       if (user_type === 'Merchant') {
         await Merchant.create({
           user_id: userTransaction.id,
@@ -93,48 +106,53 @@ module.exports = class AuthController {
           parent_id,
         }, { transaction: t });
       }
-      // create params token
-      const emailToken = jwtSign({
-        id: userTransaction.id,
-        email: userTransaction.email
-      })
-      // create history
-      const isHistoryCreated = await newHistory('createUser', userTransaction);
-      if(!isHistoryCreated) {
-          throw { name: 'fail_create_history' };
-      }
+
+      // !TODO: create history
+      //  still error, should use transaction ?
+      // const isHistoryCreated = await newHistory('createUser', userTransaction);
+      // if(!isHistoryCreated) {
+      //     throw { name: 'fail_create_history' };
+      // }
       // if transaction successfull, send the OTP.
       t.afterCommit(() => {
         // using padStart so it will be always 6 digit.
         const OTP = String(Math.floor(Math.random() * 999999));
-        transporter.sendMail(mailOtp(userTransaction.email, OTP), (error) => {
-          if(error){
-            // !need to rework error name.
-            throw {
-              name: 'error_send_otp',
-            }
-          } else{
-            console.log('otp to email sent.')
-            redis.set(`${userTransaction.id}`, OTP, 'ex', 120)
-            res.status(201).json({
-              message: `OTP was sent to ${userTransaction.email}.`,
-              id: userTransaction.id,
-              token: emailToken
-            });
+        transporter.sendMail(mailOtp(userTransaction.email, OTP), async (error) => {
+          try {
+            if(error){
+              // !need to rework error name.
+              throw {
+                name: 'error_send_otp',
+              };
+            } else{
+              const otpToken = jwtSign({
+                id: userTransaction.id,
+                email: userTransaction.email,
+              });
+              await redis.set(`${userTransaction.id}`, OTP, 'ex', 120);
+              res.status(201).json({
+                message: `OTP was sent to ${userTransaction.email}.`,
+                id: userTransaction.id,
+                token: otpToken,
+              });
+            };
+          } catch (error) {
+            next(error);
           };
         });
       });
       await t.commit();
     } catch (error) {
+      console.log(error)
       await t.rollback();
       next(error);
-    }
-  }
+    };
+  };
 
   static async verifyUser(req, res, next){
     //ambil otp dan email dari redis
     try {
-      const {otp} = req.body
+      const {otp} = req.body;
       const redisOtp = await redis.get(`${req.params.id}`)
       if(redisOtp !== otp){
         throw {name: 'invalid_otp'}
@@ -157,18 +175,35 @@ module.exports = class AuthController {
 
   static async resendOtp(req, res, next){
     try {
+      const { id, token } = req.params;
+      const user = await User.findByPk(id);
+      
+      if (!user) {
+        throw { name: 'not_found' };
+      };
+      
       const OTP = String(Math.floor(Math.random() * 999999));
-      transporter.sendMail(mailOtp(userTransaction.email, OTP), async (error) => {
-        if(error){
-          throw {
-            message: 'error Send OTP',
-          }
-        } else{
-          console.log('OTP resend to email.')
-          await redis.set("otp", OTP)
-          res.status(201).json({
-            message: `OTP was sent.`,
-          });
+      transporter.sendMail(mailOtp(user.email, OTP), async (error) => {
+        try {
+          if(error){
+            // !need to rework error name.
+            throw {
+              name: 'error_send_otp',
+            };
+          } else{
+            const otpToken = jwtSign({
+              id: user.id,
+              email: user.email,
+            });
+            await redis.set(`${user.id}`, OTP, 'ex', 120);
+            res.status(200).json({
+              message: `OTP was sent to ${user.email}.`,
+              id: user.id,
+              token: otpToken,
+            });
+          };
+        } catch (error) {
+          next(error);
         };
       });
     } catch (err) {

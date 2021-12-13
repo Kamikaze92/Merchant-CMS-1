@@ -9,12 +9,7 @@ const layoutBorder = {
 export default function ActiveMerchantTable() {
   return (
     <>
-      <div className="container-fluid mt-5" style={{backgroundColor: "#F6FBFF"}}>
-          <div className="">
-            <p>
-              <strong>Daftar Akun Pengelola QR</strong>
-            </p>
-          </div>
+      <div className="container-fluid mt-3">
           <div className="">
             <div className="border" style={layoutBorder}>
               <h6 style={{ fontSize: 14 }}>Status Pendaftaran</h6>
@@ -47,7 +42,7 @@ export default function ActiveMerchantTable() {
             </div>
             <div className="border p-3 mt-4 mb-4" style={layoutBorder}>
               <div
-                className="d-flex flex-row justify-content-between"
+                className="d-flex flex-row justify-content-between mb-3"
                 style={{ alignItems: "center" }}
               >
                 <h6><strong>Akun Pengelola QR</strong></h6>
@@ -57,12 +52,12 @@ export default function ActiveMerchantTable() {
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th scope="col">Nama</th>
-                      <th scope="col">Email</th>
-                      <th scope="col">Sub-Kategori</th>
-                      <th scope="col">Nama Tempat</th>
-                      <th scope="col">Alamat</th>
-                      <th scope="col">Aksi</th>
+                      <th style={{fontWeight: 600, backgroundColor: "#D9D9D9"}}>Nama</th>
+                      <th style={{fontWeight: 600, backgroundColor: "#D9D9D9"}}>Email</th>
+                      <th style={{fontWeight: 600, backgroundColor: "#D9D9D9"}}>Sub-Kategori</th>
+                      <th style={{fontWeight: 600, backgroundColor: "#D9D9D9"}}>Nama Tempat</th>
+                      <th style={{fontWeight: 600, backgroundColor: "#D9D9D9"}}>Alamat</th>
+                      <th style={{fontWeight: 600, backgroundColor: "#D9D9D9"}}>Aksi</th>
 
                     </tr>
                   </thead>

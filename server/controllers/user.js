@@ -1,6 +1,6 @@
 const { getPagination, getPagingData } = require("../helpers/pagination");
 const  newHistory = require('../helpers/historyInstance');
-const { User, Role, Verificator, sequelize, History, Verifier, Merchant, City } = require("../models");
+const { User, Role, Verificator, sequelize, History, Category, Verifier, Merchant, City } = require("../models");
 const { Op } = require("sequelize");
 const {jwtSign, verifyData} = require('../helpers/jwt')
 const {transporter, mailActivation} = require('../helpers/nodemailer')
@@ -107,12 +107,6 @@ module.exports = class UserController {
 
   static async getUserMerchant(req, res, next) {
     try {
-      // search digunakan untuk mencari nama atau email
-      // filter digunakan untuk berdasarkan grup sepertinya mmasih belum tau
-      const { page, size, search, filter } = req.query;
-      if (+page < 1) page = 1;
-      if (+size < 1) size = 10;
-
       //=========
       // const { Verifier } = req.user;
       // if super admin all filter are passed.
@@ -162,20 +156,9 @@ module.exports = class UserController {
         }
       }
 
-      if (search) {
-        conditions = {
-          ...conditions,
-          [Op.or]: [
-            { email: { [Op.iLike]: `%${search}%` } },
-            { full_name: { [Op.iLike]: `%${search}%` } },
-          ],
-        };
-      };
-
-      const { limit, offset } = getPagination(page, size);
-      const response = await User.findAndCountAll({
+      const response = await User.findAll({
         where: conditions,
-        order: [["full_name", "ASC"]],
+        order: [["created_at", "ASC"]],
         attributes: {
           exclude: ["password"],
         },
@@ -183,15 +166,19 @@ module.exports = class UserController {
           {
             model: Merchant,
             require: true, // REQUIRED!. because if not have merchant it should return empty array!.
-          },
+            include: [
+              {
+                model: Category,
+                require: true, // REQUIRED!. because merchant should have category!.
+              },
+            ]
+          }
         ],
-        limit,
-        offset,
       });
       if (!response) {
         throw { name: "user_not_found" };
       }
-      res.status(200).json(getPagingData(response, page, limit));
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -199,12 +186,6 @@ module.exports = class UserController {
 
   static async getUserVerifier(req, res, next) {
     try {
-      // search digunakan untuk mencari nama atau email
-      // filter digunakan untuk berdasarkan grup sepertinya mmasih belum tau
-      const { page, size, search, filter } = req.query;
-      if (+page < 1) page = 1;
-      if (+size < 1) size = 10;
-
       //=========
       // const { Verifier } = req.user;
       // if super admin all filter are passed.
@@ -251,22 +232,12 @@ module.exports = class UserController {
         cities = cities.map(e => e.id);
         conditions = {
           ...conditions,
+          '$Verifier.province_id$': verifier.province_id,
           '$Verifier.city_id$': { [Op.in]: cities },
         }
       }
 
-      if (search) {
-        conditions = {
-          ...conditions,
-          [Op.or]: [
-            { email: { [Op.iLike]: `%${search}%` } },
-            { full_name: { [Op.iLike]: `%${search}%` } },
-          ],
-        };
-      };
-
-      const { limit, offset } = getPagination(page, size);
-      const response = await User.findAndCountAll({
+      const response = await User.findAll({
         where: conditions,
         order: [['created_at', 'DESC']],
         attributes: {
@@ -278,13 +249,11 @@ module.exports = class UserController {
             require: true, // REQUIRED!. because if not have verifier it should return empty array!.
           },
         ],
-        limit,
-        offset,
       });
       if (!response) {
         throw { name: "user_not_found" };
       }
-      res.status(200).json(getPagingData(response, page, limit));
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -468,71 +437,96 @@ module.exports = class UserController {
 
   static async sendActivationLink(req, res, next){
     try {
-      const {id} = req.params;
-      const foundUser = await User.findOne({id});
-      const params = {
-        approve_by: req.user.email
-      }
-      await User.update()
-      const payload = {
-        id: foundUser.id,
-        email: foundUser.email
-      };
-      const token = jwtSign(payload);
-      let link = `http://localhost:3000/${foundUser.id}/${token}`
-      transporter.sendMail(mailActivation(foundUser.email, link), (err) => {
-        if(err){
+      const { id } = req.params;
+
+      // not only check on id but need to make sure its still not approved 
+      // to prevent false positive.
+      const user = await User.findOne({
+        where: {
+          id,
+          approved_by: {
+            [Op.eq]: null,
+          }
+        }
+      });
+
+      // update user approved_by
+      const response = await User.update({
+        approved_by: req.user.id,
+      }, {
+        where: { id: user.id },
+      });
+
+      // !TODO : create history.
+
+      // generate token, fot activation later.
+      const token = jwtSign({
+        id: response.id,
+        email: response.email,
+      });
+
+      let link = `${process.env.SERVER_URL}/${response.id}/${token}`
+      transporter.sendMail(mailActivation(user.email, link), (error) => {
+        if(error){
           throw {
             message: 'error Send OTP',
           }
         } else{
           console.log(`email sent to ${response.email}`)
-          res.status(201).json({ 
-            message: 'Activation link has been sent to your email'
-          })
-        }
-      })
-    } catch (err) {
-      next(err)
+          res.status(200).json({ 
+            message: 'Activation link has been sent to your email',
+          });
+        };
+      });
+    } catch (error) {
+      next(error);
     }
   }
 
   static async approveUser(req, res, next) {
     try {
-      const {id, token} = req.params
-      const payload = verifyData(token)
-      let params = {
-        approved_at: new Date()
-      }
-      await User.update(params,{
+      const { id, token } = req.params;
+
+      // if token was invalid its throw error.
+      verifyData(token);
+      await User.update({
+        approved_at: new Date(),
+      }, {
         where: {id}
-      })
-      res.status(201).json({ 
+      });
+
+      // !TODO : create history.
+
+      res.status(200).json({ 
         message: 'User has been approved.',
-        id: id
-      })
-    } catch (err) {
-      next(err)
-    }
-  }
+        id,
+      });
+    } catch (error) {
+      next(error);
+    };
+  };
 
   static async userCreatePassword(req, res, next){
     try {
-      const { id } = req.params
-      const { password, password2 } = req.body
-      if(password !== password2){
-        throw {name: "password_not_match"}
-      }
+      const { id } = req.params;
+      const { password, confirmPassword } = req.body;
+      if (password !== confirmPassword) {
+        throw {
+          name: "password_not_match"
+        };
+      };
       //create hooks beforeUpdate to hash new password
-      let params = { password }
-      await User.update(params, {
-        where: { id }
-      })
-      res.status(201).json({ 
-        message: 'Password registered. Please attempt login.'
-      })
-    } catch (err) {
-      next(err)
-    }
-  }
+      await User.update({ password }, {
+        where: { id },
+      });
+
+      // !TODO : create history.
+
+      res.status(200).json({ 
+        message: 'Password registered. You can login now.'
+      });
+    } catch (error) {
+      next(error);
+    };
+  };
 };

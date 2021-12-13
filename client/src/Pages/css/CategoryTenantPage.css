@@ -1,0 +1,107 @@
+.context {
+  margin-left: 210px;
+  width: 1070px;
+  padding: 20px;
+  background-color: #ffffff;
+  height: 102px;
+}
+
+.kategori {
+  height: 400px;
+  margin-top: 15px;
+  margin-left: 240px;
+  width: 1015px;
+  background-color: #ffffff;
+}
+
+.admin {
+  font-family: Roboto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.list {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.filter {
+  height: 72px;
+  margin-top: 15px;
+  margin-left: 240px;
+  width: 1015px;
+  background-color: #ffffff;
+}
+
+.input-filter {
+  width: 446px;
+  height: 40px;
+  margin: auto;
+}
+
+.button-search {
+  width: 61px;
+  height: 40px;
+  color: white;
+  background: #229bd8;
+  border-color: #229bd8;
+}
+
+.add-category {
+  margin-left: 705px;
+}
+
+.add-category button {
+  width: 161px;
+  height: 38px;
+  color: white;
+  background: #229bd8;
+  border-color: #229bd8;
+}
+
+.kategori p {
+  margin-left: 20px;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  font-size: 18px;
+}
+
+th {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  background: #000000d9;
+  position: static;
+  width: 109px;
+  height: 24px;
+  left: 0px;
+  top: 0px;
+}
+
+td {
+  position: static;
+  width: 943px;
+  height: 22px;
+  left: 0px;
+  top: 17px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  background: #000000d9;
+}
