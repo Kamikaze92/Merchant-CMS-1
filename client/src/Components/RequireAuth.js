@@ -6,3 +6,10 @@ export function RequireAuth({ children }){
     }
     return children
 }
+
+export function HasToken({ children }) {
+    if(localStorage.access_token){
+        return <Navigate to="/merchants" />
+    }
+    return children
+}
