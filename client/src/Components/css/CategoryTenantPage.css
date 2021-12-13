@@ -9,7 +9,7 @@
 .kategori {
   height: 400px;
   margin-top: 15px;
-  margin-left: 240px;
+  margin-left: 25px;
   width: 1015px;
   background-color: #ffffff;
 }
@@ -35,7 +35,7 @@
 .filter {
   height: 72px;
   margin-top: 15px;
-  margin-left: 240px;
+  margin-left: 25px;
   width: 1015px;
   background-color: #ffffff;
 }

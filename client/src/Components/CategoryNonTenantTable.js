@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./css/CategoryTenantPage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCategoriesTenant } from "../store/actions/category";
 import { Modal, Button, Form } from "react-bootstrap";
-import CategoryDetail from "./CategoryNonTenantDetailTable";
 import {
   getAllCategoriesNonTenant,
   createCategoryNonTenant,
@@ -26,7 +24,10 @@ export default function CategoryNonTenant(props) {
     show: false,
     categoryName: "",
   });
-  const [input, setInput] = useState();
+  const [input, setInput] = useState({
+    name: "",
+    description: "",
+  });
   const handleShow = (payload) => setShow(payload);
   const handleClose = (payload) => {
     if (payload.name === null) {
@@ -48,7 +49,6 @@ export default function CategoryNonTenant(props) {
       ...input,
     };
     data[e.target.name] = e.target.value;
-    console.log(data, ">>>>> asuppp");
     setInput(data);
   };
   useEffect(() => {
@@ -145,7 +145,7 @@ export default function CategoryNonTenant(props) {
       <div className="kategori">
         <div className="d-flex">
           <div className="mt-4">
-            <p style={{fontWeight: "bold"}}>Daftar Kategori</p>
+            <p style={{ fontWeight: "bold" }}>Daftar Kategori</p>
           </div>
           <div className="input-group-append add-category mt-4">
             <button
@@ -193,9 +193,11 @@ export default function CategoryNonTenant(props) {
                                 : 0}
                             </td>
                             <td>
-                              <a style={{cursor: "pointer"}}
-                              onClick={() => navigate(`/categories/${el.id}`)}>
-                                <i class='bx bx-list-ul' ></i>
+                              <a
+                                style={{ cursor: "pointer" }}
+                                onClick={() => navigate(`/categories/${el.id}`)}
+                              >
+                                <i class="bx bx-list-ul"></i>
                                 Detail
                               </a>
                             </td>
@@ -217,9 +219,11 @@ export default function CategoryNonTenant(props) {
                               : 0}
                           </td>
                           <td>
-                            <a style={{cursor: "pointer"}}
-                            onClick={() => navigate(`/categories/${el.id}`)}>
-                              <i class='bx bx-list-ul' ></i>
+                            <a
+                              style={{ cursor: "pointer" }}
+                              onClick={() => navigate(`/categories/${el.id}`)}
+                            >
+                              <i class="bx bx-list-ul"></i>
                               Detail
                             </a>
                           </td>
@@ -328,7 +332,7 @@ export default function CategoryNonTenant(props) {
             name="name"
             type="text"
             // defaultValue={nameUpdate}
-            // value={nameUpdate}
+            value={input.name}
             className="form-control"
             placeholder="Name"
             aria-label="Name"
@@ -340,7 +344,7 @@ export default function CategoryNonTenant(props) {
             name="description"
             type="text"
             // defaultValue={nameUpdate}
-            // value={nameUpdate}
+            value={input.description}
             className="form-control"
             placeholder="Deskripsi"
             aria-label="Deskripsi"

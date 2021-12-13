@@ -18,7 +18,7 @@ export default function Category(props) {
     show: false,
     categoryName: "",
   });
-  const [name, setName] = useState();
+  const [inputCategory, setName] = useState("");
   const handleShow = (payload) => setShow(payload);
   const handleClose = (payload) => {
     if (payload.name === null) {
@@ -28,11 +28,14 @@ export default function Category(props) {
         payload: null,
         show: false,
       });
+      setName("");
     } else {
       if (payload.name === "Tambah Kategori") {
-        dispatch(createCategoryTenant(name));
+        dispatch(createCategoryTenant(inputCategory));
+        setName("");
       } else if (payload.name === "Edit Kategori") {
-        dispatch(updateCategoryTenant(payload.payload, name));
+        dispatch(updateCategoryTenant(payload.payload, inputCategory));
+        setName("");
       } else {
         dispatch(deleteCategoryTenant(payload.payload));
       }
@@ -183,6 +186,10 @@ export default function Category(props) {
                           <tr key={el.id}>
                             <td>{el.name}</td>
                             <td>
+                              <i
+                                className="bi bi-pencil  bd-highlight"
+                                style={{ color: "#229BD8" }}
+                              ></i>
                               <a
                                 onClick={() =>
                                   handleShow({
@@ -193,9 +200,12 @@ export default function Category(props) {
                                   })
                                 }
                               >
-                                <img src="../../public/assets/images/pen.png"></img>
                                 Edit
                               </a>
+                              <i
+                                className="bi bi-trash  bd-highlight"
+                                style={{ color: "#229BD8" }}
+                              ></i>
                               <a
                                 onClick={() =>
                                   handleShow({
@@ -206,7 +216,6 @@ export default function Category(props) {
                                   })
                                 }
                               >
-                                <img src="../../public/assets/images/Vector.png"></img>
                                 Hapus
                               </a>
                             </td>
@@ -222,6 +231,10 @@ export default function Category(props) {
                         <tr key={el.id}>
                           <td>{el.name}</td>
                           <td>
+                            <i
+                              className="bi bi-pencil  bd-highlight"
+                              style={{ color: "#229BD8" }}
+                            ></i>
                             <a
                               onClick={() =>
                                 handleShow({
@@ -232,9 +245,12 @@ export default function Category(props) {
                                 })
                               }
                             >
-                              <img src="../../public/assets/images/pen.png"></img>
                               Edit
                             </a>
+                            <i
+                              className="bi bi-trash  bd-highlight"
+                              style={{ color: "#229BD8" }}
+                            ></i>
                             <a
                               onClick={() =>
                                 handleShow({
@@ -245,7 +261,6 @@ export default function Category(props) {
                                 })
                               }
                             >
-                              <img src="../../public/assets/images/Vector.png"></img>
                               Hapus
                             </a>
                           </td>
@@ -348,17 +363,20 @@ export default function Category(props) {
           <Modal.Title>{name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Label>Name</Form.Label>
-          <input
-            onChange={inputName}
-            type="text"
-            // defaultValue={nameUpdate}
-            // value={nameUpdate}
-            className="form-control"
-            placeholder="Cari kategori tenant"
-            aria-label="Cari kategori tenant"
-            aria-describedby="basic-addon2"
-          ></input>
+          {name === "Edit Kategori" || name === "Tambah Kategori" ? (
+            <>
+              <Form.Label>Name</Form.Label>
+              <input
+                onChange={inputName}
+                type="text"
+                value={inputCategory}
+                className="form-control"
+                placeholder="Name"
+                aria-label="Name"
+                aria-describedby="basic-addon2"
+              ></input>
+            </>
+          ) : null}
         </Modal.Body>
         <Modal.Footer>
           <Button
