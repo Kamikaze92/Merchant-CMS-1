@@ -34,7 +34,7 @@ export default function ListGroupPage () {
                 <button className="btn btn-default">+ Tambah Data</button>
               </div>
                 <div>
-                <table class="table table-hover">
+                <table className="table table-hover">
                     <tbody>
                         <tr>
                             <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Nama Grup</th>
@@ -50,7 +50,7 @@ export default function ListGroupPage () {
                             <td>Super Admin</td>
                             <td>
                                 <div className="d-flex align-items-center bd-highlight mb-3"> 
-                                    <i class="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
+                                    <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
                                     <div style={{ height: "20px" }}>
                                         <p className="ms-2 me-4  bd-highlight">Detail</p>
                                     </div>
@@ -64,7 +64,7 @@ export default function ListGroupPage () {
                             <td>Approve User Kab/Kota, Approve...</td>
                             <td>
                                 <div className="d-flex align-items-center bd-highlight mb-3"> 
-                                    <i class="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
+                                    <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
                                     <div style={{ height: "20px" }}>
                                         <p className="ms-2 me-4  bd-highlight">Detail</p>
                                     </div>
@@ -78,7 +78,7 @@ export default function ListGroupPage () {
                             <td>Approve Merchant Kab/Kota</td>
                             <td>
                                 <div className="d-flex align-items-center bd-highlight mb-3"> 
-                                    <i class="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
+                                    <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
                                     <div style={{ height: "20px" }}>
                                         <p className="ms-2 me-4  bd-highlight">Detail</p>
                                     </div>
@@ -90,7 +90,13 @@ export default function ListGroupPage () {
                             <td>Untuk Merchant</td>
                             <td>1000</td>
                             <td>Merchant Feature</td>
-                            <td><a href="#"><i class='bx bx-list-ul' ></i> Detail</a>
+                            <td>
+                                <div className="d-flex align-items-center bd-highlight mb-3"> 
+                                    <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
+                                    <div style={{ height: "20px" }}>
+                                        <p className="ms-2 me-4  bd-highlight">Detail</p>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>

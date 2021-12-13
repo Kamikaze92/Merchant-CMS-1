@@ -39,8 +39,7 @@ class UserGroupsController {
                 res.status(200).json(resp);
             }  
         } catch (error) {
-            console.log(error);
-            // next(error);
+            next(error);
         }
     }
     static async getUserGroup(req, res, next) {
@@ -54,8 +53,7 @@ class UserGroupsController {
             }
             res.status(200).json(resp);
         } catch (error) {
-            console.log(error);
-            // next(error);
+            next(error);
         }
     }
     static async updateUserGroup(req, res, next) {
@@ -82,8 +80,7 @@ class UserGroupsController {
             res.status(200).json({ message: `User Group with id ${id} has been updated` })
             }
         } catch (error) {
-            console.log(error);
-            // next(error);
+            next(error);
         }
     }
     static async deleteUserGroup(req, res, next) {
@@ -105,8 +102,7 @@ class UserGroupsController {
             }
             res.status(200).json({ message: `User Group with id ${id} has been deleted` });
         } catch (error) {
-            console.log(error);
-            // next(error);
+            next(error);
         }
     }
 }

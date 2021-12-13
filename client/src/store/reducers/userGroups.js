@@ -8,11 +8,11 @@ import {
   const initialState = {
     isLoading: false,
     userGroups: [],
-    userGroup: [],
+    userGroup: {},
     error: null,
   }
   
-export default function items(state = initialState, action) {
+export default function userGroupReducer(state = initialState, action) {
     switch (action.type) {
         case SET_USER_GROUPS_LOADING:
             return {

@@ -6,8 +6,7 @@ class HistoryController {
             const resp = await History.findAll();
             res.status(200).json(resp);
         } catch (error) {
-            console.log(error);
-            // next(error);
+            next(error);
         }
     }
 }
