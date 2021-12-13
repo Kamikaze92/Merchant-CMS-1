@@ -20,8 +20,7 @@ class PrivilegeController {
                 name: resp.name
               });
         } catch (error) {
-            console.log(error);
-            // next(error);
+            next(error);
         }
     }
     static async getAllPrivilege (req, res, next) {
@@ -29,14 +28,9 @@ class PrivilegeController {
             const resp = await Privilege.findAll({ attributes: { 
                 exclude: ['createdAt', 'updatedAt'] } 
             });
-            if(!resp.length) {
-                res.status(200).json({ message: 'Data is not found' });
-            } else {
-                res.status(200).json(resp);
-            }
+            res.status(200).json(resp);
         } catch (error) {
-            console.log(error);
-            // next(error);
+            next(error);
         }
     }
     static async getPrivilegeById (req, res, next) {
@@ -50,8 +44,7 @@ class PrivilegeController {
             }
             res.status(200).json(resp);
         } catch (error) {
-            console.log(error);
-            // next(error);
+            next(error);
         }
     }
     static async deletePrivilege (req, res, next) {
@@ -73,8 +66,7 @@ class PrivilegeController {
               }
             res.status(200).json({ message: 'Privilege has been deleted' })
         } catch (error) {
-            console.log(error);
-            // next(error);
+            next(error);
         }
     }
 }
