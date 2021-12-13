@@ -26,7 +26,7 @@ const mailActivation = (emailUser, activationLink) => {
     from: EMAIL_FROM,
     to: emailUser,
     subject: '[PEDULI-LINDUNGI-CMS] Activation Link for verify new user',
-    html: `This is your verification link \n <a>${activationLink}</a> \n Click link to finish your registration.`,
+    html: `This is your verification link \n <a href="${activationLink}">${activationLink}</a> \n Click link to finish your registration.`,
   };
 };
 
@@ -35,7 +35,7 @@ const resetPasswordMail = (emailUser, resetLink) => {
     from: EMAIL_FROM,
     to: emailUser,
     subject: '[PEDULI-LINDUNGI-CMS] Request reset account password',
-    html: `This is your one-time link to reset your password. \n <a>${resetLink}</a> \n Click link to reset password.`,
+    html: `This is your one-time link to reset your password. \n <a href="${resetLink}">${resetLink}</a> \n Click link to reset password.`,
   };
 };
 
