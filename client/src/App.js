@@ -1,7 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
-import CategoryNonTenant from "./Pages/CategoryNonTenantPage";
-import CategoryDetail from "./Pages/CategoryDetailPage";
-import CategoryTenant from "./Pages/CategoryTenantPage";
+import CategoryNonTenant from "./Pages/CategoryNonTenant";
+import CategoryNonTenantDetail from "./Pages/CategoryNonTenantDetail";
+import CategoryTenant from "./Pages/CategoryTenant";
 import UserDetail from "./Pages/UserDetail";
 import ListGroup from "./Pages/ListGroup";
 import Users from "./Pages/Users";
@@ -47,21 +47,13 @@ function App() {
         <Route path="/group-list" element={<ListGroup />}></Route>
         <Route path="/group-list/detail" element={<ListGroupDetail />}></Route>
         <Route path="/change-password" element={<ChangePassword />}></Route>
+        <Route path="/categories" element={<CategoryNonTenant />}></Route>
+        <Route path="/categories/:id" element={<CategoryNonTenantDetail />}></Route>
+        <Route path="/categories/tenant" element={<CategoryTenant />}></Route>
 
-        <Route path="/category" element={<CategoryNonTenant />}></Route>
-        <Route path="/category/tenant" element={<CategoryTenant />}></Route>
-        <Route path="/category/:id" element={<CategoryDetail />}></Route>
-        <Route path="/approval/">
-          {/* <Route path="merchant" element={<MerchantApproval />}></Route> */}
-          <Route path="verifier" element={<Users />}></Route>
-        </Route>
         <Route path="/errors" element={<ErrorPage />}></Route>
       </Routes>
       <div className="App">
-        {/* <RegisterMerchant /> */}
-        {/* <RegisterVerificator /> */}
-        {/* <OtpInput /> */}
-        {/* <RegisterMerchant /> */}
       </div>
     </>
   );

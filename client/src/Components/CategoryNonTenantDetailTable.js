@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import "./css/container.css";
 import axios from "../config/server";
 import { useNavigate } from "react-router";
 import {
@@ -90,23 +89,6 @@ export default function CategoryDetail(props) {
       <FormPage data={show} />
 
       <div className="container1">
-        <div className="row">
-          <div className="col-2">
-            <div className="row">
-              <div className="d-flex align-items-center">
-                <i className="bi bi-arrow-left me-3"></i>
-                <p
-                  onClick={() => navigate("/category")}
-                  className="text-nowrap"
-                  style={{ height: "10px" }}
-                >
-                  Detail Group
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div className="row card mt-4" style={{ width: "990px" }}>
           <div
             className="mb-3 d-flex align-items-center bd-highlight mb-3"

@@ -123,10 +123,6 @@ export default function Category(props) {
   return (
     <>
       <FormPage data={show} />
-      <div className="context">
-        <p className="admin">Administrasi - Kategori Tenant</p>
-        <p className="list">Daftar Kategori Tenant</p>
-      </div>
       <div className="filter p-3">
         <div className="input-group mb-3 input-filter">
           <input
@@ -138,7 +134,7 @@ export default function Category(props) {
             aria-describedby="basic-addon2"
           ></input>
           <div className="input-group-append">
-            <button onClick={filterCategory} className="button-search">
+            <button onClick={filterCategory} className="btn btn-default mx-2">
               Cari
             </button>
           </div>
@@ -151,6 +147,7 @@ export default function Category(props) {
           </div>
           <div className="input-group-append add-category mt-4">
             <button
+              className="btn btn-default"
               onClick={() =>
                 handleShow({
                   name: "Tambah Kategori",

@@ -5,7 +5,7 @@ import "./css/CategoryTenantPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategoriesTenant } from "../store/actions/category";
 import { Modal, Button, Form } from "react-bootstrap";
-import CategoryDetail from "./CategoryDetailPage";
+import CategoryDetail from "./CategoryNonTenantDetailTable";
 import {
   getAllCategoriesNonTenant,
   createCategoryNonTenant,
@@ -125,10 +125,6 @@ export default function CategoryNonTenant(props) {
   return (
     <>
       <FormPage data={show} />
-      <div className="context">
-        <p className="admin">Administrasi - Kategori & Sub-Kategori</p>
-        <p className="list">Daftar Kategori</p>
-      </div>
       <div className="filter p-3">
         <div className="input-group mb-3 input-filter">
           <input
@@ -140,7 +136,7 @@ export default function CategoryNonTenant(props) {
             aria-describedby="basic-addon2"
           ></input>
           <div className="input-group-append">
-            <button onClick={filterCategory} className="button-search">
+            <button onClick={filterCategory} className="btn btn-default mx-2">
               Cari
             </button>
           </div>
@@ -149,10 +145,11 @@ export default function CategoryNonTenant(props) {
       <div className="kategori">
         <div className="d-flex">
           <div className="mt-4">
-            <p>Daftar Kategori</p>
+            <p style={{fontWeight: "bold"}}>Daftar Kategori</p>
           </div>
           <div className="input-group-append add-category mt-4">
             <button
+              className="btn btn-default"
               onClick={() =>
                 handleShow({
                   name: "Tambah Kategori",
@@ -196,8 +193,9 @@ export default function CategoryNonTenant(props) {
                                 : 0}
                             </td>
                             <td>
-                              <a onClick={() => navigate(`/category/${el.id}`)}>
-                                <img src="../../public/assets/images/detail.png"></img>
+                              <a style={{cursor: "pointer"}}
+                              onClick={() => navigate(`/categories/${el.id}`)}>
+                                <i class='bx bx-list-ul' ></i>
                                 Detail
                               </a>
                             </td>
@@ -219,8 +217,9 @@ export default function CategoryNonTenant(props) {
                               : 0}
                           </td>
                           <td>
-                            <a onClick={() => navigate(`/category/${el.id}`)}>
-                              <img src="../../public/assets/images/detail.png"></img>
+                            <a style={{cursor: "pointer"}}
+                            onClick={() => navigate(`/categories/${el.id}`)}>
+                              <i class='bx bx-list-ul' ></i>
                               Detail
                             </a>
                           </td>

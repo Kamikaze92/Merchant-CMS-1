@@ -56,10 +56,14 @@ export default function Sidebar() {
                             </Link>
                         </a>
                         <a href="#" className="dropdown__link">
-                            <span className="text-dark">Kategori & Sub-Kategori</span>
+                            <Link to="/categories" style={{ textDecoration: 'none'}}>
+                                <span className="text-dark">Kategori & Sub-Kategori</span>
+                            </Link>
                         </a>
                         <a href="#" className="dropdown__link">
-                            <span className="text-dark">Kategori Tenant</span>
+                            <Link to="/categories/tenant" style={{ textDecoration: 'none'}}>
+                                <span className="text-dark">Kategori Tenant</span>
+                            </Link>
                         </a>
                         <a href="#" className="dropdown__link" id="dropdown__link">
                             <Link to="/change-password" style={{ textDecoration: 'none'}}>
