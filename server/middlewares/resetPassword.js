@@ -1,9 +1,12 @@
-const {verifyLink} = require('../helpers/jwt')
+const {verifyLink, decodeJwt} = require('../helpers/jwt')
 const {User} = require('../models/index')
 const resetPasswordMiddleware = async (req, res, next) => {
+    console.log("masookkkkkk")
     try {
       const { id, token } = req.params
-      const payload = verifyLink(token)
+      const { password } = decodeJwt(token);
+
+      const payload = verifyLink(token, password);
       if (!payload){
         throw {name: "invalid_token"}
       }
