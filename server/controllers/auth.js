@@ -1,4 +1,4 @@
-const {comparePassword} = require('../helpers/bcrypt')
+const {comparePassword, getSalt} = require('../helpers/bcrypt')
 const {jwtSign, signPasswordLink} = require('../helpers/jwt')
 const newHistory = require('../helpers/historyInstance');
 const {transporter, mailOtp, resetPasswordMail} = require('../helpers/nodemailer')
@@ -66,7 +66,7 @@ module.exports = class AuthController {
       if (user_type !== 'Merchant' && user_type !== 'Verifier' ) {
         throw {
           name: 'errorUserType',
-          mgs: 'user type should be "Merchant" or "Verifier"',
+          msg: 'user type should be "Merchant" or "Verifier"',
         }
       }
 
@@ -77,6 +77,7 @@ module.exports = class AuthController {
           institution,
           province_id: province_id || null,
           city_id: city_id || null,
+          created_by: 1,
         }, { transaction: t });
       };
 
@@ -87,6 +88,7 @@ module.exports = class AuthController {
         phone_number,
         password: 'random',
         verifier_id: verifierTransaction?.id || null,
+        created_by: 1,
       }, { transaction: t });
 
       // merchant transaction.
@@ -104,6 +106,7 @@ module.exports = class AuthController {
           postal_code,
           tenant_category_id,
           parent_id,
+          created_by: 1,
         }, { transaction: t });
       }
 
@@ -114,7 +117,7 @@ module.exports = class AuthController {
       //     throw { name: 'fail_create_history' };
       // }
       // if transaction successfull, send the OTP.
-      t.afterCommit(() => {
+      t.afterCommit(async () => {
         // using padStart so it will be always 6 digit.
         const OTP = String(Math.floor(Math.random() * 999999));
         transporter.sendMail(mailOtp(userTransaction.email, OTP), async (error) => {
@@ -181,7 +184,7 @@ module.exports = class AuthController {
       const user = await User.findByPk(id);
       
       if (!user) {
-        throw { name: 'not_found' };
+        throw { name: 'user_not_found' };
       };
       
       const OTP = String(Math.floor(Math.random() * 999999));
@@ -215,17 +218,21 @@ module.exports = class AuthController {
 
   static async forgotPassword(req, res, next){
       try {
-        const { email } = req.body;
+        const { email, url } = req.body;
         const response = await User.findOne({ where: { email } });
         if(!email) {
           throw { name: 'email_not_found' }
         }
+        if(!response){
+          throw { name: 'user_not_found'}
+        }
         const payload = {
             id: response.id,
-            email: response.email
+            email: response.email,
+            password: response.password,
         };
         const token = signPasswordLink(payload, response.password);
-        let link = `http://localhost:3000/${response.id}/${token}`
+        let link = `http://${url}/${response.id}/${token}`
         transporter.sendMail(resetPasswordMail(response.email, link), (err) => {
           if(err){
             throw {
@@ -251,7 +258,7 @@ module.exports = class AuthController {
         throw {name: "password_not_match"}
       }
       //create hooks beforeUpdate to hash new password
-      let params = { password }
+      let params = { password: getSalt(password) }
       await User.update(params, {
         where: { id }
       })
@@ -262,4 +269,58 @@ module.exports = class AuthController {
       next(err)
     }
   }
+
+  static async checkStatus(req,res,next){
+    try {
+      const {email} = req.body
+      console.log(email)
+      if(!req.body.email){
+        throw {name: 'email_not_found'}
+      }
+      const response = await User.findOne({where: {email}})
+      let statusMessage = ''
+      if(!response){
+        statusMessage = 'Email Tidak Ditemukan'
+      } else if(!response.verified_at){
+        statusMessage = 'Email Tidak Ditemukan'
+      } else if(response.is_rejected == true){
+        statusMessage = 'Ditolak'
+      } else if(response.approved_at && response.approved_by && response.verified_at ) {
+        statusMessage = 'Sudah Aktif'
+      } else if(!response.approved_at && !response.approved_by){
+        statusMessage = 'Menunggu Proses Persetujuan Akun'
+      } else if(!response.approved_at) {
+        statusMessage = 'Sudah Disetujui'
+      } 
+      res.status(200).json({
+        status: statusMessage
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+    static async approveUser(req, res, next) {
+    try {
+      const { id, token } = req.params;
+
+      // if token was invalid its throw error.
+      verifyData(token);
+      await User.update({
+        approved_at: new Date(),
+      }, {
+        where: {id}
+      });
+
+      // !TODO : create history.
+
+      res.status(200).json({ 
+        message: 'User has been approved.',
+        id,
+      });
+    } catch (error) {
+      next(error);
+    };
+  };
 }
+

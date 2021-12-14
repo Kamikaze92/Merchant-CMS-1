@@ -9,11 +9,11 @@ module.exports = class CategoryController {
         res.status(200).json(JSON.parse(chace));
       } else {
         let response = await Category.findAll({
-          include: "sub_category",
-          where: {
-            parent_id: null,
-            is_tenant_category: false,
-          },
+          include: [{
+            model: Category,
+            as: 'sub_category',
+            require: false,
+          }],
         });
         await redis.set("categories_non_tenant", JSON.stringify(response));
         res.status(200).json(response);
@@ -50,7 +50,6 @@ module.exports = class CategoryController {
       let response = await Category.create({
         name,
         is_tenant_category: true,
-        created_by: "req.user.name",
       });
       await redis.del("categories_tenant");
       res.status(201).json(response);
@@ -70,7 +69,6 @@ module.exports = class CategoryController {
       let response = await Category.create({
         name,
         description,
-        created_by: "req.user.name",
         is_tenant_category: false,
       });
       await redis.del("categories_non_tenant");
@@ -209,7 +207,6 @@ module.exports = class CategoryController {
         }
         let data = await Category.create({
           name,
-          created_by: "req.user.name",
           parent_id: category.id,
         });
         await redis.del("categories_non_tenant");
@@ -265,10 +262,14 @@ module.exports = class CategoryController {
       let response = await Category.findOne({
         where: {
           id: +id,
-          is_tenant_category: false,
-          parent_id: null,
+          // is_tenant_category: false,
+          // parent_id: null,
         },
-        include: "sub_category",
+        include: {
+          model: Category,
+          as: 'sub_category',
+          require: true,
+        },
       });
       if (!response) {
         throw {

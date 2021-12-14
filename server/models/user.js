@@ -1,6 +1,6 @@
-"use strict";
-const { Model } = require("sequelize");
-const { getSalt } = require("../helpers/bcrypt");
+'use strict';
+const { Model } = require('sequelize');
+const { getSalt } = require('../helpers/bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -13,10 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasOne(models.Merchant, {
         foreignKey: 'user_id',
+        as: 'merchant',
       });
+
       User.belongsTo(models.Verifier, {
         foreignKey: 'verifier_id',
-      })
+        as: 'verifier',
+      });
+      
+      User.belongsTo(User, {
+        foreignKey: 'approved_by',
+        as: 'approver',
+      });
     }
   }
   User.init(
@@ -26,67 +34,66 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Name is required",
+            msg: 'Name is required',
           },
           notEmpty: {
-            msg: "Name is required",
+            msg: 'Name is required',
           },
         },
-      },
+      }, // required.
       email: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: {
           args: true,
-          msg: "Email must be unique",
+          msg: 'Email must be unique',
         },
         validate: {
           notNull: {
-            msg: "Email is required",
+            msg: 'Email is required',
           },
           isEmail: {
-            msg: "Invalid email format",
+            msg: 'Invalid email format',
           },
           notEmpty: {
-            msg: "Email is required",
+            msg: 'Email is required',
           },
         },
-      },
+      }, // unique, email format, required.
       password: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Password is required",
+            msg: 'Password is required',
           },
           notEmpty: {
-            msg: "Password is required",
+            msg: 'Password is required',
           },
         },
-      },
-      verified_at: DataTypes.DATE,
+      }, // min 6 max 12, required.
       phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Mobile phone is required",
+            msg: 'Phone phone is required',
           },
           notEmpty: {
-            msg: "Mobile phone is required",
+            msg: 'Phone phone is required',
           },
           len: {
-            msg: "Maximum mobile number is 15",
+            args: [0, 15],
+            msg: 'Phone number maximum 15 digits',
           },
         },
-      },
-      approved_by: {
-        type: DataTypes.INTEGER,
-      },
+      }, // max 15 digits, required.
+      verifier_id: DataTypes.INTEGER,
+      verified_at: DataTypes.DATE,
+      approved_by: DataTypes.INTEGER,
       approved_at: DataTypes.DATE,
       is_rejected: DataTypes.BOOLEAN,
       rejected_reason: DataTypes.STRING,
-      verifier_id: DataTypes.INTEGER,
     },
     {
       sequelize,
@@ -94,13 +101,9 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: 'created_at',
       updatedAt: 'updated_at',
       deletedAt: 'deleted_at',
-      modelName: "User",
+      modelName: 'User',
       hooks: {
-        beforeCreate(user) {
-          user.email = user.email.toLowerCase();
-          user.password = getSalt(user.password);
-        },
-        beforeUpdate(user) {
+        beforeSave(user) {
           user.email = user.email.toLowerCase();
           user.password = getSalt(user.password);
         },

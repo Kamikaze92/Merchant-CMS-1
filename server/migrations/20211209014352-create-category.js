@@ -9,8 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
-        type: Sequelize.STRING,
         allowNull: false,
+        type: Sequelize.STRING,
       },
       description: {
         type: Sequelize.STRING,
@@ -18,14 +18,13 @@ module.exports = {
       is_tenant_category: {
         type: Sequelize.BOOLEAN,
       },
-      created_by: {
-        type: Sequelize.STRING,
-      },
       parent_id: {
+        allowNull: true,
         type: Sequelize.INTEGER,
-      },
-      deleted_at: {
-        type: Sequelize.DATE,
+        references: {
+          model: 'Categories',
+          key: 'id',
+        },
       },
       created_at: {
         allowNull: false,
@@ -33,6 +32,9 @@ module.exports = {
       },
       updated_at: {
         allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deleted_at: {
         type: Sequelize.DATE,
       },
     });

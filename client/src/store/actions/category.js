@@ -43,6 +43,9 @@ export function createCategoryTenant(name) {
         data: {
           name,
         },
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
       });
       dispatch({
         type: CATEGORY_TENANT_CREATE,
@@ -67,6 +70,9 @@ export function updateCategoryTenant(id, name) {
         data: {
           name,
         },
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
       });
       dispatch({
         type: CATEGORY_TENANT_UPDATE,
@@ -87,6 +93,9 @@ export function deleteCategoryTenant(id) {
       let response = await axios({
         method: "delete",
         url: `/categories/${id}`,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
       });
       dispatch({
         type: CATEGORY_DELETE_TENANT,
@@ -128,6 +137,9 @@ export function createCategoryNonTenant(data) {
         method: "post",
         url: "/categories",
         data,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
       });
       dispatch({
         type: CATEGORY_NON_TENANT_CREATE,
@@ -135,7 +147,6 @@ export function createCategoryNonTenant(data) {
       });
       dispatch(getLoading(CATEGORY_LOADING, false));
     } catch (error) {
-      console.log(error.response.data);
       dispatch(getError(CATEGORY_ERROR, error));
       dispatch(getLoading(CATEGORY_LOADING, false));
     }
@@ -150,6 +161,9 @@ export function updateCategoryNonTenant(id, data) {
         method: "put",
         url: `/categories/${id}`,
         data,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
       });
       dispatch({
         type: CATEGORY_NON_TENANT_UPDATE,
@@ -173,6 +187,9 @@ export function deleteCategoryNonTenant(id) {
       let response = await axios({
         method: "delete",
         url: `/categories/${id}`,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
       });
       dispatch({
         type: CATEGORY_DELETE_NON_TENANT,
@@ -192,6 +209,9 @@ export function deleteSubCategory(id) {
       let response = await axios({
         method: "delete",
         url: `/categories/${id}`,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
       });
       dispatch({
         type: CATEGORY_DELETE_SUB_CATEGORY,
@@ -219,6 +239,9 @@ export function createNewSubCategory(id, data) {
         method: "post",
         url: `categories/sub/${id}`,
         data,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
       });
       dispatch({
         type: SUB_CATEGORY_CREATE,
@@ -247,6 +270,9 @@ export function updateSubCategory(payload, { name }) {
         data: {
           name,
           parent_id: payload.category_id,
+          headers: {
+            access_token: localStorage.getItem('access_token')
+          }
         },
       });
       dispatch({

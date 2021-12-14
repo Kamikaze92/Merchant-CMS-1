@@ -63,6 +63,7 @@ const createUser = async (payload) => {
     console.log("Sucess Seed");
   } catch (error) {
     await t.rollback();
+    console.log(error);
     console.log("Error: rollback");
   }
 }

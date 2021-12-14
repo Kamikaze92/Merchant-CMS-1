@@ -9,7 +9,7 @@ class RoleController {
       const payload = {
         entity_name: 'Role',
         entity_id: resp.id,
-        user_id: 1 //req.user.id
+        user_id: req.user.id
       };
       const isHistoryCreated = await newHistory('createRole', payload);
       if(!isHistoryCreated) {
@@ -21,8 +21,7 @@ class RoleController {
         description: resp.description,
       });
     } catch (error) {
-      console.log(error);
-      // next(error);
+      next(error);
     }
   }
   static async getAllRoles (req, res, next) {
@@ -31,13 +30,12 @@ class RoleController {
         { exclude: ['createdAt', 'updatedAt'] } 
       });
       if(!resp.length) {
-        res.status(200).json({ message: 'Role is not found' });
+        res.status(404).json({ message: 'Role is not found' });
     } else {
         res.status(200).json(resp);
     }
     } catch (error) {
-      console.log(error);
-      // next(error);
+      next(error);
     }
   }
   static async getRole (req, res, next) {
@@ -51,8 +49,7 @@ class RoleController {
       }
       res.status(200).json(resp);
     } catch (error) {
-      console.log(error);
-      // next(error);
+      next(error);
     }
   }
   static async updateRole (req, res, next) {
@@ -70,7 +67,7 @@ class RoleController {
         const payload = {
           entity_name: 'Role',
           entity_id: resp[1][0].id,
-          user_id: 1 //req.user.id
+          user_id: req.user.id
         };
         const isHistoryCreated = await newHistory('updateRole', payload);
         if(!isHistoryCreated) {
@@ -79,8 +76,7 @@ class RoleController {
         res.status(200).json({ message: `Role with id ${id} has been updated` })
       }
     } catch (error) {
-      console.log(error);
-      // next(error);
+      next(error);
     }
   }
   static async deleteRole (req, res, next) {
@@ -94,7 +90,7 @@ class RoleController {
       const payload = {
         entity_name: 'Role',
         entity_id: foundRole.id,
-        user_id: 1 //req.user.id
+        user_id: req.user.id
       };
       const isHistoryCreated = await newHistory('deleteRole', payload);
       if(!isHistoryCreated) {
@@ -102,8 +98,7 @@ class RoleController {
       }
       res.status(200).json({ message: `Role with id ${id} has been deleted` });
     } catch (error) {
-      console.log(error);
-      // next(error);
+      next(error);
     }
   }
 }

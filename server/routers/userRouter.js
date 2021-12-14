@@ -16,7 +16,6 @@ router.put('/:id', UserController.updateUser);
 router.patch('/:id', UserController.updateUser);
 router.delete('/:id', UserController.deleteUserSoft);
 router.post('/activation/:id', UserController.sendActivationLink);
-router.patch('/approve-user/:id/:token', verifyMiddleware, UserController.approveUser);
-router.patch('/create-password/:id', UserController.userCreatePassword);
+router.patch('/create-password/', UserController.userChangePassword);
 
 module.exports = router;
