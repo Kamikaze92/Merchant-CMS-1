@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,27 +9,40 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       full_name: {
-        type: Sequelize.STRING,
         allowNull: false,
+        type: Sequelize.STRING,
       },
       email: {
-        type: Sequelize.STRING,
         allowNull: false,
         unique: true,
+        type: Sequelize.STRING,
       },
       password: {
-        type: Sequelize.STRING,
         allowNull: false,
+        type: Sequelize.STRING,
+      },
+      phone_number: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      verifier_id: {
+        allowNull: true,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Verifiers',
+          key: 'id',
+        },
       },
       verified_at: {
         type: Sequelize.DATE,
       },
-      phone_number: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       approved_by: {
+        allowNull: true,
         type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
       },
       approved_at: {
         type: Sequelize.DATE,
@@ -40,13 +53,9 @@ module.exports = {
       rejected_reason: {
         type: Sequelize.STRING,
       },
-      verifier_id: {
+      created_by: {
+        allowNull: false,
         type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: "Verifiers",
-          key: "id",
-        },
       },
       created_at: {
         allowNull: false,
@@ -62,6 +71,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable('Users');
   },
 };
