@@ -175,14 +175,12 @@ export default function CategoryDetail(props) {
                 <div className="d-flex flex-column fw-bolder">
                   <p>Nama</p>
                   <p>Deskripsi</p>
-                  <p>Dibuat Oleh</p>
                   <p>Dibuat Pada</p>
                 </div>
                 {data ? (
                   <div className="d-flex flex-column ms-4">
                     <p>: &nbsp; {data.name}</p>
                     <p>: &nbsp; {data.description}</p>
-                    <p>: &nbsp; {data.created_by}</p>
                     <p>: &nbsp; {data.created_at}</p>
                   </div>
                 ) : null}

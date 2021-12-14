@@ -50,7 +50,6 @@ module.exports = class CategoryController {
       let response = await Category.create({
         name,
         is_tenant_category: true,
-        created_by: req.user.name,
       });
       await redis.del("categories_tenant");
       res.status(201).json(response);
@@ -70,7 +69,6 @@ module.exports = class CategoryController {
       let response = await Category.create({
         name,
         description,
-        created_by: req.user.name,
         is_tenant_category: false,
       });
       await redis.del("categories_non_tenant");
@@ -209,7 +207,6 @@ module.exports = class CategoryController {
         }
         let data = await Category.create({
           name,
-          created_by: req.user.name,
           parent_id: category.id,
         });
         await redis.del("categories_non_tenant");
