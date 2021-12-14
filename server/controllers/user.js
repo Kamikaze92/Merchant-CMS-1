@@ -228,7 +228,7 @@ module.exports = class UserController {
       //  * province null or
       //  * city not null 
       //  */
-      if (role !== 'Admin' && (!verifier || !verifier.province_id || verifier.city_id)) {
+      if (role !== 'Admin' && (!verifier || !verifier.province_id || verifier?.city_id)) {
         // TODO : hrow error, because minimum should have province_id.
         throw {
           name: 'NotAuthorized',
@@ -237,7 +237,7 @@ module.exports = class UserController {
       } 
       
       // // if not admin, should check province id to show all the user below their province.
-      if (verifier.province_id && role !== 'Admin') {
+      if (verifier?.province_id && role !== 'Admin') {
         let cities = await City.findAll({
           where: {
             province_id: verifier.province_id,
@@ -277,11 +277,12 @@ module.exports = class UserController {
           },
         ],
       });
-      if (!response) {
+      if (!response.length) {
         throw { name: "user_not_found" };
       }
       res.status(200).json(response);
     } catch (error) {
+      console.log(error, ">>> apa nichh??");
       next(error);
     }
   }

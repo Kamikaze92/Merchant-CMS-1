@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveMerchants } from '../store/actions/users';
 import { useNavigate, Link } from 'react-router-dom';
-
+import {USER_ERROR} from '../store/actionType/users'
 
 const layoutBorder = {
   padding: "16px",
@@ -20,6 +20,15 @@ export default function ActiveMerchantTable() {
 
   }
   , [])
+
+  useEffect(() => {
+    if (error) {
+      dispatch({
+        type:USER_ERROR,
+        payload: null
+      })
+    }
+  }, [])
   
   if(isLoading) {
     return (
@@ -64,7 +73,7 @@ export default function ActiveMerchantTable() {
                       type="search"
                       placeholder="Masukkan email / nama tempat"
                     />
-                    <button className="btn btn-default ms-1" type="submit">
+                    <button className="btn btn-default" type="submit" style={{backgroundColor: '#229BD8', color:'white'}}>
                       Cari
                     </button>
                   </div>
