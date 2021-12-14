@@ -31,6 +31,9 @@ export default function ListGroupPage ({ id }) {
     }
     return (
       <>
+      {
+        JSON.stringify(userGroups)
+      }
           <div className="container-fluid mt-3">
           <div className="border" style={layoutBorder}>
               <div className="d-flex flex-row justify-content-center">
