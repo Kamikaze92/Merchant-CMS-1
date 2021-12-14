@@ -159,6 +159,14 @@ export default function RegisterVerificator() {
                   >
                     Masuk
                   </button>
+                  <button
+                    className="btn btn-primary"
+                    type="submit"
+                    style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
+                    disabled
+                  >
+                  <span class="spinner-border spinner-border-sm text-white" role="status"></span>
+                  </button>
                 </div>
               </form>
               <div style={RegisterFooter} className="mt-3">
