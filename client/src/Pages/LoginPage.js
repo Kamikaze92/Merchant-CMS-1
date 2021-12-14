@@ -71,7 +71,10 @@ export default function LoginPage() {
       if (response.status === 200) {
         localStorage.setItem('access_token', response.data.access_token);
         navigate('/merchants');
-      } else {
+      } if(response.status === 401){
+        navigate('/account-verified')
+      }
+      else {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
