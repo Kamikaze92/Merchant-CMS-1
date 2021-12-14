@@ -75,7 +75,7 @@ export default function LoginPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
     }
   }
   return (
