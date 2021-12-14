@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./css/CategoryTenantPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategoriesTenant } from "../store/actions/category";
@@ -137,7 +138,7 @@ export default function Category(props) {
             aria-describedby="basic-addon2"
           ></input>
           <div className="input-group-append">
-            <button onClick={filterCategory} className="btn btn-default mx-2">
+            <button onClick={filterCategory} className="btn btn-default mx-2" style={{backgroundColor:'#229bd8', borderColor:'#229bd8', color: 'white'}}>
               Cari
             </button>
           </div>
@@ -151,6 +152,7 @@ export default function Category(props) {
           <div className="input-group-append add-category mt-4">
             <button
               className="btn btn-default"
+              style={{fontSize:'15px'}}
               onClick={() =>
                 handleShow({
                   name: "Tambah Kategori",
@@ -183,43 +185,7 @@ export default function Category(props) {
                   ? tenant.map((el, i) => {
                       if (i < 5) {
                         return (
-                          <tr key={el.id}>
-                            <td>{el.name}</td>
-                            <td>
-                              <i
-                                className="bi bi-pencil  bd-highlight"
-                                style={{ color: "#229BD8" }}
-                              ></i>
-                              <a
-                                onClick={() =>
-                                  handleShow({
-                                    name: "Edit Kategori",
-                                    payload: el.id,
-                                    categoryName: el.name,
-                                    show: true,
-                                  })
-                                }
-                              >
-                                Edit
-                              </a>
-                              <i
-                                className="bi bi-trash  bd-highlight"
-                                style={{ color: "#229BD8" }}
-                              ></i>
-                              <a
-                                onClick={() =>
-                                  handleShow({
-                                    name: "Hapus Kategori",
-                                    payload: el.id,
-                                    categoryName: "",
-                                    show: true,
-                                  })
-                                }
-                              >
-                                Hapus
-                              </a>
-                            </td>
-                          </tr>
+                          <TableCategoryTenant el={el}/>
                         );
                       } else {
                         return null;
@@ -228,45 +194,7 @@ export default function Category(props) {
                   : category
                   ? category.map((el, i) => {
                       return (
-                        <tr key={el.id}>
-                          <td>{el.name}</td>
-                          <td>
-                            <div>
-                            <i
-                              className="bi bi-pencil  bd-highlight"
-                              style={{ color: "#229BD8" }}
-                            ></i>
-                            <a
-                              onClick={() =>
-                                handleShow({
-                                  name: "Edit Kategori",
-                                  payload: el.id,
-                                  categoryName: el.name,
-                                  show: true,
-                                })
-                              }
-                            >
-                              Edit
-                            </a>
-                            <i
-                              className="bi bi-trash  bd-highlight"
-                              style={{ color: "#229BD8" }}
-                            ></i>
-                            <a
-                              onClick={() =>
-                                handleShow({
-                                  name: "Hapus Kategori",
-                                  payload: el.id,
-                                  categoryName: "",
-                                  show: true,
-                                })
-                              }
-                            >
-                              Hapus
-                            </a>
-                            </div>
-                          </td>
-                        </tr>
+                        <TableCategoryTenant el={el}/>
                       );
                     })
                   : null}
@@ -407,4 +335,67 @@ export default function Category(props) {
       </Modal>
     );
   }
+
+  function TableCategoryTenant({el}) {
+    return (
+      <tr key={el.id}>
+        <td>{el.name}</td>
+        <td>
+        <p style={{fontSize: '13px'}}>
+          <i
+            className="bi bi-pencil-fill"
+            style={{ color: "#229BD8" }}
+            onClick={() =>
+              handleShow({
+                name: "Edit Kategori",
+                payload: el.id,
+                categoryName: el.name,
+                show: true,
+              })
+            }
+          ></i> &nbsp;
+          <a
+            onClick={() =>
+              handleShow({
+                name: "Edit Kategori",
+                payload: el.id,
+                categoryName: el.name,
+                show: true,
+              })
+            }
+            style={{ color: "#229BD8" }}
+          >
+            Edit
+          </a> &nbsp; 
+          <i
+            className="bi bi-trash  bd-highlight"
+            style={{ color: "#F6303A" }}
+            onClick={() =>
+              handleShow({
+                name: "Hapus Kategori",
+                payload: el.id,
+                categoryName: "",
+                show: true,
+              })
+            }
+          ></i> &nbsp;
+          <a
+            onClick={() =>
+              handleShow({
+                name: "Hapus Kategori",
+                payload: el.id,
+                categoryName: "",
+                show: true,
+              })
+            }
+            style={{ color: "#F6303A" }}
+          >
+            Hapus
+          </a>
+          </p>
+        </td>
+      </tr>
+    )
+  }
+
 }

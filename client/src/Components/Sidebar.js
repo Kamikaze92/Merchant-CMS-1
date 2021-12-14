@@ -30,15 +30,15 @@ export default function Sidebar() {
             ></img>
           </div>
           <div className='nav__list'>
-            <a href='#' className='nav__link' title='Persetujuan Akun Pengguna'>
+            <a className='nav__link' title='Persetujuan Akun Pengguna' style={{ textDecoration: 'none' }}>
               <i className='bx bx-user nav__icon'></i>
               <Link to='/merchants' style={{ textDecoration: 'none' }}>
                 <span className='text-dark'>Persetujuan Akun Pengguna</span>
               </Link>
             </a>
 
-            <a
-              href='#'
+            <a style={{ textDecoration: 'none' }}
+            style={{ textDecoration: 'none' }}
               className='nav__link'
               title='Persetujuan Akun Verifikator'
             >
@@ -48,8 +48,8 @@ export default function Sidebar() {
               </Link>
             </a>
 
-            <a
-              href='#'
+            <a style={{ textDecoration: 'none' }}
+            
               className='nav__link'
               title='Daftar Akun Pengelola QR Code'
             >
@@ -58,36 +58,36 @@ export default function Sidebar() {
                 <span className='text-dark'>Daftar Akun Pengelola QR Code</span>
               </Link>
             </a>
-            <a className='nav__link' id='dropdown__linktop'>
+            <a style={{ textDecoration: 'none' }} className='nav__link' id='dropdown__linktop'>
               <i className='bx bxs-cog nav__icon'></i>
               <span>Administrasi</span>
             </a>
-            <a href='#' className='dropdown__link'>
+            <a style={{ textDecoration: 'none' }} className='dropdown__link'>
               <Link to='/users' style={{ textDecoration: 'none' }}>
                 <span className='text-dark'>Pengguna</span>
               </Link>
             </a>
-            <a href='#' className='dropdown__link'>
+            <a style={{ textDecoration: 'none' }} className='dropdown__link'>
               <Link to='/group-list' style={{ textDecoration: 'none' }}>
                 <span className='text-dark'>Grup</span>
               </Link>
             </a>
-            <a href='#' className='dropdown__link'>
+            <a style={{ textDecoration: 'none' }} className='dropdown__link'>
               <Link to='/categories' style={{ textDecoration: 'none' }}>
                 <span className='text-dark'>Kategori & Sub-Kategori</span>
               </Link>
             </a>
-            <a href='#' className='dropdown__link'>
+            <a style={{ textDecoration: 'none' }} className='dropdown__link'>
               <Link to='/categories/tenant' style={{ textDecoration: 'none' }}>
                 <span className='text-dark'>Kategori Tenant</span>
               </Link>
             </a>
-            <a href='#' className='dropdown__link' id='dropdown__link'>
+            <a style={{ textDecoration: 'none' }} className='dropdown__link' id='dropdown__link'>
               <Link to='/change-password' style={{ textDecoration: 'none' }}>
                 <span className='text-dark'>Ubah Password</span>
               </Link>
             </a>
-            <a onClick={handleLogout} href='#' className='nav__link'>
+            <a style={{ textDecoration: 'none' }} onClick={handleLogout} className='nav__link'>
               <i className='bx bx-log-out nav__icon'></i>
               <span className='text-dark'>Keluar Akun</span>
             </a>

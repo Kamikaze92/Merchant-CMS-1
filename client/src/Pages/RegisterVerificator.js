@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import axios from '../config/server'
 import {Link} from 'react-router-dom'
-import { useState } from 'react';
 
 const RegisterPage = {
   backgroundColor: "#094C6F",
@@ -174,7 +173,6 @@ export default function RegisterVerificator() {
           url:'register',
           data: obj
         })
-        console.log(response.data);
         setLoading(false)
         navigate('otp-verification/${response.data.id}/${response.data.token}')
       } catch (error) {

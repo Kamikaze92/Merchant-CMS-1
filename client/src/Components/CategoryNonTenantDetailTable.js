@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import axios from "../config/server";
@@ -108,11 +109,11 @@ export default function CategoryDetail(props) {
         url: `/categories/${id}`,
       });
       setData(response.data);
-      setShow({
-        name: null,
-        payload: null,
-        show: false,
-      });
+      // setShow({
+      //   name: null,
+      //   payload: null,
+      //   show: false,
+      // });
     }
   }, [updated, createdSub, successDeleted, updatedSub]);
   return (
@@ -179,10 +180,10 @@ export default function CategoryDetail(props) {
                 </div>
                 {data ? (
                   <div className="d-flex flex-column ms-4">
-                    <p>:{data.name}</p>
-                    <p>:{data.description}</p>
-                    <p>:{data.created_by}</p>
-                    <p>:{data.created_at}</p>
+                    <p>: &nbsp; {data.name}</p>
+                    <p>: &nbsp; {data.description}</p>
+                    <p>: &nbsp; {data.created_by}</p>
+                    <p>: &nbsp; {data.created_at}</p>
                   </div>
                 ) : null}
               </div>
@@ -208,6 +209,7 @@ export default function CategoryDetail(props) {
                   style={{ color: "#f8f8f8" }}
                 ></i>
                 <p
+                  style={{ color: "#f8f8f8" }}
                   className="m-3  bd-highlight"
                   onClick={() =>
                     handleShow({
@@ -225,6 +227,7 @@ export default function CategoryDetail(props) {
                   style={{ color: "#f8f8f8" }}
                 ></i>
                 <p
+                  style={{ color: "#f8f8f8" }}
                   className="m-3  bd-highlight"
                   // onClick={() =>
                   //   handleShow({
@@ -239,7 +242,7 @@ export default function CategoryDetail(props) {
                 </p>
               </div>
               <div className="px-3 mb-3">
-                <input class="form-control" placeholder="Cari Nama Grup" />
+                <input class="form-control" placeholder="Cari Sub Kategori" />
               </div>
               <div className="d-flex flex-row">
                 <table class="table">
@@ -292,7 +295,7 @@ export default function CategoryDetail(props) {
                                       })
                                     }
                                   >
-                                    <p className="ms-2 me-4  bd-highlight">
+                                    <p className="ms-2 me-4  bd-highlight" style={{color: '#1890FF'}}>
                                       Edit
                                     </p>
                                   </div>
@@ -311,7 +314,7 @@ export default function CategoryDetail(props) {
                                       })
                                     }
                                   >
-                                    <p className="ms-2 me-4  bd-highlight">
+                                    <p className="ms-2 me-4  bd-highlight" style={{ color: "#DD4A48" }}>
                                       Hapus
                                     </p>
                                   </div>
