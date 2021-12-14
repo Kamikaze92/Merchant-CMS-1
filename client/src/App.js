@@ -21,17 +21,12 @@ import AccountVerified from "./Pages/AccountVerified";
 import { RequireAuth, HasToken } from './Components/RequireAuth';
 import Dashboard from './Pages/Dashboard';
 import ForgotPassword from './Pages/ForgotPassword';
-<<<<<<< HEAD
-import ButtonLoading from './Components/buttonLoading';
-=======
 import SetPassword from "./Pages/SetPassword";
->>>>>>> d2173b6945ef0b0b387f51e0769e85cac92a77b2
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/loading" element={ <ButtonLoading></ButtonLoading> }></Route>
         {/* auth Router Guard*/}
         <Route path="/" element={<RequireAuth><Dashboard/></RequireAuth>}>
           {/* Table utama */}
