@@ -55,7 +55,6 @@ export default function Category(props) {
     dispatch(getAllCategoriesTenant());
   }, []);
   useEffect(() => {
-    console.log("asup ga sihh???", loading);
     if (!loading) {
       setShow({
         name: null,

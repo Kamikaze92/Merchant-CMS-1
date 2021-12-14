@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { setUser } from '../store/actions/users';
 import { Link } from 'react-router-dom';
 import LoadingComponent from './LoadingComponent';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 const layoutBorder = {
   borderRadius: 5,

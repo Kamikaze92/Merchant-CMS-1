@@ -1,7 +1,8 @@
 import errorImage from '../assets/images/Frame 167.svg';
 import LoadingComponent from '../Components/LoadingComponent';
-import { useEffect } from "react";
-const { getUserGroups,  } = require('../store/actions/userGroups');
+import { useEffect, useState } from "react";
+import { Modal, Button } from 'react-bootstrap';
+const { getUserGroups } = require('../store/actions/userGroups');
 const { useSelector, useDispatch } = require('react-redux');
 
 const layoutBorder = {
@@ -20,10 +21,11 @@ export default function ListGroupPage () {
         dispatch(getUserGroups());
     }, [dispatch]);
     const addGroup = () => {
-        console.log('Add Group Feature');
+      console.log('Add FEature');
     }
     return (
-        <>
+      <>
+          <App></App>
           <div className="container-fluid mt-3">
           <div className="border" style={layoutBorder}>
               <div className="d-flex flex-row justify-content-center">
@@ -118,4 +120,50 @@ export default function ListGroupPage () {
           </div>
         </>
       );
+}
+
+
+function FormModal(props) {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Modal heading
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h4>Centered Modal</h4>
+        <p>
+          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+          consectetur ac, vestibulum at eros.
+        </p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
+function App() {
+  const [modalShow, setModalShow] = useState(false);
+
+  return (
+    <>
+      <Button variant="primary" onClick={() => setModalShow(true)}>
+        Launch vertically centered modal
+      </Button>
+
+      <FormModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
+    </>
+  );
 }

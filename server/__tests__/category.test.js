@@ -2,6 +2,7 @@ const request = require("supertest");
 const app = require("../app");
 const { Category } = require("../models");
 const { jwtSign } = require("../helpers/jwt");
+const redis = require('../config/redis');
 
 // beforeAll((done) => {
 //     User.create(userTest)
@@ -30,6 +31,7 @@ const { jwtSign } = require("../helpers/jwt");
 //       });
 //   });
 
+redis.disconnect();
 describe("Test API for Categories", () => {
   test("200 Success show all Categories non tenant", (done) => {
     request(app)

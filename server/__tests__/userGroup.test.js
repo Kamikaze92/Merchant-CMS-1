@@ -3,12 +3,27 @@ const request = require("supertest");
 const app = require("../app");
 const { User, Privilege, Role, User_Group } = require("../models");
 const { jwtSign } = require("../helpers/jwt");
+const redis = require('../config/redis');
  
  let validToken1, invalidToken, user_group_id;
  const validUser1 = {
-   email: "h8.pedulilindungi.merchant@gmail.com",
-   password: "finalproject1",
- };
+  full_name: 'Merchant Tenant', 
+  email: 'merchtn111@mail.com',
+  phone_number: '62899999999',
+  // should chose one category_id or tenant_category_id:
+  category_id: 1,
+  // tenant_category_id: '',
+  // parent_id: '',
+  place_name: 'Merchant NT1',
+  institution: 'MNT',
+  address: 'Bandung',
+  province_id: 1,
+  city_id: 1,
+  postal_code: '12345',
+  user_type: 'Merchant',
+  created_at: new Date(),
+  updated_at: new Date(),
+};
  const roleTest = JSON.parse(fs.readFileSync('../../dummyData/roles.JSON', 'utf-8'));
  const privilegeTest = JSON.parse(fs.readFileSync('../../dummyData/privileges.JSON', 'utf-8'));
  const userGroupTest = JSON.parse(fs.readFileSync('../../dummyData/user-groups.JSON', 'utf-8'));
@@ -18,6 +33,7 @@ const { jwtSign } = require("../helpers/jwt");
     element.updatedAt = new Date();
   });
 
+  redis.disconnect();
  beforeAll((done) => {
    User.create(validUser1)
      .then((registeredUser1) => {

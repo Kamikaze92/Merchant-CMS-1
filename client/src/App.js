@@ -22,6 +22,7 @@ import { RequireAuth, HasToken } from './Components/RequireAuth';
 import Dashboard from './Pages/Dashboard';
 import ForgotPassword from './Pages/ForgotPassword';
 import SetPassword from "./Pages/SetPassword";
+import Swal from 'sweetalert2'
 
 function App() {
   return (
