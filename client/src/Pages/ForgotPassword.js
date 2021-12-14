@@ -43,7 +43,7 @@ const RegisterFooter = {
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const [formEmail, setFormEmail] = useState({
-    url: `${window.location.hostname}/set-password/${1}/${1}`,
+    url: `${window.location.hostname}/set-password/${id}/${token}`,
     email: "",
   });
   const inputEmail = (e) => {
