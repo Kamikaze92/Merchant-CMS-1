@@ -65,6 +65,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "invalid_otp") {
     code = 400;
     msg = "OTP is not valid"
+  } else if(err.name === 'NotAuthorized') {
+    code = 403;
+    msg = "Your not authorized"
   }
 
   res.status(code).json({
