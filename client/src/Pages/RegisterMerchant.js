@@ -241,12 +241,12 @@ export default function RegisterMerchant() {
                           Kategori Tenant
                         </label>
                         <div className="input-group ">
-                          <select class="form-select" id="tenant_category_id" name="tenant_category_id"
+                          <select className="form-select" id="tenant_category_id" name="tenant_category_id"
                             value={tenant_category_id}
                             onChange={handleFormDataChange}
                             >
                             {/**Sampel */}
-                            <option selected disabled>
+                            <option value="" disabled>
                               Pilih Kategori
                             </option>
                             { tenantCategories?.map(category => {
@@ -277,12 +277,12 @@ export default function RegisterMerchant() {
                           Kategori
                         </label>
                         <div className="input-group ">
-                          <select class="form-select" id="category_id" name="category_id"
+                          <select className="form-select" id="category_id" name="category_id"
                             value={category_id}
                             onChange={handleFormDataChange}
                             >
                             {/**Sampel */}
-                            <option selected disabled>
+                            <option value="" disabled>
                               Pilih Kategori
                             </option>
                             { categories?.map(category => {
@@ -296,12 +296,12 @@ export default function RegisterMerchant() {
                           Sub-Kategori
                         </label>
                         <div className="input-group ">
-                          <select class="form-select" id="sub_category_id" name="sub_category_id"
+                          <select className="form-select" id="sub_category_id" name="sub_category_id"
                             value={sub_category_id}
                             onChange={handleFormDataChange}
                           >
                           {/**Sampel */}
-                          <option selected disabled>
+                          <option value="" disabled>
                             Pilih Sub-Kategori
                           </option>
                             { subCategories?.map(category => {
@@ -369,12 +369,12 @@ export default function RegisterMerchant() {
                       Provinsi
                     </label>
                     <div className="input-group ">
-                      <select class="form-select" id="province_id" name="province_id"
+                      <select className="form-select" id="province_id" name="province_id"
                         value={province_id}
                         onChange={handleFormDataChange}
                       >
                         {/**Sampel */}
-                        <option selected disabled>
+                        <option value="" disabled>
                           Pilih Provinsi
                         </option>
                         { provinces?.map(province => {
@@ -388,12 +388,12 @@ export default function RegisterMerchant() {
                       Kota
                     </label>
                     <div className="input-group ">
-                      <select class="form-select" id="city_id" name="city_id"
+                      <select className="form-select" id="city_id" name="city_id"
                         value={city_id}
                         onChange={handleFormDataChange}
                       >
                         {/**Sampel */}
-                        <option selected disabled>
+                        <option value="" disabled>
                           Pilih Kota / Kabupaten
                         </option>
                         { cities?.map(city => {
@@ -417,7 +417,7 @@ export default function RegisterMerchant() {
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
                     disabled
                   >
-                  <span class="spinner-border spinner-border-sm text-white" role="status"></span>
+                  <span className="spinner-border spinner-border-sm text-white" role="status"></span>
                   </button>
                 </div>
               </form>

@@ -14,8 +14,42 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   City.init({
-    name: DataTypes.STRING,
-    province_id: DataTypes.INTEGER,
+    name: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        notNull: {
+          msg: "Name is required"
+        },
+        notEmpty: {
+          msg: "Name is required"
+        }
+      }
+    }, // required.
+    province_id: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        notNull: {
+          msg: "Province is required"
+        },
+        notEmpty: {
+          msg: "Province is required"
+        }
+      }
+    }, // required.
+    created_by: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      validate: {
+        notNull: {
+          msg: "Creator owner is required",
+        },
+        notEmpty: {
+          msg: "Creator owner is required",
+        },
+      },
+    }, // required.
   }, {
     sequelize,
     paranoid: true,

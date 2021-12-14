@@ -6,35 +6,46 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       role_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Roles',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
       privilege_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Privileges',
-          key: 'id'
-        }
+          key: 'id',
+        },
       },
-      createdAt: {
+      created_by: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
       },
-      updatedAt: {
+      created_at: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deleted_at: {
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('User_Groups');
-  }
+  },
 };

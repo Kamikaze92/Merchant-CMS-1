@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     /**
@@ -9,8 +9,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Category.hasMany(Category, {
-        foreignKey: "parent_id",
-        as: "sub_category",
+        foreignKey: 'parent_id',
+        as: 'sub_category',
+      });
+
+      Category.belongsTo(Category, {
+        foreignKey: 'parent_id',
+        as: 'category',
+      });
+
+      Category.hasMany(models.Merchant, {
+        foreignKey: 'category_id',
+        as: 'merchants',
+      });
+
+      Category.hasMany(models.Merchant, {
+        foreignKey: 'tenant_category_id',
+        as: 'tenant_merchants',
       });
     }
   }
@@ -21,25 +36,34 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Name is required",
+            msg: 'Name is required',
           },
           notEmpty: {
-            msg: "Name is required",
+            msg: 'Name is required',
           },
         },
-      },
+      }, // required.
       description: {
         type: DataTypes.STRING,
       },
       is_tenant_category: {
         type: DataTypes.BOOLEAN,
       },
-      created_by: {
-        type: DataTypes.STRING,
-      },
       parent_id: {
         type: DataTypes.INTEGER,
       },
+      created_by: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: 'Creator owner is required',
+          },
+          notEmpty: {
+            msg: 'Creator owner is required',
+          },
+        },
+      }, // required.
     },
     {
       sequelize,
@@ -47,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: 'created_at',
       updatedAt: 'updated_at',
       deletedAt: 'deleted_at',
-      modelName: "Category",
+      modelName: 'Category',
     }
   );
   return Category;

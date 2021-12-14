@@ -1,6 +1,6 @@
 const { getPagination, getPagingData } = require("../helpers/pagination");
 const  newHistory = require('../helpers/historyInstance');
-const { User, sequelize, Category, Verifier, Merchant, City, UserGroups } = require("../models");
+const { User, Role, Verificator, sequelize, History, UserGroups, Category, Verifier, Merchant, Province, City } = require("../models");
 const { Op } = require("sequelize");
 const {jwtSign, verifyData} = require('../helpers/jwt')
 const {comparePassword} = require('../helpers/bcrypt')
@@ -25,8 +25,8 @@ module.exports = class UserController {
         deleted_at: null,
       };
       if (search) {
-        condition["email"] = { [Op.iLike]: `%${search}%` };
-        condition["fullname"] = { [Op.iLike]: `%${search}%` };
+        conditions["email"] = { [Op.iLike]: `%${search}%` };
+        conditions["fullname"] = { [Op.iLike]: `%${search}%` };
       }
       const { limit, offset } = getPagination(page, size);
       const response = await User.findAndCountAll({
@@ -38,6 +38,7 @@ module.exports = class UserController {
         include: [
           {
             model: Verifier,
+            as: 'verifier',
           },
         ],
         limit,
@@ -56,50 +57,47 @@ module.exports = class UserController {
   static async getUser(req, res, next) {
     try {
       const id = +req.params.id;
+
+      const user = await User.findByPk(id);
+      const include = [];
+      if (user.verifier_id) {
+        include.push(
+          {
+            model: Verifier,
+            require: true, // REQUIRED!. because if not have verifier it should return empty array!.
+          },
+        );
+      } else {
+        include.push(
+          {
+            model: Merchant,
+            require: true, // REQUIRED!. because if not have merchant it should return empty array!.
+            include: [
+              {
+                model: Category,
+                require: true, // REQUIRED!. because merchant should have category!.
+              },
+            ]
+          }
+        );
+      };
+
       const result = await User.findByPk(id, {
-        include: [
-          {
-            model: Merchant
-          },
-          {
-            model: Verifier
-          },
-        ],
+        include,
         attributes: {
           exclude: ["password"],
         },
       });
+
       if (!result) {
         throw { name: "user_not_found" };
       }
       res.status(200).json(result);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }
-  // get user status
-  static async getUserStatus(req, res, next) {
-    //
-    try {
-      const { email } = req.body
-      const find = await User.findOne({where: {email: email}})
-      if (!find){
-        throw { name: "email_not_found" };  // Email tidak ditemukan Throw
-      }
-      if (!find.verified_at){
-        res.status(200).json({message: "rejected"}) // belum verifikasi 
-      }
-      if(find.approved_at){
-        res.status(200).json({message: "approved"})
-      }
-      // untuk activate nya belum 
-    } catch (err) {
-      console.log(err);
-      next(err);
-    }
-  }
-
+  // fixed
   static async getUserMerchant(req, res, next) {
     try {
       //=========
@@ -107,7 +105,7 @@ module.exports = class UserController {
       // if super admin all filter are passed.
       // TODO : this one get from authentication when ready.
       // remove later.
-      const verifier = req.user.Verifier;
+      const { verifier } = req.user;
       // const role = req.user.Role.name;
       // const role = 'Admin';
       const role = 'Verifikator';
@@ -116,7 +114,7 @@ module.exports = class UserController {
       // New Merchant User.
       let conditions = {
         verifier_id: null,
-        verified_at: null,
+        verified_at: { [Op.ne]: null },
         approved_at: null,
         approved_by: null,
         is_rejected: null,
@@ -141,14 +139,14 @@ module.exports = class UserController {
       if (role !== 'Admin' && verifier.city_id) {
         conditions = {
           ...conditions,
-          '$Merchant.city_id$': verifier.city_id,
+          '$merchant.city_id$': verifier.city_id,
         }
       }
 
       if (role !== 'Admin' && verifier.province_id) {
         conditions = {
           ...conditions,
-          '$Merchant.province_id$': verifier.province_id,
+          '$merchant.province_id$': verifier.province_id,
         }
       }
 
@@ -161,12 +159,24 @@ module.exports = class UserController {
         include: [
           {
             model: Merchant,
+            as: 'merchant',
             require: true, // REQUIRED!. because if not have merchant it should return empty array!.
             include: [
               {
                 model: Category,
+                as: 'sub_category',
                 require: true, // REQUIRED!. because merchant should have category!.
               },
+              {
+                model: Province,
+                as: 'province',
+                require: true, // REQUIRED!. because if not have merchant it should return empty array!.
+              },
+              {
+                model: City,
+                as: 'city',
+                require: true, // REQUIRED!. because if not have merchant it should return empty array!.
+              }
             ]
           }
         ],
@@ -179,7 +189,7 @@ module.exports = class UserController {
       next(error);
     }
   }
-
+  // fixed
   static async getUserVerifier(req, res, next) {
     try {
       //=========
@@ -187,7 +197,7 @@ module.exports = class UserController {
       // if super admin all filter are passed.
       // TODO : this one get from authentication when ready.
       // remove later.
-      const verifier = req.user.Verifier;
+      const { verifier } = req.user;
       
       // const role = 'Admin';
       const role = 'Verifikator';
@@ -229,8 +239,8 @@ module.exports = class UserController {
         cities = cities.map(e => e.id);
         conditions = {
           ...conditions,
-          '$Verifier.province_id$': verifier.province_id,
-          '$Verifier.city_id$': { [Op.in]: cities },
+          '$verifier.province_id$': verifier.province_id,
+          '$verifier.city_id$': { [Op.in]: cities },
         }
       }
 
@@ -243,7 +253,20 @@ module.exports = class UserController {
         include: [
           {
             model: Verifier,
+            as: 'verifier',
             require: true, // REQUIRED!. because if not have verifier it should return empty array!.
+            include: [
+              {
+                model: Province,
+                as: 'province',
+                require: true, // REQUIRED!. because if not have merchant it should return empty array!.
+              },
+              {
+                model: City,
+                as: 'city',
+                require: true, // REQUIRED!. because if not have merchant it should return empty array!.
+              }
+            ]
           },
         ],
       });
@@ -255,7 +278,7 @@ module.exports = class UserController {
       next(error);
     }
   }
-
+  // fixed
   static async getActiveUserMerchant(req, res, next) {
     try {
       //=========
@@ -263,7 +286,7 @@ module.exports = class UserController {
       // if super admin all filter are passed.
       // TODO : this one get from authentication when ready.
       // remove later.
-      const verifier = req.user.Verifier;
+      const { verifier } = req.user;
       // const role = req.user.Role.name;
       // const role = 'Admin';
       const role = 'Verifikator';
@@ -297,14 +320,14 @@ module.exports = class UserController {
       if (role !== 'Admin' && verifier.city_id) {
         conditions = {
           ...conditions,
-          '$Merchant.city_id$': verifier.city_id,
+          '$merchant.city_id$': verifier.city_id,
         }
       }
 
       if (role !== 'Admin' && verifier.province_id) {
         conditions = {
           ...conditions,
-          '$Merchant.province_id$': verifier.province_id,
+          '$merchant.province_id$': verifier.province_id,
         }
       }
 
@@ -317,12 +340,49 @@ module.exports = class UserController {
         include: [
           {
             model: Merchant,
+            as: 'merchant',
             require: true, // REQUIRED!. because if not have merchant it should return empty array!.
             include: [
               {
+                model: Merchant,
+                require: true, // REQUIRED!. because merchant should have province!.
+                as: 'non_tenant_merchant',
+                attributes: {
+                  include: ["place_name"],
+                },
+              },
+              {
                 model: Category,
                 require: true, // REQUIRED!. because merchant should have category!.
+                as: 'sub_category',
+                attributes: {
+                  include: ["name", "description"],
+                },
+                include: {
+                  model: Category,
+                  require: true, // REQUIRED!. because merchant should have category!.
+                  as: 'category',
+                  attributes: {
+                    include: ["name", "description"],
+                  },
+                },
               },
+              {
+                model: Province,
+                require: true, // REQUIRED!. because merchant should have province!.
+                as: 'province',
+                attributes: {
+                  include: ["name"],
+                },
+              },
+              {
+                model: City,
+                require: true, // REQUIRED!. because merchant should have city!.
+                as: 'city',
+                attributes: {
+                  include: ["name"],
+                },
+              }
             ]
           }
         ],
@@ -459,27 +519,26 @@ module.exports = class UserController {
   static async deleteUserSoft(req, res, next) {
     const t = await sequelize.transaction();
     try {
-      const id = req.params.id
-      const findUser = await User.findByPk(id)
+      const id = req.params.id;
+      const findUser = await User.findByPk(id);
       if (!findUser){
         throw { name: "user_not_found" };
       }
-      const del = await User.destroy({ where: { id: id }, transaction: t });
-      const payload = {
-        entity_name: 'User',
-        entity_id: findUser.id,
-        user_id: req.user.id, // yang menghapus adalah yang login menekan tombol
-      };
-      const isHistoryCreated = await newHistory('deleteUserSoft', payload);
-      if(!isHistoryCreated) {
-        throw { err: 'fail_create_history' };
-      }
+      const del = await User.destroy({ where: { id }, transaction: t });
+      // const payload = {
+      //   entity_name: 'User',
+      //   entity_id: findUser.id,
+      //   user_id: req.user.id, // yang menghapus adalah yang login menekan tombol
+      // };
+      // const isHistoryCreated = await newHistory('deleteUserSoft', payload);
+      // if(!isHistoryCreated) {
+      //   throw { err: 'fail_create_history' };
+      // }
       await t.commit();
       res.status(200).json({ message: "Success delete the User" });
-    } catch (err) {
+    } catch (error) {
       await t.rollback();
-      console.log(err);
-      next(err);
+      next(error);
     }
   }
   // delete user (hard) //nambahin paranoid di model User = true
@@ -559,28 +618,6 @@ module.exports = class UserController {
     }
   }
 
-  static async approveUser(req, res, next) {
-    try {
-      const { id, token } = req.params;
-
-      // if token was invalid its throw error.
-      verifyData(token);
-      await User.update({
-        approved_at: new Date(),
-      }, {
-        where: {id}
-      });
-
-      // !TODO : create history.
-
-      res.status(200).json({ 
-        message: 'User has been approved.',
-        id,
-      });
-    } catch (error) {
-      next(error);
-    };
-  };
 
   static async userChangePassword(req, res, next){
     try {

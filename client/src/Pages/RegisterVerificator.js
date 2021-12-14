@@ -174,9 +174,9 @@ export default function RegisterVerificator() {
           data: obj
         })
         setLoading(false)
-        navigate('otp-verification/${response.data.id}/${response.data.token}')
+        navigate(`/otp-verification/${response.data.id}/${response.data.token}`);
       } catch (error) {
-        if (error.message && !error.response.data) {
+        if (error.message && !error.response?.data) {
           setLoading(false)
         } else {
           console.log(error.response.data.message, '>>>>>>');
@@ -326,7 +326,7 @@ export default function RegisterVerificator() {
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
                     disabled
                   >
-                  <span class="spinner-border spinner-border-sm text-white" role="status"></span>
+                  <span className="spinner-border spinner-border-sm text-white" role="status"></span>
                   </button>
                 </div>
                 }

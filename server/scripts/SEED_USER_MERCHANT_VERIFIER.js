@@ -19,6 +19,7 @@ const createUser = async (payload) => {
       postal_code,
       province_id,
       city_id,
+      created_by,
     } = payload;
     
     if (user_type !== 'Merchant' && user_type !== 'Verifier' ) {
@@ -34,6 +35,7 @@ const createUser = async (payload) => {
         institution,
         province_id,
         city_id,
+        created_by,
       }, { transaction: t });
     };
 
@@ -42,6 +44,7 @@ const createUser = async (payload) => {
       email,
       phone_number,
       password: 'random',
+      created_by,
       verifier_id: verifierTransaction?.id || null,
     }, { transaction: t });
 
@@ -57,12 +60,14 @@ const createUser = async (payload) => {
         postal_code,
         tenant_category_id,
         parent_id,
+        created_by,
       }, { transaction: t });
     }
     await t.commit();
     console.log("Sucess Seed");
   } catch (error) {
     await t.rollback();
+    console.log(error);
     console.log("Error: rollback");
   }
 }
@@ -83,6 +88,7 @@ const merchantNonTenant = [
     province_id: 1,
     city_id: 1,
     postal_code: '12345',
+    created_by: 1,
     user_type: 'Merchant', // Merchant or Verifier
   },
   {
@@ -100,6 +106,7 @@ const merchantNonTenant = [
     province_id: 1,
     city_id: 1,
     postal_code: '12345',
+    created_by: 1,
     user_type: 'Merchant', // Merchant or Verifier
   },
   {
@@ -117,6 +124,7 @@ const merchantNonTenant = [
     province_id: 1,
     city_id: 1,
     postal_code: '12345',
+    created_by: 1,
     user_type: 'Merchant', // Merchant or Verifier
   },
   {
@@ -134,6 +142,7 @@ const merchantNonTenant = [
     province_id: 1,
     city_id: 2,
     postal_code: '12345',
+    created_by: 1,
     user_type: 'Merchant', // Merchant or Verifier
   },
   {
@@ -151,6 +160,7 @@ const merchantNonTenant = [
     province_id: 2,
     city_id: 1,
     postal_code: '12345',
+    created_by: 1,
     user_type: 'Merchant', // Merchant or Verifier
   }
 ];
@@ -175,6 +185,7 @@ const merchantTenant = [
     province_id: 1,
     city_id: 1,
     postal_code: '12345',
+    created_by: 1,
     user_type: 'Merchant', // Merchant or Verifier
   },
   {
@@ -192,6 +203,7 @@ const merchantTenant = [
     province_id: 1,
     city_id: 1,
     postal_code: '12345',
+    created_by: 1,
     user_type: 'Merchant', // Merchant or Verifier
   },
   {
@@ -209,6 +221,7 @@ const merchantTenant = [
     province_id: 1,
     city_id: 1,
     postal_code: '12345',
+    created_by: 1,
     user_type: 'Merchant', // Merchant or Verifier
   },
   {
@@ -226,6 +239,7 @@ const merchantTenant = [
     province_id: 1,
     city_id: 2,
     postal_code: '12345',
+    created_by: 1,
     user_type: 'Merchant', // Merchant or Verifier
   },
   {
@@ -243,6 +257,7 @@ const merchantTenant = [
     province_id: 2,
     city_id: 1,
     postal_code: '12345',
+    created_by: 1,
     user_type: 'Merchant', // Merchant or Verifier
   }
 ];
@@ -260,6 +275,7 @@ const VerifierProv = [
     institution: 'MNT', // pengampu
     province_id: 1,
     city_id: null,
+    created_by: 1,
     user_type: 'Verifier', // Merchant or Verifier
   },
   {
@@ -270,6 +286,7 @@ const VerifierProv = [
     institution: 'MNT', // pengampu
     province_id: 2,
     city_id: null,
+    created_by: 1,
     user_type: 'Verifier', // Merchant or Verifier
   },
 ];
@@ -287,6 +304,7 @@ const VerifierCity = [
     institution: 'MNT', // pengampu
     province_id: 1,
     city_id: 1,
+    created_by: 1,
     user_type: 'Verifier', // Merchant or Verifier
   },
   {
@@ -297,6 +315,7 @@ const VerifierCity = [
     institution: 'MNT', // pengampu
     province_id: 1,
     city_id: 2,
+    created_by: 1,
     user_type: 'Verifier', // Merchant or Verifier
   },
   {
@@ -307,6 +326,7 @@ const VerifierCity = [
     institution: 'MNT', // pengampu
     province_id: 1,
     city_id: 3,
+    created_by: 1,
     user_type: 'Verifier', // Merchant or Verifier
   },
   {
@@ -317,6 +337,7 @@ const VerifierCity = [
     institution: 'MNT', // pengampu
     province_id: 2,
     city_id: 1,
+    created_by: 1,
     user_type: 'Verifier', // Merchant or Verifier
   },
 ];
