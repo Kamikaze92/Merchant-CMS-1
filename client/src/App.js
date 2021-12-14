@@ -22,6 +22,7 @@ import { RequireAuth, HasToken } from './Components/RequireAuth';
 import Dashboard from './Pages/Dashboard';
 import ForgotPassword from './Pages/ForgotPassword';
 import SetPassword from "./Pages/SetPassword";
+import ApprovalPage from './Pages/ApprovalPage'
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
         <Route path="/otp-verification/:id/:token" element={<HasToken><OtpInput /></HasToken>}></Route>
         <Route path="/check-status" element={<HasToken><CheckStatus /></HasToken>}></Route>
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+        <Route path="/approval-page/:id/:token" element={<ApprovalPage />}></Route>
         <Route path="/set-password/:id/:token" element={<SetPassword />}></Route>
         <Route path="/errors" element={<ErrorPage />}></Route>
         <Route

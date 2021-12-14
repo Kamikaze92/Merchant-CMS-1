@@ -8,6 +8,7 @@ export default function OtpInput() {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(2);
   const [otp, setOtp] = useState('');
+  const [error, setError] = useState('')
 
   const setTime = () => {
     if (seconds === 0 && minutes === 0) {
@@ -45,6 +46,7 @@ export default function OtpInput() {
       })
       if (response.status === 200 ) navigate(`/account-verified`);
     } catch (error) {
+      setError(error.response.data.message)
       console.log(error);
     }
   };
@@ -91,19 +93,25 @@ export default function OtpInput() {
                   email
                 </h6>
               </div>
-              <form className='justify-content-center' onSubmit={onFormSubmit}>
-                <div id='divOuter'>
-                  <div id='divInner'>
+              {error ? (
+                <div className="alert alert-danger alert-dismissible" role="alert">
+                  <strong>Ups!</strong> {error}
+                </div>
+                ): (null)}
+              <form onSubmit={onFormSubmit}>
+                <div id="divOuter" className="text-center">
+                  <div id="divInner">
                     <input
                       id='partitioned'
                       className='mt-5 mb-3'
                       type='text'
                       maxLength='6'
                       name='otp'
+                      style={{fontSize: "36px"}}
                       value={otp}
                       onChange={handleFormChange}
                     />
-                  </div>
+                    </div>
                 </div>
                 <div className='d-grid gap-2 col-12 mt-3'>
                   <button
@@ -126,9 +134,9 @@ export default function OtpInput() {
                   Jika anda tidak menerima email, silahkan cek folder spam anda,
                   atau <br /> kirim ulang kode verifikasi
                   {seconds === 0 && minutes === 0 ? (
-                    <button onClick={onResendOTP} className='text-decoration-none mb-3 mx-1'>
+                    <a onClick={onResendOTP} className='text-decoration-none mb-3 mx-1'>
                       Resend OTP
-                    </button>
+                    </a>
                   ) : (
                     <span className='mx-2'>
                       ({minutes}:{seconds})

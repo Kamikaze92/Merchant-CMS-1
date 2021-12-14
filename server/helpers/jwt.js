@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const privateKey = process.env.JWTKEY;
 
 let jwtSign = (data) => {
-    return jwt.sign(data, privateKey)
+    return jwt.sign(data, privateKey, {expiresIn: '72h'})
 }
 
 let signPasswordLink = (data, password) => {

@@ -59,6 +59,8 @@ export default function RegisterVerificator() {
     institution: '',
     Verifier: ''
   });
+  const [error, setError] = useState('')
+  console.log(error)
     useEffect(async() => {
       if (!provinces.length) {
         const { data } = await axios({
@@ -177,8 +179,10 @@ export default function RegisterVerificator() {
         navigate(`/otp-verification/${response.data.id}/${response.data.token}`);
       } catch (error) {
         if (error.message && !error.response?.data) {
+          setError(error.message)
           setLoading(false)
         } else {
+          setError(error.response.data.message)
           setLoading(false)
         }
         setLoading(false)
@@ -206,6 +210,11 @@ export default function RegisterVerificator() {
               <form onSubmit={handleFormSubmit}>
                 {/* <!--Email--> */}
                 <div className="px-1 py-1">
+                {error ? (
+                <div className="alert alert-danger alert-dismissible" role="alert">
+                  <strong>Ups!</strong> {error}
+                </div>
+                ): (null)}
                   <div>
                     <label className="form-label" style={FormText}>
                       Nama Lengkap
@@ -317,7 +326,7 @@ export default function RegisterVerificator() {
                     type="submit"
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
                   >
-                    Masuk
+                    Daftar
                   </button>
                   <button
                     className={isButtonRegisterClicked ? "btn btn-primary" : "btn btn-primary d-none"}

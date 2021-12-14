@@ -5,7 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const RegisterPage = {
   backgroundColor: "#094C6F",
-  height: "130vh"
+  height: "150vh"
 };
 const RegisterForm = {
   backgroundColor: "white",
@@ -47,7 +47,7 @@ export default function RegisterMerchant() {
   const [tenantCategories, setTenantCategories] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [cities, setCities] = useState([]);
-
+  const [error, setError] = useState('')
   const [isTenant, setIsTenant] = useState('true');
   const [formData, setFormData] = useState({
     user_type: 'Merchant',
@@ -124,9 +124,8 @@ export default function RegisterMerchant() {
       })
       if (response.status === 201 ) navigate(`/otp-verification/${response.data.id}/${response.data.token}`);
     } catch (error) {
+      setError(error.response.data.message)
       setIsButtonRegisterClicked(false);
-      console.log(error);
-      // error
     }
   }
 
@@ -163,6 +162,11 @@ export default function RegisterMerchant() {
                   Register Akun Pengelola QR Code PeduliLindungi
                 </h4>
               </div>
+              {error ? (
+                <div className="alert alert-danger alert-dismissible" role="alert">
+                  <strong>Ups!</strong> {error}
+                </div>
+                ): (null)}
               <form onSubmit={(e) => onFormSubmit(e)}>
                 {/* <!--Email--> */}
                 <div className="px-1 py-1">
@@ -409,7 +413,7 @@ export default function RegisterMerchant() {
                     type="submit"
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
                   >
-                    Register
+                    Daftar
                   </button>
                   <button
                     className={isButtonRegisterClicked ? "btn btn-primary" : "btn btn-primary d-none"}
