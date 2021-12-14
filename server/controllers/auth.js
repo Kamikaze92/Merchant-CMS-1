@@ -13,6 +13,11 @@ module.exports = class AuthController {
       let response = await User.findOne({
         where: { email },
       });
+      if(!response.approved_at && !response.approved_by && !response.verified_at){
+        throw {
+          name: "not_authenticated",
+        }
+      }
 
       if(response && comparePassword(password, response.password)){
         if(!response.approved_at && !response.approved_by && !response.verified_at){
@@ -66,7 +71,7 @@ module.exports = class AuthController {
       if (user_type !== 'Merchant' && user_type !== 'Verifier' ) {
         throw {
           name: 'errorUserType',
-          mgs: 'user type should be "Merchant" or "Verifier"',
+          msg: 'user type should be "Merchant" or "Verifier"',
         }
       }
 
@@ -184,7 +189,7 @@ module.exports = class AuthController {
       const user = await User.findByPk(id);
       
       if (!user) {
-        throw { name: 'not_found' };
+        throw { name: 'user_not_found' };
       };
       
       const OTP = String(Math.floor(Math.random() * 999999));
