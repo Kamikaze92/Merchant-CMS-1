@@ -52,18 +52,6 @@ module.exports = (sequelize, DataTypes) => {
       parent_id: {
         type: DataTypes.INTEGER,
       },
-      created_by: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: 'Creator owner is required',
-          },
-          notEmpty: {
-            msg: 'Creator owner is required',
-          },
-        },
-      }, // required.
     },
     {
       sequelize,
