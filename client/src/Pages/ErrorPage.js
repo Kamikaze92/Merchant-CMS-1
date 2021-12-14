@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react-dom";
+import { useState, useEffect } from "react";
 import errorImage1 from '../assets/images/Frame 167.svg'
 import errorImage2 from '../assets/images/Illustration - Business, Startup, workflow, error _ exhaustion, exhausted, work, laptop, computer, support.svg'
 
