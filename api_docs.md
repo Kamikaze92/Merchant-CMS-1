@@ -9,10 +9,13 @@ Peduli Lindungi is an application to manage your .... This app has :
 4. `POST /resend-otp/:id/:token`
 5. `POST /forgot-password/:id/:token`
 6. `PATCH /reset-password/:id/:token`
+7. `PATCH /approve-user/:id/:token`
+8. `POST /check-status`
 
 
 ### Merchant
 1. `GET /users/merchants`
+2. `GET /users/merchants/active`
 
 
 ### User
@@ -24,8 +27,7 @@ Peduli Lindungi is an application to manage your .... This app has :
 6. `PATCH /users/:id`
 7. `DELETE /users/:id`
 8. `POST /users/activation/:id`
-9. `PATCH /users/approve-user/:id/:token`
-10. `PATCH /users/create-password/:id`
+9. `PATCH /users/create-password/:id`
 
 ### User Group
 1. `GET /user-groups`
@@ -62,11 +64,9 @@ Peduli Lindungi is an application to manage your .... This app has :
 1. `GET /categories`  
 2. `POST /categories`
 3. `PUT /categories/:id`
-
 4. `GET /categories/tenant`
 5. `GET /categories/tenant/:id`
 6. `PUT /categories/tenant/:id`
-
 7. `POST /categories/sub/:category_id`
 8. `PUT /categories/sub/:id`
 9. `GET /categories/:id`
@@ -92,6 +92,7 @@ not needed
 not needed
 ```
 **Request Body**
+
 ```json
 {
   "full_name": "String",
@@ -108,6 +109,7 @@ not needed
   "city_id": "Integer",
 }
 ```
+
 **Response (201 - Created)**
 ```json
 {
@@ -116,6 +118,7 @@ not needed
   "token": "String"
 }
 ```
+
 **Response (400 - Bad Request)**
 ```json
 {
@@ -145,10 +148,8 @@ OR
 {
   "message": "Invalid email format"
 }
-
 ```
 
-&nbsp;
 
 ### POST /login
 > Login user
@@ -162,6 +163,7 @@ not needed
 ```
 not needed
 ```
+
 **Request Body**
 ```json
 {
@@ -170,22 +172,25 @@ not needed
   "password": "String"
 }
 ```
+
 **Response (200 - OK)**
 ```json
 {
   "access_token": "String"
 }
 ```
+
 **Response (401 - Unauthorized)**
 ```json
 {
   "message": "Error invalid username or email or password"
 }
-
 ```
+
 
 ### POST /otp-verification/:id/:token
 > Create OTP
+
 
 **Request Headers**
 ```
@@ -198,18 +203,21 @@ not needed
   "token": "string (required)"
 }
 ```
+
 **Request Body**
 ```json
 {    
   "otp": "String"
 }
 ```
+
 **Response (200 - OK)**
 ```json
 {
   "message": "Registration success! Please check your email by 3x24 for verification process."
 }
 ```
+
 **Response (400 - Bad Request)**
 ```json
 {
@@ -221,6 +229,7 @@ OR
 }
 
 ```
+
 
 ### POST /resend-otp/:id/:token
 > Resend OTP
@@ -236,8 +245,8 @@ not needed
   "token": "string (required)"
 }
 ```
-**Request Body**
 
+**Request Body**
 ```
 not needed
 ```
@@ -250,6 +259,7 @@ not needed
   "token": "string",
 }
 ```
+
 **Response (400 - Bad Request)**
 ```json
 {
@@ -264,13 +274,16 @@ not needed
 }
 ```
 
+
 ### POST /forgot-password/:id/:token
 > Forgot Password
+
 
 **Request Headers**
 ```
 not needed
 ```
+
 **Request Params**
 ```json
 {
@@ -278,18 +291,22 @@ not needed
   "token": "string (required)"
 }
 ```
+
 **Request Body**
 ```json
 {    
   "email": "String"
 }
 ```
+
+
 **Response (201 - Created)**
 ```json
 {
   "message": "A link has been sent to your email"
 }
 ```
+
 **Response (400 - Bad Request)**
 ```json
 {
@@ -318,6 +335,7 @@ not needed
   "token": "string (required)"
 }
 ```
+
 **Request Body**
 
 ```json
@@ -333,12 +351,81 @@ not needed
   "message": "Your password has been changed, please attempt login"
 }
 ```
+
 **Response (401 - Unauthorized)**
 ```json
 {
   "message": "Password not match"
 }
 ```
+
+
+### PATCH /approve-user/:id/:token
+> Send activation link by id
+
+
+**Request Headers**
+```
+not needed
+```
+
+**Request Params**
+```json
+{
+  "id": "integer (required)",
+  "token": "string (required)"
+}
+```
+
+**Request Body**
+```
+not needed
+```
+
+**Response (200 - Ok)**
+```json
+{
+  "message": "User has been approved.",
+  "id": "Integer"
+}
+```
+
+
+### POST /check-status
+> Create status
+
+**Request Headers**
+```
+not needed
+```
+
+**Request Params**
+```
+not needed
+```
+
+**Request Body**
+```json
+
+{
+  "email": "String"
+}
+```
+
+**Response (200 - Ok)**
+```json
+{
+  "status": "String",
+}
+```
+
+**Response (404 - Not Found)**
+```json
+{
+  "message": "Email is not found",
+}
+```
+
 
 ### GET /merchants
 > Get all merchants
@@ -349,18 +436,13 @@ not needed
   "access_token": "string"
 }
 ```
+
 **Request Params**
 ```
 not needed
 ```
 
-**Request User**
-```json
-"Verifier": "string"
-```
-
 **Request Body**
-
 ```
 not needed
 ```
@@ -412,6 +494,7 @@ not needed
     },
 ]
 ```
+
 **Response (403 - Forbidden)**
 ```json
 {
@@ -427,7 +510,6 @@ not needed
 ```
 
 
-========================!!
 ### GET /users
 > Get all users
 
@@ -437,27 +519,56 @@ not needed
   "access_token": "string"
 }
 ```
+
 **Request Query**
-```js
+```json
 
-"page": "Integer"
-"size": "Integer"
-"search": "String"
-"filter": "String"
-
+{ 
+  "page": "Integer",
+  "size": "Integer",
+  "search": "String",
+  "filter": "String",
+}
 ```
 
 **Request Body**
-
 ```
 not needed
 ```
 
 **Response (200 - Ok)**
 ```json
-[
-   
-]
+{
+    "totalItems": "Integer",
+    "users": [
+        {
+            "id": "Integer",
+            "full_name": "String",
+            "email": "String",
+            "phone_number": "String",
+            "verifier_id": "Integer",
+            "verified_at": "String",
+            "approved_by": "String",
+            "approved_at": "String",
+            "is_rejected": "String",
+            "rejected_reason": "String",
+            "created_at": "String",
+            "updated_at": "String",
+            "deleted_at": "String",
+            "verifier": {
+                "id": "Integer",
+                "institution": "String",
+                "province_id": "Integer",
+                "city_id": "Integer",
+                "created_at": "String",
+                "updated_at": "String",
+                "deleted_at": "String"
+            }
+        },
+    ],
+    "totalPages": "Integer",
+    "currentPage": "Integer"
+}
 ```
 
 **Response (404 - Not Found)**
@@ -466,11 +577,10 @@ not needed
   "message": "User is not found"
 }
 ```
-=========================!!
 
-========================!!
+
 ### GET /users/:id
-> Get all users
+> Get users by id
 
 **Request Headers**
 ```json
@@ -486,7 +596,6 @@ not needed
 ```
 
 **Request Body**
-
 ```
 not needed
 ```
@@ -494,8 +603,76 @@ not needed
 **Response (200 - Ok)**
 ```json
 {
-   
-   
+  "id": "Integer",
+  "full_name": "String",
+  "email": "String",
+  "phone_number": "String",
+  "verifier_id": "Integer",
+  "verified_at": "String",
+  "approved_by": "String",
+  "approved_at": "String",
+  "is_rejected": "String",
+  "rejected_reason": "String",
+  "created_at": "String",
+  "updated_at": "String",
+  "deleted_at": "String",
+  "verifier": {
+      "id": "Integer",
+      "institution": "String",
+      "province_id": "Integer",
+      "city_id": "Integer",
+      "created_at": "String",
+      "updated_at": "String",
+      "deleted_at": "String"
+    }                    
+},
+OR
+{
+    "id": "Integer",
+    "full_name": "String",
+    "email": "String",
+    "phone_number": "String",
+    "verifier_id": "Integer",
+    "verified_at": "String",
+    "approved_by": "Integer",
+    "approved_at": "String",
+    "is_rejected": "Integer",
+    "rejected_reason": "Integer",
+    "created_at": "String",
+    "updated_at": "String",
+    "deleted_at": "Integer",
+    "merchant": {
+        "id": "Integer",
+        "user_id": "Integer",
+        "institution": "String",
+        "address": "String",
+        "postal_code": "String",
+        "province_id": "Integer",
+        "city_id": "Integer",
+        "place_name": "String",
+        "category_id": "Integer",
+        "tenant_category_id": "Integer",
+        "parent_id": "Integer",
+        "created_at": "String",
+        "updated_at": "String",
+        "deleted_at": "String",
+        "sub_category": "String",
+        "province": {
+            "id": "Integer",
+            "name": "String",
+            "created_at": "String",
+            "updated_at": "String",
+            "deleted_at": "String"
+        },
+        "city": {
+            "id": "Integer",
+            "name": "String",
+            "province_id": "Integer",
+            "created_at": "String",
+            "updated_at": "String",
+            "deleted_at": "String"
+        }
+    }
 }
 ```
 
@@ -505,8 +682,6 @@ not needed
   "message": "User is not found"
 }
 ```
-=========================!!
-
 
 
 ### POST /users
@@ -520,7 +695,6 @@ not needed
 ```
 
 **Request Body**
-
 ```json
 {
   "user_type": "String",
@@ -575,8 +749,8 @@ OR
 {
   "message": "Invalid email format"
 }
-
 ```
+
 
 ### GET /merchants/active
 > Get all active merchants
@@ -587,18 +761,13 @@ OR
   "access_token": "string"
 }
 ```
+
 **Request Params**
 ```
 not needed
 ```
 
-**Request User**
-```json
-"Verifier": "string"
-```
-
 **Request Body**
-
 ```
 not needed
 ```
@@ -650,6 +819,7 @@ not needed
     },
 ]
 ```
+
 **Response (403 - Forbidden)**
 ```json
 {
@@ -664,6 +834,7 @@ not needed
 }
 ```
 
+
 ### GET /verifiers
 > Get all verifiers
 
@@ -673,18 +844,13 @@ not needed
   "access_token": "string"
 }
 ```
+
 **Request Params**
 ```
 not needed
 ```
 
-**Request User**
-```json
-"Verifier": "string"
-```
-
 **Request Body**
-
 ```
 not needed
 ```
@@ -718,6 +884,7 @@ not needed
     },
 ]
 ```
+
 **Response (403 - Forbidden)**
 ```json
 {
@@ -731,6 +898,7 @@ not needed
   "message": "User is not found"
 }
 ```
+
 
 ### PUT /users/:id
 > Put user by id
@@ -750,7 +918,6 @@ not needed
 ```
 
 **Request Body**
-
 ```json
 {
   "full_name": "String",
@@ -782,7 +949,6 @@ OR
 {
   "message": "Failed to create history"
 }
-
 ```
 
 **Response (404 - Not Found)**
@@ -791,6 +957,7 @@ OR
   "message": "User is not found"
 }
 ```
+
 
 ### PATCH /users/:id
 > PATCH user by id
@@ -810,7 +977,6 @@ OR
 ```
 
 **Request Body**
-
 ```json
 {
   "full_name": "String",
@@ -842,7 +1008,6 @@ OR
 {
   "message": "Failed to create history"
 }
-
 ```
 
 **Response (404 - Not Found)**
@@ -871,8 +1036,7 @@ OR
 ```
 
 **Request Body**
-
-```json
+```
 not needed
 ```
 
@@ -885,11 +1049,9 @@ not needed
 
 **Response (400 - Bad Request)**
 ```json
-
 {
   "message": "Failed to create history"
 }
-
 ```
 
 **Response (404 - Not Found)**
@@ -918,7 +1080,6 @@ not needed
 ```
 
 **Request Body**
-
 ```
 not needed
 ```
@@ -929,7 +1090,6 @@ not needed
   "message": "Activation link has been sent to your email"
 }
 ```
-
 
 **Response (400 - Bad Request)**
 ```json
@@ -945,41 +1105,9 @@ not needed
 }
 ```
 
-### PATCH /approve-user/:id/:token
-> Send activation link by id
 
-**Request Headers**
-```json
-{
-  "access_token": "string"
-}
-```
-
-**Request Params**
-```json
-{
-  "id": "integer (required)",
-  "token": "string (required)"
-}
-```
-
-**Request Body**
-
-```
-not needed
-```
-
-**Response (200 - Ok)**
-```json
-{
-  "message": "User has been approved.",
-  "id": "Integer"
-}
-```
-
-
-### PATCH /create-password/:id
-> Patch create password
+### PATCH /create-password
+> Patch for change password
 
 **Request Headers**
 ```json
@@ -996,7 +1124,6 @@ not needed
 ```
 
 **Request Body**
-
 ```
 not needed
 ```
@@ -1029,7 +1156,7 @@ not needed
 **Request Body**
 ```json
 {
-  "role_id": "integer (required)"
+  "role_id": "integer (required)",
   "privilege_id": "integer (required)"
 }
 ```
@@ -1047,7 +1174,6 @@ not needed
 {
   "message": "Failed to create history"
 }
-
 ```
 
 **Response (404 - Not Found)**
@@ -1061,7 +1187,7 @@ OR
 }
 ```
 
-===================!!
+
 ### GET /user-groups
 > Get all user group
 
@@ -1077,12 +1203,33 @@ OR
 not needed
 ```
 
-
 **Response (200 - Ok)**
 ```json
-{
-
-}
+[
+    {
+        "id": "Integer",
+        "role_id": "Integer",
+        "privilege_id": "Integer",
+        "created_at": "String",
+        "updated_at": "String",
+        "deleted_at": "String",
+        "privilege": {
+            "id": "Integer"1,
+            "name": "String",
+            "created_at": "String",
+            "updated_at": "String",
+            "deleted_at": "String"
+        },
+        "role": {
+            "id": "Integer",
+            "name":  "String",
+            "description": "String",
+            "created_at": "String",
+            "updated_at": "String",
+            "deleted_at": "String"
+        }
+    }
+]
 ```
 
 **Response (404 - Not Found)**
@@ -1091,10 +1238,8 @@ not needed
   "message": "User Group is not found"
 }
 ```
-===================!!
 
 
-===================!!
 ### GET /user-groups/:id
 > Get user group by id
 
@@ -1112,18 +1257,38 @@ not needed
  }
 ```
 
-
 **Request Body**
 ```
 not needed
 ```
 
-
 **Response (200 - Ok)**
 ```json
-{
-
-}
+[
+    {
+        "id": "Integer",
+        "role_id": "Integer",
+        "privilege_id": "Integer",
+        "created_at": "String",
+        "updated_at": "String",
+        "deleted_at": "String",
+        "privilege": {
+            "id": "Integer"1,
+            "name": "String",
+            "created_at": "String",
+            "updated_at": "String",
+            "deleted_at": "String"
+        },
+        "role": {
+            "id": "Integer",
+            "name":  "String",
+            "description": "String",
+            "created_at": "String",
+            "updated_at": "String",
+            "deleted_at": "String"
+        }
+    }
+]
 ```
 
 **Response (404 - Not Found)**
@@ -1151,12 +1316,10 @@ not needed
  }
 ```
 
-
 **Request Body**
 ```
 not needed
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -1184,6 +1347,7 @@ OR
 
 ```
 
+
 ### DELETE /user-groups/:id
 > Delete user group by id
 
@@ -1201,12 +1365,10 @@ OR
 }
 ```
 
-
 **Request Body**
 ```
 not needed
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -1227,8 +1389,8 @@ not needed
 {
   "message": "Failed to create history"
 }
-
 ```
+
 
 ### POST /roles
 > Create role
@@ -1244,7 +1406,6 @@ not needed
 ```
 not needed
 ```
-
 
 **Request Body**
 ```js
@@ -1287,11 +1448,9 @@ OR
 {
   "message": "Role description can't be empty"
 }
-
 ```
 
 
-======================!!
 ### GET /roles
 > Get all roles
 
@@ -1314,9 +1473,17 @@ not needed
 ```
 
 **Response (200 - Ok)**
-```
-
-
+```json
+[
+    {
+        "id": "Integer",
+        "name": "String",
+        "description": "String",
+        "created_at": "String",
+        "updated_at": "String",
+        "deleted_at": "String"
+    }
+]
 ```
 
 **Response (404 - Not Found)**
@@ -1325,9 +1492,7 @@ not needed
   "message": "Role is not found"
 }
 ```
-======================!!
 
-======================!!
 
 ### GET /roles/:id
 > Get role by id
@@ -1352,8 +1517,15 @@ not needed
 ```
 
 **Response (200 - Ok)**
-```
-
+```json
+{
+  "id": "Integer",
+  "name": "String",
+  "description": "String",
+  "created_at": "String",
+  "updated_at": "String",
+  "deleted_at": "String"
+}
 
 ```
 
@@ -1364,7 +1536,6 @@ not needed
 }
 ```
 
-======================!!
 
 ### PUT /roles/:id
 > Put role by id
@@ -1389,7 +1560,6 @@ not needed
   "name": "String",
   "description": "String"
 }
-
 ```
 
 **Response (200 - Ok)**
@@ -1401,7 +1571,6 @@ OR
 {
   "message": "Role with id <id> has been updated"
 }
-
 ```
 
 **Response (404 - Not Found)**
@@ -1439,7 +1608,6 @@ OR
 **Request Body**
 ```
 not needed
-
 ```
 
 **Response (200 - Ok)**
@@ -1447,7 +1615,6 @@ not needed
 {
   "message": "Role with id <id> has been deleted"
 }
-
 ```
 
 **Response (404 - Not Found)**
@@ -1486,7 +1653,6 @@ not needed
 {
   "name": "String"
 }
-
 ```
 
 **Response (201 - Created)**
@@ -1495,7 +1661,6 @@ not needed
   "id": "Integer",
   "name": "String"
 }
-
 ```
 
 **Response (400 - Bad Request)**
@@ -1513,7 +1678,7 @@ OR
 }
 ```
 
-==========================!!
+
 ### GET /privileges
 > Get all privileges
 
@@ -1532,19 +1697,21 @@ not needed
 **Request Body**
 ```
 not needed
-
 ```
 
 **Response (200 - Ok)**
 ```json
 [
-
+    {
+        "id": "Integer",
+        "name": "String",
+        "created_at": "String",
+        "updated_at": "String",
+        "deleted_at": "String"
+    }
 ]
-
 ```
-==========================!!
 
-==========================!!
 
 ### GET /privileges/:id
 > Get privileges by id
@@ -1566,16 +1733,19 @@ not needed
 **Request Body**
 ```
 not needed
-
 ```
 
 **Response (200 - Ok)**
+```json
+  {
+    "id": "Integer",
+    "name": "String",
+    "created_at": "String",
+    "updated_at": "String",
+    "deleted_at": "String"
+  }
 ```
-{
 
-}
-
-```
 
 **Response (404 - Not Found)**
 ```json
@@ -1583,7 +1753,7 @@ not needed
   "message": "Privilege is not found"
 }
 ```
-==========================!!
+
 
 ### DELETE /privileges/:id
 > Delete privilege by id
@@ -1602,12 +1772,10 @@ not needed
  }
 ```
 
-
 **Request Body**
 ```
 not needed
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -1645,12 +1813,10 @@ not needed
 not needed
 ```
 
-
 **Request Body**
 ```
 not needed
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -1691,12 +1857,10 @@ not needed
 not needed
 ```
 
-
 **Request Body**
 ```
 not needed
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -1727,12 +1891,10 @@ not needed
 not needed
 ```
 
-
 **Request Body**
 ```
 not needed
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -1764,6 +1926,7 @@ not needed
 ]
 ```
 
+
 ### POST /categories
 > Post category non tenant
 
@@ -1777,7 +1940,6 @@ not needed
 not needed
 ```
 
-
 **Request Body**
 ```json
 {
@@ -1785,7 +1947,6 @@ not needed
   "description": "String"
 }
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -1824,7 +1985,6 @@ not needed
 }
 ```
 
-
 **Request Body**
 ```json
 {
@@ -1832,7 +1992,6 @@ not needed
   "description": "String"
 }
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -1864,7 +2023,6 @@ OR
 ```
 
 
-
 ### GET /categories/tenant
 > Get all categories tenant
 
@@ -1878,12 +2036,10 @@ not needed
 not needed
 ```
 
-
 **Request Body**
 ```
 not needed
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -1916,7 +2072,6 @@ not needed
 not needed
 ```
 
-
 **Request Body**
 ```json
 {
@@ -1941,7 +2096,6 @@ not needed
 ```
 
 
-
 ### PUT /categories/tenant:id
 > Put category tenant by id
 
@@ -1957,14 +2111,12 @@ not needed
 }
 ```
 
-
 **Request Body**
 ```json
 {
    "name": "String",
 }
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -2005,14 +2157,12 @@ not needed
 }
 ```
 
-
 **Request Body**
 ```json
 {
    "name": "String",
 }
 ```
-
 
 **Response (201 - Ok)**
 ```json
@@ -2038,7 +2188,6 @@ not needed
 ```
 
 
-
 ### PUT /categories/sub/:id
 > Put sub category by id
 
@@ -2054,7 +2203,6 @@ not needed
 }
 ```
 
-
 **Request Body**
 ```json
 {
@@ -2062,7 +2210,6 @@ not needed
    "parent_id": "Integer",
 }
 ```
-
 
 **Response (200 - Ok)**
 ```json
@@ -2090,6 +2237,7 @@ OR
   "message": "Category is not found"
 }
 ```
+
 
 ### GET /categories/:id
 > Get category by id
@@ -2174,7 +2322,6 @@ not needed
 {
   "message": "Category with id <id> has been deleted"
 }
-
 ```
 
 **Response (404 - Not Found)**
@@ -2183,20 +2330,6 @@ not needed
   "message": "Category is not found"
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Global Error
 
