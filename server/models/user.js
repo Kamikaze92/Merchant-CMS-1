@@ -86,7 +86,7 @@ module.exports = (sequelize, DataTypes) => {
       approved_at: DataTypes.DATE,
       is_rejected: DataTypes.BOOLEAN,
       rejected_reason: DataTypes.STRING,
-      verifier_id: DataTypes.INTEGER,
+      verifier_id: DataTypes.INTEGER
     },
     {
       sequelize,

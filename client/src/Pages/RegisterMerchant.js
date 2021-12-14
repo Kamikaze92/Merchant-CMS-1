@@ -41,6 +41,7 @@ const RegisterFooter = {
 
 export default function RegisterMerchant() {
   let navigate = useNavigate();
+  const [isButtonRegisterClicked, setIsButtonRegisterClicked] = useState(false);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [tenantCategories, setTenantCategories] = useState([]);
@@ -113,6 +114,7 @@ export default function RegisterMerchant() {
   }
 
   const onFormSubmit = async (e) => {
+    setIsButtonRegisterClicked(true);
     e.preventDefault();
     try { 
       const response = await axios({
@@ -122,6 +124,7 @@ export default function RegisterMerchant() {
       })
       if (response.status === 201 ) navigate(`/otp-verification/${response.data.id}/${response.data.token}`);
     } catch (error) {
+      setIsButtonRegisterClicked(false);
       console.log(error);
       // error
     }
@@ -407,6 +410,14 @@ export default function RegisterMerchant() {
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
                   >
                     Register
+                  </button>
+                  <button
+                    className={isButtonRegisterClicked ? "btn btn-primary" : "btn btn-primary d-none"}
+                    type="submit"
+                    style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
+                    disabled
+                  >
+                  <span class="spinner-border spinner-border-sm text-white" role="status"></span>
                   </button>
                 </div>
               </form>

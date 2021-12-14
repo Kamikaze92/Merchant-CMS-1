@@ -1,6 +1,6 @@
 import Sidebar from "../Components/Sidebar"
 import Navbar from "../Components/Navbar"
-import MerchantApprovalTable from "../Components/MerchantApprovalTable.jsx"
+import MerchantApprovalTable from "../Components/MerchantApprovalTable.js"
 export default function MerchantAprroval(){
     return(
     <>

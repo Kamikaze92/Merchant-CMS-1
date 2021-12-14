@@ -16,7 +16,7 @@ class UserGroupsController {
             const payload = {
                 entity_name: 'User_Group',
                 entity_id: resp.id,
-                user_id: 1 //req.user.id
+                user_id: req.user.id
               };
               const isHistoryCreated = await newHistory('createUserGroup', payload);
               if(!isHistoryCreated) {
@@ -71,7 +71,7 @@ class UserGroupsController {
                 const payload = {
                     entity_name: 'User_Group',
                     entity_id: resp[1][0].id,
-                    user_id: 1 //req.user.id
+                    user_id: req.user.id
                 };
                 const isHistoryCreated = await newHistory('updateUserGroup', payload);
                 if(!isHistoryCreated) {
@@ -94,7 +94,7 @@ class UserGroupsController {
             const payload = {
                 entity_name: 'User_Group',
                 entity_id: foundUserGroup.id,
-                user_id: 1 //req.user.id
+                user_id: req.user.id
             };
             const isHistoryCreated = await newHistory('deleteUserGroup', payload);
             if(!isHistoryCreated) {

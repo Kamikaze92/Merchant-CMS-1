@@ -1,4 +1,6 @@
 import {Link} from 'react-router-dom'
+import { useState } from 'react';
+
 const RegisterPage = {
   backgroundColor: "#094C6F",
   backgroundSize: "cover",
@@ -38,6 +40,8 @@ const RegisterFooter = {
 }
 
 export default function RegisterVerificator() {
+  const [isButtonRegisterClicked, setIsButtonRegisterClicked] = useState(false);
+  //Tinggal tambahin formSubmit kayak di register merchant, tombol spinner nanti langsung bekerja
   return (
     <div style={RegisterPage}>
       <div className="register-form">
@@ -158,6 +162,14 @@ export default function RegisterVerificator() {
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
                   >
                     Masuk
+                  </button>
+                  <button
+                    className={isButtonRegisterClicked ? "btn btn-primary" : "btn btn-primary d-none"}
+                    type="submit"
+                    style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
+                    disabled
+                  >
+                  <span class="spinner-border spinner-border-sm text-white" role="status"></span>
                   </button>
                 </div>
               </form>
