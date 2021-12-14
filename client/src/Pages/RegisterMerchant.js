@@ -121,7 +121,7 @@ export default function RegisterMerchant() {
         method: 'POST',
         data: formData,
       })
-      if (response.status === 201 ) navigate(`/register-merchant/${response.data.id}/${response.data.token}`);
+      if (response.status === 201 ) navigate(`/otp-verification/${response.data.id}/${response.data.token}`);
     } catch (error) {
       console.log(error);
       // error

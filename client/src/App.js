@@ -21,7 +21,11 @@ import AccountVerified from "./Pages/AccountVerified";
 import { RequireAuth, HasToken } from './Components/RequireAuth';
 import Dashboard from './Pages/Dashboard';
 import ForgotPassword from './Pages/ForgotPassword';
+<<<<<<< HEAD
 import ButtonLoading from './Components/buttonLoading';
+=======
+import SetPassword from "./Pages/SetPassword";
+>>>>>>> d2173b6945ef0b0b387f51e0769e85cac92a77b2
 
 function App() {
   return (
@@ -35,7 +39,7 @@ function App() {
           <Route path="/merchants" element={<MerchantApproval />}></Route>
           <Route path="/verifiers" element={<UserVerifierApproval />}></Route>
           <Route path="/active-merchants" element={<ActiveMerchant />}></Route>
-          <Route path="/active-merchants/detail" element={<ActiveMerchantDetail />}></Route>
+          <Route path="/active-merchants/:id" element={<ActiveMerchantDetail />}></Route>
 
           {/* users, usergroup, category */}
           <Route path="/users" element={<Users />}></Route>
@@ -47,6 +51,7 @@ function App() {
           <Route path="/categories/tenant" element={<CategoryTenant />}></Route>
           <Route path="/categories/:id" element={<CategoryNonTenantDetail />}></Route>
         </Route>
+        
         <Route path="/register-verifier" element={<HasToken><RegisterVerificator /></HasToken>}></Route>
         <Route path="/register-merchant" element={<HasToken><RegisterMerchant /></HasToken>}></Route>
         <Route path="/account-verified" element={<HasToken><AccountVerified /></HasToken>}></Route>
@@ -54,6 +59,7 @@ function App() {
         <Route path="/otp-verification/:id/:token" element={<HasToken><OtpInput /></HasToken>}></Route>
         <Route path="/check-status" element={<HasToken><CheckStatus /></HasToken>}></Route>
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+        <Route path="/set-password/:id/:token" element={<SetPassword />}></Route>
         <Route path="/errors" element={<ErrorPage />}></Route>
         <Route
           path="*"

@@ -7,6 +7,7 @@ import {
   SET_USERS_VERIFIER_SUCCESS,
   APPROVE_VERIFIER_SUCCESS,
   DELETE_VERIFIER_SUCCESS,
+  SET_ACTIVE_MERCHANTS,
   USER_LOADING,
   USER_ERROR,
 } from "../actionType/users";
@@ -269,3 +270,32 @@ export const deleteUserVerifier =
       });
     }
   };
+
+export const setActiveMerchants = () => async (dispatch) => {
+  dispatch({
+    type: USER_LOADING,
+    payload: true
+  })
+ try {
+  const response = await axios({
+    method: "GET",
+    url: `${process.env.REACT_APP_BASE_URL}/users/merchants/active`,
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  })
+  if(response.status === 200){
+    dispatch({
+      type: SET_ACTIVE_MERCHANTS,
+      payload: response.data,
+    })
+  } else {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+ } catch (error) {
+   dispatch({
+     type: USER_ERROR,
+     payload: error
+   })
+ }
+}
