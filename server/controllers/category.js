@@ -9,11 +9,11 @@ module.exports = class CategoryController {
         res.status(200).json(JSON.parse(chace));
       } else {
         let response = await Category.findAll({
-          include: "sub_category",
-          where: {
-            parent_id: null,
-            is_tenant_category: false,
-          },
+          include: [{
+            model: Category,
+            as: 'sub_category',
+            require: false,
+          }],
         });
         await redis.set("categories_non_tenant", JSON.stringify(response));
         res.status(200).json(response);
@@ -265,10 +265,14 @@ module.exports = class CategoryController {
       let response = await Category.findOne({
         where: {
           id: +id,
-          is_tenant_category: false,
-          parent_id: null,
+          // is_tenant_category: false,
+          // parent_id: null,
         },
-        include: "sub_category",
+        include: {
+          model: Category,
+          as: 'sub_category',
+          require: true,
+        },
       });
       if (!response) {
         throw {

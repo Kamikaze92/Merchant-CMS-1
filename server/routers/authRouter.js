@@ -6,9 +6,11 @@ const {verifyMiddleware} = require('../middlewares/verifyMiddleware')
 
 router.post('/login', AuthController.userLogin);
 router.post('/register', AuthController.userRegister);
+router.post('/forgot-password', AuthController.forgotPassword);
 router.post('/otp-verification/:id/:token', verifyMiddleware, AuthController.verifyUser);
 router.post('/resend-otp/:id/:token', AuthController.resendOtp)
-router.post('/forgot-password/:id/:token', AuthController.forgotPassword);
-router.patch('/reset-password/:id/:token', resetPasswordMiddleware, AuthController.resetPassword);
+router.post('/reset-password/:id/:token', resetPasswordMiddleware, AuthController.resetPassword);
+router.patch('/approve-user/:id/:token', verifyMiddleware, AuthController.approveUser);
+router.post('/check-status', AuthController.checkStatus)
 
 module.exports = router;

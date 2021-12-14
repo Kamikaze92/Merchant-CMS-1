@@ -8,19 +8,22 @@ const FormText = {
 };
 
 const layoutBorder = {
-    borderRadius: 5,
     padding: "36px",
-    backgroundColor: "white",
     marginTop: 20,
-    marginLeft: 30,
     marginRight: 30,
     width: "50%"
   };
 
+const container = {
+    width: '1184px',
+    heigth: '494px',
+    backgroundColor: '#FFFFFF'
+}
+
 export default function ChangePassowrdForm() {
     return (
-        <div className="container-fluid mt-3">
-            <div className="border p-3 mt-4 mb-4" style={layoutBorder}>
+        <div className="container-fluid mt-3" style={container}>
+            <div className="p-3 mt-4 mb-4" style={layoutBorder}>
             <form>
                 {/* <!--Email--> */}
                 <div className="px-4 py-4">

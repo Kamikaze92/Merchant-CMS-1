@@ -9,7 +9,7 @@ class PrivilegeController {
             const payload = {
                 entity_name: 'Privilege',
                 entity_id: resp.id,
-                user_id: 1 //req.user.id
+                user_id: req.user.id
               };
               const isHistoryCreated = await newHistory('createPrivilege', payload);
               if(!isHistoryCreated) {
@@ -58,7 +58,7 @@ class PrivilegeController {
             const payload = {
                 entity_name: 'Role',
                 entity_id: privilegeFound.id,
-                user_id: 1 //req.user.id
+                user_id: req.user.id
               };
               const isHistoryCreated = await newHistory('deletePrivilege', payload);
               if(!isHistoryCreated) {

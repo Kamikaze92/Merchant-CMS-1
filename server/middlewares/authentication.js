@@ -15,6 +15,7 @@ const authentication = async (req, res, next) => {
       include: [
         {
           model: Verifier,
+          as: 'verifier',
           require: false,
         },
         // {

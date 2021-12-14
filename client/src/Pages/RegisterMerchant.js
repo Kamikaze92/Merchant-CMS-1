@@ -4,7 +4,8 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
 const RegisterPage = {
-  backgroundColor: "#094C6F"
+  backgroundColor: "#094C6F",
+  height: "130vh"
 };
 const RegisterForm = {
   backgroundColor: "white",
@@ -40,6 +41,7 @@ const RegisterFooter = {
 
 export default function RegisterMerchant() {
   let navigate = useNavigate();
+  const [isButtonRegisterClicked, setIsButtonRegisterClicked] = useState(false);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [tenantCategories, setTenantCategories] = useState([]);
@@ -112,6 +114,7 @@ export default function RegisterMerchant() {
   }
 
   const onFormSubmit = async (e) => {
+    setIsButtonRegisterClicked(true);
     e.preventDefault();
     try { 
       const response = await axios({
@@ -119,8 +122,9 @@ export default function RegisterMerchant() {
         method: 'POST',
         data: formData,
       })
-      if (response.status === 201 ) navigate(`/register-merchant/${response.data.id}/${response.data.token}`);
+      if (response.status === 201 ) navigate(`/otp-verification/${response.data.id}/${response.data.token}`);
     } catch (error) {
+      setIsButtonRegisterClicked(false);
       console.log(error);
       // error
     }
@@ -237,12 +241,12 @@ export default function RegisterMerchant() {
                           Kategori Tenant
                         </label>
                         <div className="input-group ">
-                          <select class="form-select" id="tenant_category_id" name="tenant_category_id"
+                          <select className="form-select" id="tenant_category_id" name="tenant_category_id"
                             value={tenant_category_id}
                             onChange={handleFormDataChange}
                             >
                             {/**Sampel */}
-                            <option selected disabled>
+                            <option value="" disabled>
                               Pilih Kategori
                             </option>
                             { tenantCategories?.map(category => {
@@ -273,12 +277,12 @@ export default function RegisterMerchant() {
                           Kategori
                         </label>
                         <div className="input-group ">
-                          <select class="form-select" id="category_id" name="category_id"
+                          <select className="form-select" id="category_id" name="category_id"
                             value={category_id}
                             onChange={handleFormDataChange}
                             >
                             {/**Sampel */}
-                            <option selected disabled>
+                            <option value="" disabled>
                               Pilih Kategori
                             </option>
                             { categories?.map(category => {
@@ -292,12 +296,12 @@ export default function RegisterMerchant() {
                           Sub-Kategori
                         </label>
                         <div className="input-group ">
-                          <select class="form-select" id="sub_category_id" name="sub_category_id"
+                          <select className="form-select" id="sub_category_id" name="sub_category_id"
                             value={sub_category_id}
                             onChange={handleFormDataChange}
                           >
                           {/**Sampel */}
-                          <option selected disabled>
+                          <option value="" disabled>
                             Pilih Sub-Kategori
                           </option>
                             { subCategories?.map(category => {
@@ -365,12 +369,12 @@ export default function RegisterMerchant() {
                       Provinsi
                     </label>
                     <div className="input-group ">
-                      <select class="form-select" id="province_id" name="province_id"
+                      <select className="form-select" id="province_id" name="province_id"
                         value={province_id}
                         onChange={handleFormDataChange}
                       >
                         {/**Sampel */}
-                        <option selected disabled>
+                        <option value="" disabled>
                           Pilih Provinsi
                         </option>
                         { provinces?.map(province => {
@@ -384,12 +388,12 @@ export default function RegisterMerchant() {
                       Kota
                     </label>
                     <div className="input-group ">
-                      <select class="form-select" id="city_id" name="city_id"
+                      <select className="form-select" id="city_id" name="city_id"
                         value={city_id}
                         onChange={handleFormDataChange}
                       >
                         {/**Sampel */}
-                        <option selected disabled>
+                        <option value="" disabled>
                           Pilih Kota / Kabupaten
                         </option>
                         { cities?.map(city => {
@@ -407,15 +411,23 @@ export default function RegisterMerchant() {
                   >
                     Register
                   </button>
+                  <button
+                    className={isButtonRegisterClicked ? "btn btn-primary" : "btn btn-primary d-none"}
+                    type="submit"
+                    style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
+                    disabled
+                  >
+                  <span className="spinner-border spinner-border-sm text-white" role="status"></span>
+                  </button>
                 </div>
               </form>
               <div style={RegisterFooter} className="mt-3">
-                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
+                <h6 style={{ fontColor: '#229BD8', fontSize: 14}}>
                   Sudah punya akun? <Link to="/login"  className="text-info text-decoration-none"><strong>Login</strong></Link>
                 </h6>
-                <h6 style={{ fontColor: '#229BD8', fontSize: 12}}>
+                <h6 style={{ fontColor: '#229BD8', fontSize: 14}}>
                   Sudah melakukan registrasi?{" "}
-                  <Link to="/check-merchant-status" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></Link>
+                  <Link to="/check-status" className="text-info text-decoration-none"><strong>Periksa status registrasi akun anda</strong></Link>
                 </h6>
               </div>
             </div>
