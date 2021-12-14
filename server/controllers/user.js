@@ -131,8 +131,7 @@ module.exports = class UserController {
       if (role !== 'Admin' && (!verifier || !verifier.province_id)) {
         // TODO : throw error, because should have verifier.
         throw {
-          name: 'NotAuthorized',
-          msg: ''
+          name: 'forbidden',
         }
       };
 
@@ -312,8 +311,7 @@ module.exports = class UserController {
       if (role !== 'Admin' && (!verifier || !verifier.province_id)) {
         // TODO : throw error, because should have verifier.
         throw {
-          name: 'NotAuthorized',
-          msg: '',
+          name: 'forbidden',
         }
       };
 
