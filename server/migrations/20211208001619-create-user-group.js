@@ -24,14 +24,6 @@ module.exports = {
           key: 'id',
         },
       },
-      created_by: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,

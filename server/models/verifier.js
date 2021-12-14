@@ -57,18 +57,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         type: DataTypes.INTEGER,
       }, // required.
-      created_by: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-        validate: {
-          notNull: {
-            msg: "Creator owner is required",
-          },
-          notEmpty: {
-            msg: "Creator owner is required",
-          },
-        },
-      }, // required.
     },
     {
       sequelize,
