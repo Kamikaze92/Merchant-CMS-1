@@ -13,26 +13,26 @@ module.exports = class AuthController {
       let response = await User.findOne({
         where: { email },
       });
+      if(!response.approved_at && !response.approved_by && !response.verified_at){
+        throw {
+          name: "not_authenticated",
+        }
+      }
 
       if(response && comparePassword(password, response.password)){
-        if(!response.approved_at){
-          throw {
-            name: "not_authenticated",
-          };
-        } else {
-          const access_token = jwtSign({
-            id: response.id,
-            email: response.email,
-          });
-          res.status(200).json({
-            access_token: access_token,
-          });
-        };
+        const access_token = jwtSign({
+          id: response.id,
+          email: response.email,
+        });
+        res.status(200).json({
+          access_token: access_token,
+        });
       } else {
         throw {
           name: 'invalid_user',
         };
-      };
+      }
+
     } catch (error) {
       next(error);
     };
@@ -66,7 +66,7 @@ module.exports = class AuthController {
       if (user_type !== 'Merchant' && user_type !== 'Verifier' ) {
         throw {
           name: 'errorUserType',
-          mgs: 'user type should be "Merchant" or "Verifier"',
+          msg: 'user type should be "Merchant" or "Verifier"',
         }
       }
 
@@ -184,7 +184,7 @@ module.exports = class AuthController {
       const user = await User.findByPk(id);
       
       if (!user) {
-        throw { name: 'not_found' };
+        throw { name: 'user_not_found' };
       };
       
       const OTP = String(Math.floor(Math.random() * 999999));
@@ -226,6 +226,11 @@ module.exports = class AuthController {
         if(!response){
           throw { name: 'user_not_found'}
         }
+        if(!response.approved_at && !response.approved_by && !response.verified_at){
+          throw {
+            name: "not_authenticated",
+          }
+        }
         const payload = {
             id: response.id,
             email: response.email,
@@ -254,6 +259,9 @@ module.exports = class AuthController {
     try {
       const { id } = req.params
       const { password, password2 } = req.body
+      if(!req.body){
+        throw {name: 'password_not_found'}
+      }
       if(password !== password2){
         throw {name: "password_not_match"}
       }
@@ -303,21 +311,23 @@ module.exports = class AuthController {
     static async approveUser(req, res, next) {
     try {
       const { id, token } = req.params;
-
-      // if token was invalid its throw error.
-      verifyData(token);
-      await User.update({
-        approved_at: new Date(),
-      }, {
-        where: {id}
-      });
-
+      const response = await User.findOne({where: {id}})
+      if(response.approved_at){
+        verifyData(token);
+        await User.update({
+          approved_at: new Date(),
+        }, {
+          where: {id}
+        });
+        res.status(201).json({ 
+          message: 'User has been approved.',
+          id,
+        });
+      }
+      else{
+        throw {name: 'not_authenticated'}
+      }
       // !TODO : create history.
-
-      res.status(200).json({ 
-        message: 'User has been approved.',
-        id,
-      });
     } catch (error) {
       next(error);
     };

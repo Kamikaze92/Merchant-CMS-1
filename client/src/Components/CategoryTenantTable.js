@@ -9,6 +9,7 @@ import {
   updateCategoryTenant,
   deleteCategoryTenant,
 } from "../store/actions/category";
+import LoadingComponent from "./LoadingComponent";
 let page = 1;
 let pagination = 5;
 export default function Category(props) {
@@ -272,7 +273,9 @@ export default function Category(props) {
               </tbody>
             </table>
           </div>
-        ) : null}
+        ) : 
+        <LoadingComponent></LoadingComponent>
+        }
         <div className="mt-3">
           <Pagination lengthData={tenant} />
         </div>

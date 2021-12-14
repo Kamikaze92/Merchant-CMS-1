@@ -8,6 +8,7 @@ import {
   getAllCategoriesNonTenant,
   createCategoryNonTenant,
 } from "../store/actions/category";
+import LoadingComponent from "./LoadingComponent";
 let page = 1;
 let pagination = 5;
 export default function CategoryNonTenant(props) {
@@ -234,7 +235,9 @@ export default function CategoryNonTenant(props) {
               </tbody>
             </table>
           </div>
-        ) : null}
+        ) : 
+        <LoadingComponent></LoadingComponent>
+        }
         <div className="mt-3">
           <Pagination lengthData={non_tenant} />
         </div>

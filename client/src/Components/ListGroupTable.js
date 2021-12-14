@@ -1,7 +1,7 @@
 import errorImage from '../assets/images/Frame 167.svg';
 import LoadingComponent from '../Components/LoadingComponent';
-import { useEffect, useState } from "react";
-import { Modal, Button } from 'react-bootstrap';
+import { useEffect } from "react";
+import { Link } from 'react-router-dom';
 const { getUserGroups } = require('../store/actions/userGroups');
 const { useSelector, useDispatch } = require('react-redux');
 
@@ -14,18 +14,23 @@ const layoutBorder = {
     marginRight: 24,
   };
 
-export default function ListGroupPage () {
+export default function ListGroupPage ({ id }) {
     const { isLoading, userGroups } = useSelector(state => state.userGroups);
+    console.log(userGroups);
     const dispatch = useDispatch();
+    const detailData = {
+      id
+    }
+    const path = `/user-groups/${id}`;
     useEffect( () => {
         dispatch(getUserGroups());
     }, [dispatch]);
+    console.log(userGroups);
     const addGroup = () => {
-      console.log('Add FEature');
+      console.log('Add Feature');
     }
     return (
       <>
-          <App></App>
           <div className="container-fluid mt-3">
           <div className="border" style={layoutBorder}>
               <div className="d-flex flex-row justify-content-center">
@@ -51,7 +56,7 @@ export default function ListGroupPage () {
                 <h6><strong>Akun Grup Baru</strong></h6>
                 <button className="btn btn-default" onClick={ addGroup }>+ Tambah Data</button>
               </div>
-                <div cla>
+                <div>
                     {
                         isLoading ? 
                         <LoadingComponent/> :
@@ -75,14 +80,7 @@ export default function ListGroupPage () {
                                                 <td>Untuk Administrator</td>
                                                 <td>2</td>
                                                 <td>Super Admin</td>
-                                                <td>
-                                                    <div className="d-flex align-items-center bd-highlight mb-3"> 
-                                                        <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
-                                                        <div style={{ height: "20px" }}>
-                                                            <p className="ms-2 me-4  bd-highlight">Detail</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                <td><Link to={ path } state= {{ detailData }}><i class='bx bx-list-ul' ></i> Detail</Link></td>
                                             </tr>
                                         )
                                     })
@@ -120,50 +118,4 @@ export default function ListGroupPage () {
           </div>
         </>
       );
-}
-
-
-function FormModal(props) {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <h4>Centered Modal</h4>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </p>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
-
-function App() {
-  const [modalShow, setModalShow] = useState(false);
-
-  return (
-    <>
-      <Button variant="primary" onClick={() => setModalShow(true)}>
-        Launch vertically centered modal
-      </Button>
-
-      <FormModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
-    </>
-  );
 }

@@ -5,6 +5,7 @@ export const CREATE_MERCHANT_SUCCESS = 'user/merchant/create';
 export const DELETE_MERCHANT_SUCCESS = 'user/merchant/delete';
 
 export const SET_USERS_VERIFIER_SUCCESS = 'users/verifier/set';
+export const SET_USER_VERIFIER_SUCCESS = 'users/verifier/set';
 export const APPROVE_VERIFIER_SUCCESS = 'user/verifier/approve';
 export const CREATE_VERIFIER_SUCCESS = 'user/verifier/create';
 export const DELETE_VERIFIER_SUCCESS = 'user/verifier/delete';

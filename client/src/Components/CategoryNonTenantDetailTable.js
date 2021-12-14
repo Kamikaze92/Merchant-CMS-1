@@ -11,6 +11,7 @@ import {
   updateSubCategory,
 } from "../store/actions/category";
 import { Modal, Button, Form } from "react-bootstrap";
+import LoadingComponent from "./LoadingComponent";
 export default function CategoryDetail(props) {
   const { id } = useParams();
   const [input, setInput] = useState({
@@ -115,8 +116,11 @@ export default function CategoryDetail(props) {
       });
     }
   }, [updated, createdSub, successDeleted, updatedSub]);
-  return (
-    <>
+  if(loading) {
+    return <LoadingComponent></LoadingComponent>
+  } else {
+    return (
+      <>
       <FormPage data={show} />
 
       <div className="container1">
@@ -328,8 +332,9 @@ export default function CategoryDetail(props) {
           </div>
         </div>
       </div>
-    </>
-  );
+      </>
+    );
+  }
 
   function FormPage({ data }) {
     let { name, show, payload, categoryName } = data;

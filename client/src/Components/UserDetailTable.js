@@ -1,9 +1,22 @@
 
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
-export default function UserDetailPage(props) {
+import { setUserVerifiers } from '../store/actions/users';
+
+export default function UserDetailPage() {
+  const [ userDetailDate, setUserDetailData ] = useState({});
+  const userDetail = useSelector(state => state.users);
+  const dispatch = useDispatch();
   const { state } = useLocation();
-  const loc = useLocation();
-  console.log(loc);
+  useEffect(async () => {
+    if (state.detailData) {
+      setUserDetailData(state.detailData);
+    } else {
+      await dispatch(setUserVerifiers());
+      setUserDetailData(userDetail);
+    }
+  }, [dispatch])
   return (
     <>
       <div className="container">
@@ -20,10 +33,10 @@ export default function UserDetailPage(props) {
                     <p>Instansi</p>
                   </div>
                   <div className="d-flex flex-column ms-4">
-                    <p>:  { state.detailData.email }</p>
-                    <p>:  { state.detailData.full_name }</p>
-                    <p>:  { state.detailData.phone_number }</p>
-                    <p>:  { state.detailData.institution }</p>
+                    <p>:  { userDetailDate.email }</p>
+                    <p>:  { userDetailDate.full_name }</p>
+                    <p>:  { userDetailDate.phone_number }</p>
+                    <p>:  { userDetailDate.institution }</p>
                   </div>
                 </div>
             </div>

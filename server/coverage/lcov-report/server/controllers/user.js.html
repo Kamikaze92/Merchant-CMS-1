@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.84% </span>
+                <span class="strong">4.73% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/165</span>
+                <span class='fraction'>8/169</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/82</span>
+                <span class='fraction'>0/84</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.93% </span>
+                <span class="strong">4.81% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/162</span>
+                <span class='fraction'>8/166</span>
             </div>
         
             
@@ -710,7 +710,11 @@
 <a name='L645'></a><a href='#L645'>645</a>
 <a name='L646'></a><a href='#L646'>646</a>
 <a name='L647'></a><a href='#L647'>647</a>
-<a name='L648'></a><a href='#L648'>648</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L648'></a><a href='#L648'>648</a>
+<a name='L649'></a><a href='#L649'>649</a>
+<a name='L650'></a><a href='#L650'>650</a>
+<a name='L651'></a><a href='#L651'>651</a>
+<a name='L652'></a><a href='#L652'>652</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -847,7 +851,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1024,7 +1027,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1338,14 +1340,20 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1362,7 +1370,7 @@ const  newHistory = require('../helpers/historyInstance');
 const { User, Role, Verificator, sequelize, History, UserGroups, Category, Verifier, Merchant, Province, City } = require("../models");
 const { Op } = require("sequelize");
 const {jwtSign, verifyData} = require('../helpers/jwt')
-const {comparePassword} = require('../helpers/bcrypt')
+const {comparePassword, getSalt} = require('../helpers/bcrypt')
 const {transporter, mailActivation} = require('../helpers/nodemailer')
 module.exports = class UserController {
   // your code goes here
@@ -1490,8 +1498,7 @@ module.exports = class UserController {
 <span class="cstat-no" title="statement not covered" >      if (role !== 'Admin' &amp;&amp; (!verifier || !verifier.province_id)) {</span>
         // TODO : throw error, because should have verifier.
 <span class="cstat-no" title="statement not covered" >        throw {</span>
-          name: 'NotAuthorized',
-          msg: ''
+          name: 'forbidden',
         }
       };
 &nbsp;
@@ -1671,8 +1678,7 @@ module.exports = class UserController {
 <span class="cstat-no" title="statement not covered" >      if (role !== 'Admin' &amp;&amp; (!verifier || !verifier.province_id)) {</span>
         // TODO : throw error, because should have verifier.
 <span class="cstat-no" title="statement not covered" >        throw {</span>
-          name: 'NotAuthorized',
-          msg: '',
+          name: 'forbidden',
         }
       };
 &nbsp;
@@ -1981,24 +1987,30 @@ module.exports = class UserController {
 <span class="fstat-no" title="function not covered" >  st</span>atic async userChangePassword(req, res, next){
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const { id } = <span class="cstat-no" title="statement not covered" >req.user.id;</span>
+      const { oldPassword, password, confirmPassword } = <span class="cstat-no" title="statement not covered" >req.body;</span>
       const response = <span class="cstat-no" title="statement not covered" >await User.findOne({where: {id}})</span>
-      const { password, confirmPassword } = <span class="cstat-no" title="statement not covered" >req.body;</span>
-<span class="cstat-no" title="statement not covered" >      if(comparePassword(password, response.password)){</span>
+<span class="cstat-no" title="statement not covered" >      if(!req.body){</span>
+<span class="cstat-no" title="statement not covered" >        throw {</span>
+          name: 'passowrd_not_found'
+        }
+      }
+<span class="cstat-no" title="statement not covered" >      if(comparePassword(oldPassword, response.password)){</span>
 <span class="cstat-no" title="statement not covered" >        if (password !== confirmPassword) {</span>
 <span class="cstat-no" title="statement not covered" >          throw {</span>
             name: "password_not_match"
           };
         };
-        //create hooks beforeUpdate to hash new password
-<span class="cstat-no" title="statement not covered" >        await User.update({ password }, {</span>
+        let params = <span class="cstat-no" title="statement not covered" >{ password: getSalt(password) }</span>
+<span class="cstat-no" title="statement not covered" >        await User.update(params, {</span>
           where: { id },
         });
-  
-        // !TODO : create history.
-  
 <span class="cstat-no" title="statement not covered" >        res.status(200).json({ </span>
-          message: 'Password changed. You can login now.'
+          message: 'Password changed.'
         });
+      } else {
+<span class="cstat-no" title="statement not covered" >        throw {</span>
+          name: 'invalid_user'
+        }
       }
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      next(error);</span>
@@ -2011,7 +2023,7 @@ module.exports = class UserController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Tue Dec 14 2021 23:42:04 GMT+0700 (Western Indonesia Time)
+                at Wed Dec 15 2021 00:26:34 GMT+0700 (Western Indonesia Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
