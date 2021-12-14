@@ -1,7 +1,8 @@
-import Sidebar from "../Components/Sidebar"
-import Navbar from "../Components/Navbar"
-import GroupDetailTable from "../Components/GroupDetailTable"
-import {Link} from "react-router-dom"
+import Sidebar from "../Components/Sidebar";
+import Navbar from "../Components/Navbar";
+import GroupDetailTable from "../Components/GroupDetailTable";
+import { Link } from "react-router-dom";
+
 export default function GroupDetail(){
     return(
     <>

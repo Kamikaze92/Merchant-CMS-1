@@ -10,6 +10,7 @@ import {
   SET_ACTIVE_MERCHANTS,
   USER_LOADING,
   USER_ERROR,
+  SET_USER_VERIFIER_SUCCESS
 } from "../actionType/users";
 import axios from "axios";
 
@@ -299,3 +300,32 @@ export const setActiveMerchants = () => async (dispatch) => {
    })
  }
 }
+
+export const setUserVerifier = (id) => async (dispatch) => {
+  dispatch({
+    type: USER_LOADING,
+    payload: true
+  })
+ try {
+  const response = await axios({
+    method: "GET",
+    url: `${process.env.REACT_APP_BASE_URL}/users/verifier/${id}`,
+    headers: {
+      access_token: localStorage.getItem("access_token"),
+    },
+  })
+  if(response.status === 200){
+    dispatch({
+      type: SET_USER_VERIFIER_SUCCESS,
+      payload: response.data,
+    })
+  } else {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+ } catch (error) {
+   dispatch({
+     type: USER_ERROR,
+     payload: error
+   })
+ }
+} 

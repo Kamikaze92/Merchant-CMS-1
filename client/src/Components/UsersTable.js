@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { setUser } from '../store/actions/users';
 import { Link } from 'react-router-dom';
 import LoadingComponent from './LoadingComponent';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 const layoutBorder = {
   borderRadius: 5,
@@ -15,9 +16,6 @@ const layoutBorder = {
   marginLeft: 24,
   marginRight: 24,
 };
-
-
-
 
 const UserTableComponent = ({ id, full_name, email, phone_number, Verifier }) => {
   const path = `/users/${id}`;
@@ -36,33 +34,29 @@ const UserTableComponent = ({ id, full_name, email, phone_number, Verifier }) =>
   )
 }
 
-
-
-
-
 export default function UsersTable() {
-  const [usersData, setUsersData] = useState([]);
   const { users, isLoading } = useSelector(state => state.users);
   const dispatch = useDispatch();
   useEffect( () => {
      dispatch(setUser());
   }, [dispatch]);
-  const userData = users.users;
-  console.log(userData);
+  const addUsers = () => {
+    console.log('Add users feature');
+  }
   return (
     <>
       <div className="container-fluid mt-3">
           <div className="">
             <div className="border" style={layoutBorder}>
               <div className="d-flex flex-row justify-content-center">
-                <div className="col-4">
+                <div className="col-5">
                   <div className="d-flex flex-row">
                     <input
-                      class="form-control "
+                      class="form-control me-2"
                       type="search"
                       placeholder="cari pengguna"
                     />
-                    <button class="btn btn-default ms-1" type="submit">
+                    <button class="btn btn-default" type="submit">
                       Cari
                     </button>
                   </div>
@@ -75,13 +69,13 @@ export default function UsersTable() {
                 style={{ alignItems: "center" }}
               >
                 <h6><strong>Akun Pengguna Baru</strong></h6>
-                <button className="btn btn-default">+ Tambah Data</button>
+                <button className="btn btn-default" onClick={ addUsers }>+ Tambah Data</button>
               </div>
               <div>
                 {
                   isLoading ? <LoadingComponent/> :
-                  usersData?.length ?
-                  <table class="table table-hover">
+                  users.users?.length ?
+                  <table className="table table-hover">
                     <thead>
                       <tr>
                         <th style={{fontWeight: 600, backgroundColor: "#D9D9D9"}}>Nama</th>
@@ -94,13 +88,13 @@ export default function UsersTable() {
                     </thead>
                     <tbody>
                       {
-                        userData?.map(el => {
+                        users.users?.map(el => {
                           if(el.verifier_id) {
                             return <UserTableComponent 
                             id={ el.id } 
                             full_name={ el.full_name }
                             email={ el.email } 
-                            Verifier={ el.Verifier }
+                            Verifier={ el.verifier }
                             phone_number={ el.phone_number }
                             ></UserTableComponent>
                           }
@@ -127,11 +121,11 @@ export default function UsersTable() {
               <div className="d-flex flex-row-reverse">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        <li className="page-item"><a className="page-link" href="#">Previous</a></li>
+                        <li className="page-item"><a className="page-link" href="#">1</a></li>
+                        <li className="page-item"><a className="page-link" href="#">2</a></li>
+                        <li className="page-item"><a className="page-link" href="#">3</a></li>
+                        <li className="page-item"><a className="page-link" href="#">Next</a></li>
                     </ul>
                 </nav>
               </div>

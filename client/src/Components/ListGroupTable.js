@@ -1,6 +1,7 @@
 import errorImage from '../assets/images/Frame 167.svg';
 import LoadingComponent from '../Components/LoadingComponent';
 import { useEffect } from "react";
+import { Link } from 'react-router-dom';
 const { getUserGroups } = require('../store/actions/userGroups');
 const { useSelector, useDispatch } = require('react-redux');
 
@@ -9,45 +10,55 @@ const layoutBorder = {
     padding: "16px",
     backgroundColor: "white",
     marginTop: 20,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 24,
+    marginRight: 24,
   };
 
-export default function ListGroupPage () {
+export default function ListGroupPage ({ id }) {
     const { isLoading, userGroups } = useSelector(state => state.userGroups);
     const dispatch = useDispatch();
+    const detailData = {
+      id
+    }
+    const path = `/user-groups/${id}`;
     useEffect( () => {
         dispatch(getUserGroups());
     }, [dispatch]);
+    const addGroup = () => {
+      console.log('Add Feature');
+    }
     return (
-        <>
-          <div className="container-fluid">
-            <div className="border" style={layoutBorder}>
-            <div className="row">
-                <div className="col d-flex justify-content-center">
-                    <div className="col-5 d-flex align-items-center">
-                        <input className="form-control me-2" 
-                        placeholder="Cari Nama Grup"/>
-                        <div style={{ height: '38px' }}>
-                            <p className="btn" style={{ color: '#f8f8f8', backgroundColor: '#229BD8' }}>Cari</p>
-                        </div>
-                    </div>
+      <>
+      {
+        isLoading ? <LoadingComponent></LoadingComponent> :
+        <div className="container-fluid mt-3">
+          <div className="border" style={layoutBorder}>
+              <div className="d-flex flex-row justify-content-center">
+                <div className="col-5">
+                  <div className="d-flex flex-row">
+                    <input
+                      class="form-control me-2"
+                      type="search"
+                      placeholder="cari nama grup"
+                    />
+                    <button class="btn btn-default" type="submit">
+                      Cari
+                    </button>
+                  </div>
                 </div>
+              </div>
             </div>
-          </div>
-          </div>
           <div className="border p-3 mt-4 mb-4" style={layoutBorder}>
               <div
                 className="d-flex flex-row justify-content-between mb-3"
                 style={{ alignItems: "center" }}
               >
                 <h6><strong>Akun Grup Baru</strong></h6>
-                <button className="btn btn-default">+ Tambah Data</button>
+                <button className="btn btn-default" onClick={ addGroup }>+ Tambah Data</button>
               </div>
                 <div>
                     {
-                        isLoading ? 
-                        <LoadingComponent/> :
+                        isLoading ? <LoadingComponent/> :
                         userGroups?.length ?
                         <table className="table table-hover">
                             <thead>
@@ -61,21 +72,15 @@ export default function ListGroupPage () {
                             </thead>
                                 <tbody>
                                 {
-                                    userGroups.map(el => {
+                                    userGroups?.map(el => {
+                                      const path = `/group-list/${el.id}`
                                         return (
                                             <tr>
-                                                <td scope="row">Admin</td>
-                                                <td>Untuk Administrator</td>
+                                                <td scope="row">{ el.role?.name }</td>
+                                                <td>{ el.role?.description }</td>
                                                 <td>2</td>
-                                                <td>Super Admin</td>
-                                                <td>
-                                                    <div className="d-flex align-items-center bd-highlight mb-3"> 
-                                                        <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
-                                                        <div style={{ height: "20px" }}>
-                                                            <p className="ms-2 me-4  bd-highlight">Detail</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                                <td>{ el.privilege?.name }</td>
+                                                <td><Link to={ path } state= {{ detailData }}><i class='bx bx-list-ul' ></i> Detail</Link></td>
                                             </tr>
                                         )
                                     })
@@ -98,7 +103,20 @@ export default function ListGroupPage () {
                         </div>
                     }
             </div>
-          </div>  
+            <div className="d-flex flex-row-reverse">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+              </div>
+              </div>
+          </div>
+      }
         </>
       );
 }

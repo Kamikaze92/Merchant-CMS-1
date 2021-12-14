@@ -11,12 +11,14 @@ import {
   SET_ACTIVE_MERCHANT,
   USER_LOADING,
   USER_ERROR,
+  SET_USER_VERIFIER_SUCCESS
 } from '../actionType/users';
 
 const initialState = {
   users: [],
   usersMerchant: [],
   usersVerifier: [],
+  userVerifier: {},
   activeMerchants: [],
   activeMerchant: {},
   isLoading: false,
@@ -53,6 +55,12 @@ export default function items(state = initialState, action) {
       return {
         ...state,
         usersVerifier: action.payload,
+        isLoading: false,
+      };
+    case SET_USER_VERIFIER_SUCCESS:
+      return {
+        ...state,
+        userVerifier: action.payload,
         isLoading: false,
       };
     case APPROVE_VERIFIER_SUCCESS:

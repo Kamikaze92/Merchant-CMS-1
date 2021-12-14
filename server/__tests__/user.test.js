@@ -1,56 +1,61 @@
 const request = require('supertest');
-const { User } = require('../models');
 const app = require('../app');
+const { Category, User } = require('../models');
+const { getSalt, comparePassword } = require('../helpers/bcrypt');
+const redis = require('../config/redis');
 
-beforeAll(async () => {
-  await User.sync({ force: true });
-  const userObject = {
-    full_name: 'John Doe',
-    email: 'test@mail.com',
-    phone_number: '085299999999',
-    password: '12345678',
-    category_id: 1,
-    tenant_category_id: 1,
-    parent_id: 1,
-    place_name: 'Resto A',
-    institution: 'PHRI',
-    address: 'Bandung',
-    province_id: 1,
-    city_id: 1,
-    postal_code: '12345',
-    created_at: new Date(),
-    updated_at: new Date(),
-  };
-  await User.create(userObject);
+beforeAll(async (done) => {
+  try {
+    const userz = await User.create({
+      full_name: 'Admin',
+      email: 'admin2@fakemail.com',
+      password: '123456',
+      phone_number: '6289999999999',
+      verified_at: new Date(),
+      approved_by: 1,
+      approved_at: new Date(),
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
+    done();
+  } catch (error) {
+    console.log(error);
+    done(error);
+  }
+  
 });
 
-describe('Tests merchant registrations', () => {
-  test('Complete form given should respond success message with 201 status code', async () => {
+afterAll(async (done) => {
+  await Category.sync({ force: true });
+  await User.sync({ force: true });
+  await redis.quit();
+  done()
+});
+
+describe('Test API for Categories', () => {
+  redis.disconnect()
+  test.only('ADMIN POST 201', async (done) => {
     try {
-      const user = {
-        full_name: 'John Doe',
-        email: 'testdiff@mail.com',
-        phone_number: '085299999999',
-        password: 'random',
-        category_id: 1,
-        tenant_category_id: 1,
-        parent_id: 1,
-        place_name: 'Resto B',
-        institution: 'phri',
-        address: 'Bandung',
-        province_id: 1,
-        city_id: 1,
-        postal_code: '12345',
-        created_at: new Date(),
-        updated_at: new Date(),
+      const userd = {
+        email: 'admin2@fakemail.com',
+        password: '123456',
       };
-      const response = await request(app).post('/register').send(user);
-      expect(response.status).toBe(201);
-      expect(response.body).toEqual({
-        message: `Registration success, OTP was sent to ${user.email}.`,
-      });
+      const res = await request(app)
+      .post('/login')
+      .send(userd);
+      console.log(res.body, 'ini boddy');
+      const response = await request(app)
+        .post('/categories')
+        .send({
+          name: 'Test category Tenant',
+          description: 'Test category Tenant',
+        })
+        .set('access_token', res.body.access_token);
+      console.log(response.status, 'sttus response');
+      expect(response.status).toBe(200);
+      done()
     } catch (error) {
-      expect(error).toMatch('error');
+      done(error)
     }
   });
 });
