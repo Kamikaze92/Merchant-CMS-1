@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserVerifiers, approveUserVerifier, deleteUserVerifier } from '../store/actions/users';
+import { setUserMerchants, createUserMerchant, approveUserMerchant, deleteUserMerchant } from '../store/actions/users';
 import DataTable from 'react-data-table-component';
+import LoadingComponent from './LoadingComponent';
+import errorImage from '../assets/images/Frame 167.svg';
 
 const columns = (buttonHandlers) => [
   {
@@ -20,15 +22,21 @@ const columns = (buttonHandlers) => [
       sortable: true,
   },
   {
-      name: 'Instansi',
-      selector: row => row.institution,
+      name: 'Sub-Kategori',
+      selector: row => row.sub_category,
       sortable: true,
   },
-  // {
-  //     name: 'Kategori Pengguna',
-  //     selector: row => row.place_name,
-  //     sortable: true,
-  // },
+  {
+      name: 'Nama Tempat',
+      selector: row => row.place_name,
+      sortable: true,
+  },
+  {
+      name: 'Alamat',
+      selector: row => row.address,
+      sortable: true,
+  		wrap: true,
+  },
   {
     name: 'Aksi',
     cell: (row) => (
@@ -45,9 +53,9 @@ const columns = (buttonHandlers) => [
   },
 ];
 
-export default function UserVerifierApproval() {
+export default function MerchantApprovalTable() {
   const dispatch = useDispatch();
-  const { usersVerifier, isLoading, error } = useSelector(state => state.users);
+  const { usersMerchant, isLoading, error } = useSelector(state => state.users);
   const [ selectedRows, setSelectedRows ] = useState(false);
   // const [ toggledClearRows, setToggleClearRows ] = useState(false);
 
@@ -64,15 +72,15 @@ export default function UserVerifierApproval() {
   const ActionButtonHandlers = (payload, type) => {
     if (type === 'approve') {
       // promp are you sure want to approve.
-      dispatch(approveUserVerifier(payload.id, usersVerifier));
+      dispatch(approveUserMerchant(payload.id, usersMerchant));
     } 
     if (type === 'delete') {
       // promp are you sure want to approve.
-      dispatch(deleteUserVerifier(payload.id, usersVerifier));
+      dispatch(deleteUserMerchant(payload.id, usersMerchant));
     }
 	};
 
-  useEffect(() => dispatch(setUserVerifiers()), []);
+  useEffect(() => dispatch(setUserMerchants()), [dispatch]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -94,31 +102,31 @@ export default function UserVerifierApproval() {
       user_type: 'Merchant',
       // user_type: 'Verifier',
     }
-    // dispatch(createUserMerchant(payload));
+    dispatch(createUserMerchant(payload));
   };
-
   if (isLoading) {
     return (
-      <div>
-        <h1>Loading ...</h1>
-      </div>
+      <LoadingComponent />
     )
   } else {
     return (
+      usersMerchant.length ?
       <>
-        <div id="container-fluid">
-          <div className="row">
-            <div className="col-12">
+        <div id="container-fluid mt-3">
+          <div className="">
               <div>
                 <DataTable
+                  // columns={columns}
                   columns={columns(ActionButtonHandlers)}
-                  data={usersVerifier?.map(el => {
+                  data={usersMerchant?.map(el => {
                     return {
                       id: el.id,
                       created_at: el.created_at,
                       full_name: el.full_name,
                       email: el.email,
-                      institution: el.Verifier?.institution,
+                      sub_category: el.Merchant?.Category?.name,
+                      place_name: el.Merchant?.place_name,
+                      address: el.Merchant?.address,
                     }
                   })}
                   direction="auto"
@@ -138,9 +146,21 @@ export default function UserVerifierApproval() {
               </div>
             </div>
           </div>
-        </div>
-      </>
-    
+      </> :
+      <div className="container">
+        <div className="row" style={{ justifyContent: "center" }}>
+            <div className="col-7 mb-5 mt-5">
+            <div style={{ textAlign: "center" }}>
+                <img className="img-fluid"
+                src={ errorImage }
+                alt="Peduli-lindungi-logo"
+                style={{ width: "600px" }}
+                />
+            </div>
+            </div>
+          <h3 className="row" style={{ justifyContent: "center" }}>Data Not found!</h3>
+      </div>
+    </div> 
     )
   };
 };

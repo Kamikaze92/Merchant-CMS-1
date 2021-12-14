@@ -1,7 +1,8 @@
 import Sidebar from "../Components/Sidebar";
 import Navbar from "../Components/Navbar";
 import ListGroupTable from "../Components/ListGroupTable";
-import errorImage from '../assets/images/Frame 167.svg'
+import errorImage from '../assets/images/Frame 167.svg';
+import LoadingComponent from '../Components/LoadingComponent';
 import { useEffect, useState } from "react";
 const { getUserGroups } = require('../store/actions/userGroups');
 const { useSelector, useDispatch } = require('react-redux');
@@ -25,7 +26,7 @@ export default function ListGroup(){
                 <div className="bg-white border-top p-4">Administrasi - Grup
                 <br/><h4 className="mt-2"><strong>Daftar Grup Pengguna</strong></h4></div>
                 {
-                    isLoading ? <h1>Loading...</h1>
+                    isLoading ? <LoadingComponent />
                     :
                 <div className="vh-100">
                     {

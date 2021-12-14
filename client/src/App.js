@@ -38,7 +38,7 @@ function App() {
 
           {/* users, usergroup, category */}
           <Route path="/users" element={<Users />}></Route>
-          <Route path="/users/detail" element={<UserDetail />}></Route>
+          <Route path="/users/:id" element={<UserDetail />}></Route>
           <Route path="/group-list" element={<ListGroup />}></Route>
           <Route path="/group-list/detail" element={<ListGroupDetail />}></Route>
           <Route path="/change-password" element={<ChangePassword />}></Route>

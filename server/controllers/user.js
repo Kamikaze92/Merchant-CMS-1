@@ -1,6 +1,6 @@
 const { getPagination, getPagingData } = require("../helpers/pagination");
 const  newHistory = require('../helpers/historyInstance');
-const { User, Role, Verificator, sequelize, History, Category, Verifier, Merchant, City } = require("../models");
+const { User, sequelize, Category, Verifier, Merchant, City, UserGroups } = require("../models");
 const { Op } = require("sequelize");
 const {jwtSign, verifyData} = require('../helpers/jwt')
 const {comparePassword} = require('../helpers/bcrypt')
@@ -16,29 +16,28 @@ module.exports = class UserController {
       let { page, size, search, filter } = req.query;
       if (+page < 1) page = 1;
       if (+size < 1) size = 10;
-      let condition = {};
+      let conditions = {
+        verifier_id: { [Op.ne] : null },
+        verified_at: null,
+        approved_at: null,
+        approved_by: null,
+        is_rejected: null,
+        deleted_at: null,
+      };
       if (search) {
         condition["email"] = { [Op.iLike]: `%${search}%` };
         condition["fullname"] = { [Op.iLike]: `%${search}%` };
       }
       const { limit, offset } = getPagination(page, size);
       const response = await User.findAndCountAll({
-        where: condition,
-        order: [["fullname", "ASC"]],
+        where: conditions,
+        order: [["full_name", "ASC"]],
         attributes: {
           exclude: ["password"],
         },
         include: [
           {
-            model: Role,
-            include: [
-              {
-                model: Privilege,
-              },
-            ],
-          },
-          {
-            model: Verificator,
+            model: Verifier,
           },
         ],
         limit,
@@ -49,7 +48,7 @@ module.exports = class UserController {
       }
       res.status(200).json(getPagingData(response, page, limit));
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
       next(err);
     }
   }
@@ -60,15 +59,10 @@ module.exports = class UserController {
       const result = await User.findByPk(id, {
         include: [
           {
-            model: Role,
-            include: [
-              {
-                model: Privilege,
-              },
-            ],
+            model: Merchant
           },
           {
-            model: Verificator,
+            model: Verifier
           },
         ],
         attributes: {
