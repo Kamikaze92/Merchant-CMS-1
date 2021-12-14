@@ -201,7 +201,7 @@ export default function MerchantApprovalTable() {
               </div>
             </div>
    
-    <div style={{backgroundColor:'white', width: '1065px', height: '350px'}}>
+    <div style={{backgroundColor:'white', width: '1000px', height: '350px', marginLeft:'35px'}}>
       <div style={{width: '1000px'}}>
        {
         usersMerchant.length ?
