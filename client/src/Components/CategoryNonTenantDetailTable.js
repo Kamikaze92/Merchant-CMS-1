@@ -26,7 +26,7 @@ export default function CategoryDetail(props) {
     createdSub,
     successDeleted,
     updatedSub,
-  } = useSelector((state) => state.category);
+  } = useSelector((state) => state.categories);
   const [data, setData] = useState();
   const dispatch = useDispatch();
   const [show, setShow] = useState({

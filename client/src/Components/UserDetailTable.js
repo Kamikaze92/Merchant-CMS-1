@@ -2,6 +2,8 @@
 import { useLocation } from "react-router";
 export default function UserDetailPage(props) {
   const { state } = useLocation();
+  const loc = useLocation();
+  console.log(loc);
   return (
     <>
       <div className="container">

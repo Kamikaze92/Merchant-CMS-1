@@ -13,6 +13,10 @@ const layoutBorder = {
   marginLeft: 24,
   marginRight: 24,
 };
+
+
+
+
 const UserTableComponent = ({ id, full_name, email, phone_number, Verifier }) => {
   const path = `/users/${id}`;
   const detailData = {
@@ -29,9 +33,14 @@ const UserTableComponent = ({ id, full_name, email, phone_number, Verifier }) =>
     </tr>
   )
 }
+
+
+
+
+
 export default function UsersTable() {
   const [usersData, setUsersData] = useState([]);
-  const { users, isLoading } = useSelector(state => state.user);
+  const { users, isLoading } = useSelector(state => state.users);
   const dispatch = useDispatch();
   useEffect( () => {
      dispatch(setUser());
@@ -83,9 +92,13 @@ export default function UsersTable() {
                       {
                         userData?.map(el => {
                           if(el.verifier_id) {
-                            return <UserTableComponent id={ el.id } full_name={ el.full_name }
-                            email={ el.email } Verifier={ el.Verifier }
-                            phone_number={ el.phone_number }></UserTableComponent>
+                            return <UserTableComponent 
+                            id={ el.id } 
+                            full_name={ el.full_name }
+                            email={ el.email } 
+                            Verifier={ el.Verifier }
+                            phone_number={ el.phone_number }
+                            ></UserTableComponent>
                           }
                         })
                       }

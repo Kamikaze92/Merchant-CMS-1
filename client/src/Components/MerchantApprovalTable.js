@@ -80,7 +80,7 @@ export default function MerchantApprovalTable() {
     }
 	};
 
-  useEffect(() => dispatch(setUserMerchants()), []);
+  useEffect(() => dispatch(setUserMerchants()), [dispatch]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();

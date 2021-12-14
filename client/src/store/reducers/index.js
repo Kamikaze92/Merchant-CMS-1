@@ -5,8 +5,8 @@ import roleReducer from "./roles";
 import userGroupReducer from "./userGroups";
 
 const rootReducer = combineReducers({
-  user: userReducer,
-  category: categoryReducer,
+  users: userReducer,
+  categories: categoryReducer,
   roles: roleReducer,
   userGroups: userGroupReducer, 
   // add more here.

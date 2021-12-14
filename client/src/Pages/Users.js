@@ -1,14 +1,7 @@
 import Sidebar from "../Components/Sidebar";
 import Navbar from "../Components/Navbar";
 import UsersTable from "../Components/UsersTable";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 export default function Users() {
-  const [users, setUsers] = useState([]);
-  const dispatch = useDispatch();
-  useEffect(() => {
-
-  }, [dispatch])
   return (
     <>
       <Navbar />

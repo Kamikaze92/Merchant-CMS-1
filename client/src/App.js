@@ -21,11 +21,13 @@ import AccountVerified from "./Pages/AccountVerified";
 import { RequireAuth, HasToken } from './Components/RequireAuth';
 import Dashboard from './Pages/Dashboard';
 import ForgotPassword from './Pages/ForgotPassword';
+import ButtonLoading from './Components/buttonLoading';
 
 function App() {
   return (
     <>
       <Routes>
+        <Route path="/loading" element={ <ButtonLoading></ButtonLoading> }></Route>
         {/* auth Router Guard*/}
         <Route path="/" element={<RequireAuth><Dashboard/></RequireAuth>}>
           {/* Table utama */}
