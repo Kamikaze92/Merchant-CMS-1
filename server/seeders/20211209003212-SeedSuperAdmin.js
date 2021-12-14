@@ -11,7 +11,6 @@ module.exports = {
           email: 'admin@fakemail.com',
           phone_number: '6285277499999',
           password: getSalt('supersecret'),
-          created_by: 1,
           created_at: new Date(),
           updated_at: new Date(),
         },
