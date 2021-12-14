@@ -1,3 +1,9 @@
+import errorImage from '../assets/images/Frame 167.svg';
+import LoadingComponent from '../Components/LoadingComponent';
+import { useEffect } from "react";
+const { getUserGroups } = require('../store/actions/userGroups');
+const { useSelector, useDispatch } = require('react-redux');
+
 const layoutBorder = {
     borderRadius: 5,
     padding: "16px",
@@ -8,6 +14,11 @@ const layoutBorder = {
   };
 
 export default function ListGroupPage () {
+    const { isLoading, userGroups } = useSelector(state => state.userGroups);
+    const dispatch = useDispatch();
+    useEffect( () => {
+        dispatch(getUserGroups());
+    }, [dispatch]);
     return (
         <>
           <div className="container-fluid">
@@ -34,73 +45,58 @@ export default function ListGroupPage () {
                 <button className="btn btn-default">+ Tambah Data</button>
               </div>
                 <div>
-                <table className="table table-hover">
-                    <tbody>
-                        <tr>
-                            <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Nama Grup</th>
-                            <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Deskripsi</th>
-                            <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Jumlah Pengguna</th>
-                            <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Hak Akses</th>
-                            <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Aksi</th>
-                        </tr>
-                        <tr>
-                            <td scope="row">Admin</td>
-                            <td>Untuk Administrator</td>
-                            <td>2</td>
-                            <td>Super Admin</td>
-                            <td>
-                                <div className="d-flex align-items-center bd-highlight mb-3"> 
-                                    <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
-                                    <div style={{ height: "20px" }}>
-                                        <p className="ms-2 me-4  bd-highlight">Detail</p>
-                                    </div>
+                    {
+                        isLoading ? 
+                        <LoadingComponent/> :
+                        userGroups?.length ?
+                        <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Nama Grup</th>
+                                    <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Deskripsi</th>
+                                    <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Jumlah Pengguna</th>
+                                    <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Hak Akses</th>
+                                    <th style={{ fontWeight: 'bold', backgroundColor: "#D9D9D9" }}>Aksi</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                {
+                                    userGroups.map(el => {
+                                        return (
+                                            <tr>
+                                                <td scope="row">Admin</td>
+                                                <td>Untuk Administrator</td>
+                                                <td>2</td>
+                                                <td>Super Admin</td>
+                                                <td>
+                                                    <div className="d-flex align-items-center bd-highlight mb-3"> 
+                                                        <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
+                                                        <div style={{ height: "20px" }}>
+                                                            <p className="ms-2 me-4  bd-highlight">Detail</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                }                                
+                            </tbody>
+                        </table> :
+                        <div className="container">
+                            <div className="row" style={{ justifyContent: "center" }}>
+                                <div className="col-7 mb-5 mt-5">
+                                <div style={{ textAlign: "center" }}>
+                                    <img className="img-fluid"
+                                    src={ errorImage }
+                                    alt="Peduli-lindungi-logo"
+                                    style={{ width: "600px" }}
+                                    />
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">Verifikator Propinsi</td>
-                            <td>Untuk Verifikator Propinsi</td>
-                            <td>10</td>
-                            <td>Approve User Kab/Kota, Approve...</td>
-                            <td>
-                                <div className="d-flex align-items-center bd-highlight mb-3"> 
-                                    <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
-                                    <div style={{ height: "20px" }}>
-                                        <p className="ms-2 me-4  bd-highlight">Detail</p>
-                                    </div>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">Verifikator Kab/Kota</td>
-                            <td>Untuk Verifikator Kab/Kota</td>
-                            <td>10</td>
-                            <td>Approve Merchant Kab/Kota</td>
-                            <td>
-                                <div className="d-flex align-items-center bd-highlight mb-3"> 
-                                    <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
-                                    <div style={{ height: "20px" }}>
-                                        <p className="ms-2 me-4  bd-highlight">Detail</p>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td scope="row">Merchant</td>
-                            <td>Untuk Merchant</td>
-                            <td>1000</td>
-                            <td>Merchant Feature</td>
-                            <td>
-                                <div className="d-flex align-items-center bd-highlight mb-3"> 
-                                    <i className="bi bi-list-ul  bd-highlight" style={{ color: '#229BD8' }}></i>
-                                    <div style={{ height: "20px" }}>
-                                        <p className="ms-2 me-4  bd-highlight">Detail</p>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                <h3 className="row" style={{ justifyContent: "center" }}>Data Not found!</h3>
+                            </div>
+                        </div>
+                    }
             </div>
           </div>  
         </>

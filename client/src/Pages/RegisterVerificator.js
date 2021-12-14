@@ -110,9 +110,9 @@ export default function RegisterVerificator() {
                       Kategori Pengguna
                     </label>
                     <div className="input-group ">
-                      <select class="form-select">
+                      <select className="form-select">
                         {/**Sampel */}
-                        <option selected disabled>
+                        <option value="" disabled>
                           Pilih Kategori
                         </option>
                         <option value="1">Admin</option>
@@ -127,9 +127,9 @@ export default function RegisterVerificator() {
                       Provinsi
                     </label>
                     <div className="input-group ">
-                      <select class="form-select">
+                      <select className="form-select">
                         {/**Sampel */}
-                        <option selected disabled>
+                        <option value="" disabled>
                           Pilih Kategori
                         </option>
                         <option value="1">Sumatera Barat</option>
@@ -143,9 +143,9 @@ export default function RegisterVerificator() {
                       Kota
                     </label>
                     <div className="input-group ">
-                      <select class="form-select">
+                      <select className="form-select">
                         {/**Sampel */}
-                        <option selected disabled>
+                        <option value="" disabled>
                           Pilih Kota
                         </option>
                         <option value="1">Padang</option>
@@ -169,7 +169,7 @@ export default function RegisterVerificator() {
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
                     disabled
                   >
-                  <span class="spinner-border spinner-border-sm text-white" role="status"></span>
+                  <span className="spinner-border spinner-border-sm text-white" role="status"></span>
                   </button>
                 </div>
               </form>

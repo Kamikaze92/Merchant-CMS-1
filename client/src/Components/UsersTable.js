@@ -1,9 +1,11 @@
+import errorImage from '../assets/images/Frame 167.svg';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUsers, createUser } from '../store/actions/users';
 import { useNavigate } from 'react-router';
 import { setUser } from '../store/actions/users';
 import { Link } from 'react-router-dom';
+import LoadingComponent from './LoadingComponent';
 
 const layoutBorder = {
   borderRadius: 5,
@@ -72,11 +74,13 @@ export default function UsersTable() {
                 className="d-flex flex-row justify-content-between mb-3"
                 style={{ alignItems: "center" }}
               >
+                <h6><strong>Akun Pengguna Baru</strong></h6>
                 <button className="btn btn-default">+ Tambah Data</button>
               </div>
               <div>
                 {
-                  isLoading ? <h1>Loading</h1> :
+                  isLoading ? <LoadingComponent/> :
+                  usersData?.length ?
                   <table class="table table-hover">
                     <thead>
                       <tr>
@@ -103,7 +107,21 @@ export default function UsersTable() {
                         })
                       }
                     </tbody>
-                  </table>
+                  </table> :
+                  <div className="container">
+                      <div className="row" style={{ justifyContent: "center" }}>
+                          <div className="col-7 mb-5 mt-5">
+                          <div style={{ textAlign: "center" }}>
+                              <img className="img-fluid"
+                              src={ errorImage }
+                              alt="Peduli-lindungi-logo"
+                              style={{ width: "600px" }}
+                              />
+                          </div>
+                          </div>
+                          <h3 className="row" style={{ justifyContent: "center" }}>Data Not found!</h3>
+                      </div>
+                  </div>
                 }
               </div>
               <div className="d-flex flex-row-reverse">
