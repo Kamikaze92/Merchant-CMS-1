@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import axios from '../config/server'
-import {Link} from 'react-router-dom'
-import { useState } from 'react';
+import {Link} from 'react-router-dom';
 
 const RegisterPage = {
   backgroundColor: "#094C6F",
@@ -316,6 +315,7 @@ export default function RegisterVerificator() {
                   Loading...
                 </button></div>:<div className="d-grid gap-2 col-12 mt-3">
                   <button
+                    className={!isButtonRegisterClicked ? "btn btn-primary" : "btn btn-primary d-none"}
                     className="btn"
                     type="submit"
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}

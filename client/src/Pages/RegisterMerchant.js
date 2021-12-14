@@ -405,6 +405,7 @@ export default function RegisterMerchant() {
                 </div>
                 <div className="d-grid gap-2 col-12 mt-3">
                   <button
+                    className={!isButtonRegisterClicked ? "btn btn-primary" : "btn btn-primary d-none"}
                     className="btn"
                     type="submit"
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
