@@ -175,7 +175,7 @@ export default function Category(props) {
                   }}
                 >
                   <th>Nama Kategori Tenant</th>
-                  <th>Aksi</th>
+                  <th className="col-2">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -231,6 +231,7 @@ export default function Category(props) {
                         <tr key={el.id}>
                           <td>{el.name}</td>
                           <td>
+                            <div>
                             <i
                               className="bi bi-pencil  bd-highlight"
                               style={{ color: "#229BD8" }}
@@ -263,6 +264,7 @@ export default function Category(props) {
                             >
                               Hapus
                             </a>
+                            </div>
                           </td>
                         </tr>
                       );
