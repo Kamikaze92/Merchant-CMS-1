@@ -70,10 +70,6 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: {
             msg: 'Password is required',
           },
-          len: {
-            args: [6, 12],
-            msg: 'Password minimum 6 and maximum 12 characters',
-          },
         },
       }, // min 6 max 12, required.
       phone_number: {

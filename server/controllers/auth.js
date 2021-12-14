@@ -1,4 +1,4 @@
-const {comparePassword} = require('../helpers/bcrypt')
+const {comparePassword, getSalt} = require('../helpers/bcrypt')
 const {jwtSign, signPasswordLink} = require('../helpers/jwt')
 const newHistory = require('../helpers/historyInstance');
 const {transporter, mailOtp, resetPasswordMail} = require('../helpers/nodemailer')
@@ -228,10 +228,11 @@ module.exports = class AuthController {
         }
         const payload = {
             id: response.id,
-            email: response.email
+            email: response.email,
+            password: response.password,
         };
         const token = signPasswordLink(payload, response.password);
-        let link = `${url}/${response.id}/${token}`
+        let link = `http://${url}/${response.id}/${token}`
         transporter.sendMail(resetPasswordMail(response.email, link), (err) => {
           if(err){
             throw {
@@ -257,7 +258,7 @@ module.exports = class AuthController {
         throw {name: "password_not_match"}
       }
       //create hooks beforeUpdate to hash new password
-      let params = { password }
+      let params = { password: getSalt(password) }
       await User.update(params, {
         where: { id }
       })
@@ -298,5 +299,28 @@ module.exports = class AuthController {
       next(err)
     }
   }
+
+    static async approveUser(req, res, next) {
+    try {
+      const { id, token } = req.params;
+
+      // if token was invalid its throw error.
+      verifyData(token);
+      await User.update({
+        approved_at: new Date(),
+      }, {
+        where: {id}
+      });
+
+      // !TODO : create history.
+
+      res.status(200).json({ 
+        message: 'User has been approved.',
+        id,
+      });
+    } catch (error) {
+      next(error);
+    };
+  };
 }
 
