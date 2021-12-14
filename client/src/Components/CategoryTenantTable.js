@@ -50,7 +50,7 @@ export default function Category(props) {
   const [loadingFilter, setLoading] = useState(false);
   const [noData, setNoData] = useState(false);
   const dispatch = useDispatch();
-  const { tenant, loading, error } = useSelector((state) => state.category);
+  const { tenant, loading, error } = useSelector((state) => state.categories);
   useEffect(() => {
     dispatch(getAllCategoriesTenant());
   }, []);

@@ -17,7 +17,7 @@ export default function CategoryNonTenant(props) {
   const [loadingFilter, setLoading] = useState(false);
   const [noData, setNoData] = useState(false);
   const dispatch = useDispatch();
-  const { non_tenant, loading, error } = useSelector((state) => state.category);
+  const { non_tenant, loading, error } = useSelector((state) => state.categories);
   const [show, setShow] = useState({
     name: null,
     payload: null,
