@@ -30,7 +30,6 @@ export const setUser = () => async (dispatch) => {
       },
     });
     if (response.status === 200) {
-      console.log(response.data);
       dispatch({
         type: SET_USERS_SUCCESS,
         payload: response.data,
@@ -69,6 +68,7 @@ export const setUserMerchants = () => async (dispatch) => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
   } catch (error) {
+    console.log(error.response.data, '.>>>>>>');
     dispatch({
       type: USER_ERROR,
       payload: error,
@@ -97,6 +97,10 @@ export const approveUserMerchant =
           type: APPROVE_MERCHANT_SUCCESS,
           payload: newPayload,
         });
+        dispatch({
+          type: USER_LOADING,
+          payload: false,
+        });
         // for notification.
         return Promise.resolve(response);
       } else {
@@ -106,6 +110,10 @@ export const approveUserMerchant =
       dispatch({
         type: USER_ERROR,
         payload: error,
+      });
+      dispatch({
+        type: USER_LOADING,
+        payload: false,
       });
     }
   };
@@ -294,6 +302,7 @@ export const setActiveMerchants = () => async (dispatch) => {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
  } catch (error) {
+   console.log(error, 'halo gaiis');
    dispatch({
      type: USER_ERROR,
      payload: error

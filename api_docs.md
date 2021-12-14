@@ -484,7 +484,6 @@ not needed
                 "name": "String",
                 "description": "String",
                 "is_tenant_category": "Boolean",
-                "created_by": "String",
                 "parent_id": "Integer",
                 "created_at": "String",
                 "updated_at": "String",
@@ -809,7 +808,6 @@ not needed
                 "name": "String",
                 "description": "String",
                 "is_tenant_category": "Boolean",
-                "created_by": "String",
                 "parent_id": "Integer",
                 "created_at": "String",
                 "updated_at": "String",
@@ -1904,7 +1902,6 @@ not needed
         "name": "String",
         "description": "String",
         "is_tenant_category": "Boolean",
-        "created_by": "String",
         "parent_id": "Integer",
         "created_at": "String",
         "updated_at": "String",
@@ -1915,7 +1912,6 @@ not needed
                 "name": "String",
                 "description": "String",
                 "is_tenant_category": "Boolean",
-                "created_by": "String",
                 "parent_id": "Integer",
                 "created_at": "String",
                 "updated_at": "String",
@@ -1953,7 +1949,6 @@ not needed
 {
   "name": "String",
   "description": "String",
-  "created_by": "String",
   "is_tenant_category": "Boolean",
 }
 ```
@@ -1998,7 +1993,6 @@ not needed
 {
   "name": "String",
   "description": "String",
-  "created_by": "String",
   "is_tenant_category": "Boolean",
 }
 ```
@@ -2049,7 +2043,6 @@ not needed
         "name": "String",
         "description": "String",
         "is_tenant_category": "Boolean",
-        "created_by": "String",
         "parent_id": "Integer",
         "created_at": "String",
         "updated_at": "String",
@@ -2084,7 +2077,6 @@ not needed
 {
   "name": "String",
   "is_tenant_category": true,
-  "created_by": "String",
 }
 ```
 
@@ -2123,7 +2115,6 @@ not needed
 {
   "name": "String",
   "is_tenant_category": true,
-  "created_by": "String",
 }
 ```
 
@@ -2168,7 +2159,6 @@ not needed
 ```json
 {
   "name": "String",
-  "created_by": "String",
   "parent_id": "Integer",
 }
 ```
@@ -2215,7 +2205,6 @@ not needed
 ```json
 {
   "name": "String",
-  "created_by": "String",
   "parent_id": "Integer",
 }
 ```
@@ -2267,7 +2256,6 @@ not needed
     "name": "String",
     "description": "String",
     "is_tenant_category": "Boolean",
-    "created_by": "String",
     "parent_id": "Integer",
     "created_at": "String",
     "updated_at": "String",
@@ -2278,7 +2266,6 @@ not needed
             "name": "String",
             "description": "String",
             "is_tenant_category": "Boolean",
-            "created_by": "String",
             "parent_id": "Integer",
             "created_at": "String",
             "updated_at": "String",

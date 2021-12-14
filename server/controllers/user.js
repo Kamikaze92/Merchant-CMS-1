@@ -123,7 +123,7 @@ module.exports = class UserController {
       const { verifier } = req.user;
       // const role = req.user.Role.name;
       // const role = 'Admin';
-      const role = 'Verifikator';
+      const role = 'Admin';
       //=========
 
       // New Merchant User.
@@ -178,8 +178,16 @@ module.exports = class UserController {
             include: [
               {
                 model: Category,
-                as: 'sub_category',
-                require: true, // REQUIRED!. because merchant should have category!.
+                as: 'sub_category',  // REQUIRED!. because merchant should have category!.
+                require: true,
+                include: {
+                  model: Category,
+                  require: true, // REQUIRED!. because merchant should have category!.
+                  as: 'category',
+                  attributes: {
+                    include: ["name", "description"],
+                  },
+                },
               },
               {
                 model: Province,
@@ -213,11 +221,11 @@ module.exports = class UserController {
       // remove later.
       const { verifier } = req.user;
       
-      // const role = 'Admin';
-      const role = 'Verifikator';
-      //=========
+      const role = 'Admin';
+      // const role = 'Verifikator';
+      // //=========
 
-      // New Verifier User.
+      // // New Verifier User.
       let conditions = {
         verifier_id: { [Op.ne]: null },
         verified_at: null,
@@ -227,15 +235,15 @@ module.exports = class UserController {
         deleted_at: null,
       };
 
-      // Filter for list verifier.
-      /**
-       * Should throw error if.
-       * not admin and 
-       * verifier null or
-       * province null or
-       * city not null 
-       */
-      if (role !== 'Admin' && (!verifier || !verifier.province_id || verifier.city_id)) {
+      // // Filter for list verifier.
+      // /**
+      //  * Should throw error if.
+      //  * not admin and 
+      //  * verifier null or
+      //  * province null or
+      //  * city not null 
+      //  */
+      if (role !== 'Admin' && (!verifier || !verifier.province_id || verifier?.city_id)) {
         // TODO : hrow error, because minimum should have province_id.
         throw {
           name: 'NotAuthorized',
@@ -243,8 +251,8 @@ module.exports = class UserController {
         }
       } 
       
-      // if not admin, should check province id to show all the user below their province.
-      if (verifier.province_id && role !== 'Admin') {
+      // // if not admin, should check province id to show all the user below their province.
+      if (verifier?.province_id && role !== 'Admin') {
         let cities = await City.findAll({
           where: {
             province_id: verifier.province_id,
@@ -267,7 +275,7 @@ module.exports = class UserController {
         include: [
           {
             model: Verifier,
-            as: 'verifier',
+            as: 'verifier', 
             require: true, // REQUIRED!. because if not have verifier it should return empty array!.
             include: [
               {
@@ -284,11 +292,12 @@ module.exports = class UserController {
           },
         ],
       });
-      if (!response) {
+      if (!response.length) {
         throw { name: "user_not_found" };
       }
       res.status(200).json(response);
     } catch (error) {
+      console.log(error, ">>> apa nichh??");
       next(error);
     }
   }
@@ -302,8 +311,8 @@ module.exports = class UserController {
       // remove later.
       const { verifier } = req.user;
       // const role = req.user.Role.name;
-      // const role = 'Admin';
-      const role = 'Verifikator';
+      const role = 'Admin';
+      // const role = 'Verifikator';
       //=========
 
       // New Merchant User.

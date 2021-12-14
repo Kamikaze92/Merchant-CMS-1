@@ -175,7 +175,6 @@ export default function RegisterVerificator() {
           url:'register',
           data: obj
         })
-        console.log(response.data);
         setLoading(false)
         navigate(`/otp-verification/${response.data.id}/${response.data.token}`);
       } catch (error) {

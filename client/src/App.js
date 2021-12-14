@@ -13,7 +13,7 @@ import LoginPage from "./Pages/LoginPage";
 import ActiveMerchant from "./Pages/ActiveMerchant";
 import UserVerifierApproval from "./Pages/UserVerifierApproval";
 import MerchantApproval from "./Pages/MerchantApproval";
-import ActiveMerchantDetail from "./Pages/ActiveMerchantDetail";
+import DetailUserMerchant from "./Pages/DetailUserMerchant";
 import ErrorPage from "./Pages/ErrorPage";
 import ListGroupDetail from "./Pages/ListGroupDetail";
 import ChangePassword from "./Pages/ChangePassword";
@@ -33,9 +33,10 @@ function App() {
           {/* Table utama */}
           <Route index element={<MerchantApproval />}></Route>
           <Route path="/merchants" element={<MerchantApproval />}></Route>
+          <Route path="/merchants/:id" element={<DetailUserMerchant />}></Route>
           <Route path="/verifiers" element={<UserVerifierApproval />}></Route>
           <Route path="/active-merchants" element={<ActiveMerchant />}></Route>
-          <Route path="/active-merchants/:id" element={<ActiveMerchantDetail />}></Route>
+          <Route path="/active-merchants/:id" element={<DetailUserMerchant />}></Route>
 
           {/* users, usergroup, category */}
           <Route path="/users" element={<Users />}></Route>
