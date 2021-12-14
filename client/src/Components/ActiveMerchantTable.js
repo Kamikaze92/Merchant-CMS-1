@@ -13,9 +13,13 @@ const layoutBorder = {
 export default function ActiveMerchantTable() {
   const dispatch = useDispatch();
   const {activeMerchants, isLoading, error} = useSelector((state) => state.users);
-  console.log(activeMerchants)
+  console.log(activeMerchants, 'masuk kaa')
   
-  useEffect(() => dispatch(setActiveMerchants()), [])
+  useEffect(() => {
+      dispatch(setActiveMerchants())
+
+  }
+  , [])
   
   if(isLoading) {
     return (
@@ -26,6 +30,7 @@ export default function ActiveMerchantTable() {
   }
 
   if(error) {
+    console.log(error.response?.data, 'apaa gais');
     return (
       <div>
         <h1>Error...</h1>
@@ -41,7 +46,7 @@ export default function ActiveMerchantTable() {
               <h6 style={{ fontSize: 14 }}>Status Pendaftaran</h6>
               <div className="d-flex flex-row justify-content-between">
                 <div className="col-4">
-                  <select class="form-select" id="inputForm">
+                  <select className="form-select" id="inputForm">
                     {/**Sampel */}
                     <option selected disabled>
                       Pilih Kategori
@@ -55,11 +60,11 @@ export default function ActiveMerchantTable() {
                 <div className="col-4">
                   <div className="d-flex flex-row">
                     <input
-                      class="form-control "
+                      className="form-control "
                       type="search"
                       placeholder="Masukkan email / nama tempat"
                     />
-                    <button class="btn btn-default ms-1" type="submit">
+                    <button className="btn btn-default ms-1" type="submit">
                       Cari
                     </button>
                   </div>
@@ -75,7 +80,7 @@ export default function ActiveMerchantTable() {
                 <button className="btn btn-default">+ Tambah Data</button>
               </div>
               <div>
-                <table class="table table-hover">
+                <table className="table table-hover">
                   <thead>
                     <tr>
                       <th style={{fontWeight: 600, backgroundColor: "#D9D9D9"}}>Nama</th>
@@ -88,15 +93,15 @@ export default function ActiveMerchantTable() {
                     </tr>
                   </thead>
                   <tbody>
-                    {activeMerchants?.map((merchant) => {
+                    {activeMerchants?.map((user,i) => {
                       return (
-                      <tr>
-                        <td>{merchant.full_name}</td>
-                        <td>{merchant.email}</td>
-                        <td>{merchant.Merchant.Category?.name}</td>
-                        <td>{merchant.Merchant.place_name}</td>
-                        <td>{merchant.Merchant.address}</td>
-                        <td><Link state={merchant} to={`/active-merchants/${merchant.id}`}><i class='bx bx-list-ul' ></i> Detail</Link>
+                      <tr key={i}>
+                        <td>{user.full_name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.merchant?.sub_category?.name}</td>
+                        <td>{user.merchant?.place_name}</td>
+                        <td>{user.merchant?.address}</td>
+                        <td><Link state={user} to={`/active-merchants/${user?.id}`}><i className='bx bx-list-ul' ></i> Detail</Link>
                         </td>
                       </tr>)
                       
@@ -106,12 +111,12 @@ export default function ActiveMerchantTable() {
               </div>
               <div className="d-flex flex-row-reverse">
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    <ul className="pagination">
+                        <li className="page-item"><a className="page-link" href="#">Previous</a></li>
+                        <li className="page-item"><a className="page-link" href="#">1</a></li>
+                        <li className="page-item"><a className="page-link" href="#">2</a></li>
+                        <li className="page-item"><a className="page-link" href="#">3</a></li>
+                        <li className="page-item"><a className="page-link" href="#">Next</a></li>
                     </ul>
                 </nav>
               </div>
