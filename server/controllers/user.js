@@ -390,6 +390,22 @@ module.exports = class UserController {
                 },
               },
               {
+                model: Category,
+                require: true, // REQUIRED!. because merchant should have category!.
+                as: 'tenant_category',
+                attributes: {
+                  include: ["name", "description"],
+                },
+                include: {
+                  model: Category,
+                  require: true, // REQUIRED!. because merchant should have category!.
+                  as: 'category',
+                  attributes: {
+                    include: ["name", "description"],
+                  },
+                },
+              },
+              {
                 model: Province,
                 require: true, // REQUIRED!. because merchant should have province!.
                 as: 'province',

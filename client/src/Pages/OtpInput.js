@@ -57,7 +57,7 @@ export default function OtpInput() {
         url: `${process.env.REACT_APP_BASE_URL}/resend-otp/${urlParams.id}/${urlParams.token}`,
         method: 'POST',
       })
-      if (response.status === 200 ) navigate(`/register-merchant/${response.data.id}/${response.data.token}`);
+      if (response.status === 200 ) navigate(`/otp-verification/${response.data.id}/${response.data.token}`);
       // jika sukses restart timer.
     } catch (error) {
       console.log(error);
