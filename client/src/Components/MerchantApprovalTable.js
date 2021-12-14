@@ -4,46 +4,93 @@ import { setUserMerchants, createUserMerchant, approveUserMerchant, deleteUserMe
 import DataTable from 'react-data-table-component';
 import LoadingComponent from './LoadingComponent';
 import errorImage from '../assets/images/Frame 167.svg';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const columns = (buttonHandlers) => [
   {
       name: 'Tanggal Daftar',
       selector: row => row.created_at,
       sortable: true,
+      width: "140px"
   },
   {
-      name: 'Nama',
-      selector: row => row.full_name,
-      sortable: true,
-  },
-  {
-      name: 'Email',
-      selector: row => row.email,
-      sortable: true,
-  },
+    name: 'Email',
+    selector: row => row.email,
+    sortable: true,
+    width: "150px"
+},
+  
   {
       name: 'Sub-Kategori',
       selector: row => row.sub_category,
       sortable: true,
+      width: "150px"
   },
   {
       name: 'Nama Tempat',
       selector: row => row.place_name,
       sortable: true,
+      width: "150px"
   },
   {
       name: 'Alamat',
       selector: row => row.address,
       sortable: true,
   		wrap: true,
+      width: "150px"
   },
   {
     name: 'Aksi',
     cell: (row) => (
       <div>
-        <button type="button" className="btn btn-secondary btn-sm text-nowrap" onClick={() => buttonHandlers(row, 'detail')}>Detail</button>
-        <button type="button" className="btn btn-secondary btn-sm text-nowrap" onClick={() => buttonHandlers(row, 'approve')}>Approve</button>
-        <button type="button" className="btn btn-secondary btn-sm text-nowrap" onClick={() => buttonHandlers(row, 'delete')}>Hapus</button>
+        <i
+            className="bi bi-pencil-fill"
+            style={{ color: "#229BD8" }}
+            onClick={() =>
+              buttonHandlers(row, 'detail')
+            }
+          ></i> &nbsp;
+          <a
+            onClick={() =>
+              buttonHandlers(row, 'detail')
+            }
+            style={{ color: "#229BD8" }}
+          >
+            Detail
+          </a> &nbsp;
+        <i
+            className="bi bi-plus-lg  bd-highlight"
+            style={{ color: "#229BD8" }}
+            onClick={() =>
+              buttonHandlers(row, 'approve')
+            }
+          ></i> 
+          <a
+            onClick={() =>
+              buttonHandlers(row, 'approve')
+            }
+            style={{ color: "#1890FF" }}
+          >
+            Tambah
+          </a> &nbsp;
+      <i
+            className="bi bi-trash  bd-highlight"
+            style={{ color: "#F6303A" }}
+            onClick={() =>
+              buttonHandlers(
+                row, 'delete'
+              )
+            }
+          ></i> 
+          <a
+            onClick={() =>
+              buttonHandlers(
+                row, 'delete'
+              )
+            }
+            style={{ color: "#F6303A" }}
+          >Hapus</a>
+          
       </div>
     ),
     minWidth: 'fit-content',
@@ -52,16 +99,23 @@ const columns = (buttonHandlers) => [
     center: true,
   },
 ];
+const layoutBorder = {
+  padding: "16px",
+  backgroundColor: "white",
+  width: '1000px',
+  marginTop:'20px',
+  marginLeft: '35px'
+};
 
 export default function MerchantApprovalTable() {
   const dispatch = useDispatch();
   const { usersMerchant, isLoading, error } = useSelector(state => state.users);
   const [ selectedRows, setSelectedRows ] = useState(false);
+  const navigate = useNavigate()
   // const [ toggledClearRows, setToggleClearRows ] = useState(false);
-
+  console.log(usersMerchant, 'apaa gaiiss');
   const handleChange = ({ selectedRows }) => {
     setSelectedRows(selectedRows);
-    console.log(selectedRows)
   };
 
   // Toggle the state so React Data Table changes to clearSelectedRows are triggered
@@ -78,10 +132,16 @@ export default function MerchantApprovalTable() {
       // promp are you sure want to approve.
       dispatch(deleteUserMerchant(payload.id, usersMerchant));
     }
+    if (type === 'detail') {
+      let detailUser = usersMerchant.filter(el => el.id == payload.id)[0]
+      console.log(detailUser, 'banagsaata ahahahhahahhahahha');
+      navigate(`/merchants/${payload.id}`,{state: detailUser})
+    }
+    console.log(type, 'typee', payload, 'payloadd');
 	};
 
-  useEffect(() => dispatch(setUserMerchants()), [dispatch]);
-
+  useEffect(() => dispatch(setUserMerchants()), []);
+  console.log(usersMerchant, 'asupppp gaiiss???');
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const payload = {
@@ -110,11 +170,45 @@ export default function MerchantApprovalTable() {
     )
   } else {
     return (
-      usersMerchant.length ?
+      <>
+      <div style={layoutBorder}>
+              <h6 style={{ fontSize: 14 }}>Status Pendaftaran</h6>
+              <div className="d-flex flex-row justify-content-between">
+                <div className="col-4">
+                  <select className="form-select" id="inputForm">
+                    {/**Sampel */}
+                    <option selected disabled>
+                      Pilih Kategori
+                    </option>
+                    <option value="1">Dalam Proses</option>
+                    <option value="2">Aktif</option>
+                    <option value="3">Registrasi</option>
+                    <option value="3">Merchant</option>
+                  </select>
+                </div>
+                <div className="col-4">
+                  <div className="d-flex flex-row">
+                    <input
+                      className="form-control "
+                      type="search"
+                      placeholder="Masukkan email / nama tempat"
+                    />
+                    <button className="btn btn-default ms-1" type="submit" style={{backgroundColor: '#229BD8', color: 'white'}}>
+                      Cari
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+   
+    <div style={{backgroundColor:'white', width: '1000px', height: '350px', marginLeft:'35px'}}>
+      <div style={{width: '1000px'}}>
+       {
+        usersMerchant.length ?
       <>
         <div id="container-fluid mt-3">
-          <div className="">
-              <div>
+          <div>
+              <div style={{marginTop: '20px'}}>
                 <DataTable
                   // columns={columns}
                   columns={columns(ActionButtonHandlers)}
@@ -122,7 +216,6 @@ export default function MerchantApprovalTable() {
                     return {
                       id: el.id,
                       created_at: el.created_at,
-                      full_name: el.full_name,
                       email: el.email,
                       sub_category: el.Merchant?.Category?.name,
                       place_name: el.Merchant?.place_name,
@@ -161,6 +254,10 @@ export default function MerchantApprovalTable() {
           <h3 className="row" style={{ justifyContent: "center" }}>Data Not found!</h3>
       </div>
     </div> 
+    }
+          </div>
+          </div>
+          </>
     )
   };
 };

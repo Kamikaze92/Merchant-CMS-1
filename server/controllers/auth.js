@@ -1,4 +1,4 @@
-const {comparePassword} = require('../helpers/bcrypt')
+const {comparePassword, getSalt} = require('../helpers/bcrypt')
 const {jwtSign, signPasswordLink} = require('../helpers/jwt')
 const newHistory = require('../helpers/historyInstance');
 const {transporter, mailOtp, resetPasswordMail} = require('../helpers/nodemailer')
@@ -13,26 +13,31 @@ module.exports = class AuthController {
       let response = await User.findOne({
         where: { email },
       });
+      if(!response.approved_at && !response.approved_by && !response.verified_at){
+        throw {
+          name: "not_authenticated",
+        }
+      }
 
       if(response && comparePassword(password, response.password)){
-        if(!response.approved_at){
+        if(!response.approved_at && !response.approved_by && !response.verified_at){
           throw {
-            name: "not_authenticated",
-          };
-        } else {
-          const access_token = jwtSign({
-            id: response.id,
-            email: response.email,
-          });
-          res.status(200).json({
-            access_token: access_token,
-          });
-        };
+            name: "not_approved",
+          }
+        }
+        const access_token = jwtSign({
+          id: response.id,
+          email: response.email,
+        });
+        res.status(200).json({
+          access_token: access_token,
+        });
       } else {
         throw {
           name: 'invalid_user',
         };
-      };
+      }
+
     } catch (error) {
       next(error);
     };
@@ -66,7 +71,7 @@ module.exports = class AuthController {
       if (user_type !== 'Merchant' && user_type !== 'Verifier' ) {
         throw {
           name: 'errorUserType',
-          mgs: 'user type should be "Merchant" or "Verifier"',
+          msg: 'user type should be "Merchant" or "Verifier"',
         }
       }
 
@@ -77,6 +82,7 @@ module.exports = class AuthController {
           institution,
           province_id: province_id || null,
           city_id: city_id || null,
+          created_by: 1,
         }, { transaction: t });
       };
 
@@ -87,6 +93,7 @@ module.exports = class AuthController {
         phone_number,
         password: 'random',
         verifier_id: verifierTransaction?.id || null,
+        created_by: 1,
       }, { transaction: t });
 
       // merchant transaction.
@@ -104,6 +111,7 @@ module.exports = class AuthController {
           postal_code,
           tenant_category_id,
           parent_id,
+          created_by: 1,
         }, { transaction: t });
       }
 
@@ -114,7 +122,7 @@ module.exports = class AuthController {
       //     throw { name: 'fail_create_history' };
       // }
       // if transaction successfull, send the OTP.
-      t.afterCommit(() => {
+      t.afterCommit(async () => {
         // using padStart so it will be always 6 digit.
         const OTP = String(Math.floor(Math.random() * 999999));
         transporter.sendMail(mailOtp(userTransaction.email, OTP), async (error) => {
@@ -181,7 +189,7 @@ module.exports = class AuthController {
       const user = await User.findByPk(id);
       
       if (!user) {
-        throw { name: 'not_found' };
+        throw { name: 'user_not_found' };
       };
       
       const OTP = String(Math.floor(Math.random() * 999999));
@@ -223,12 +231,18 @@ module.exports = class AuthController {
         if(!response){
           throw { name: 'user_not_found'}
         }
+        if(!response.approved_at && !response.approved_by && !response.verified_at){
+          throw {
+            name: "not_approved",
+          }
+        }
         const payload = {
             id: response.id,
-            email: response.email
+            email: response.email,
+            password: response.password,
         };
         const token = signPasswordLink(payload, response.password);
-        let link = `${url}/${response.id}/${token}`
+        let link = `http://${url}/${response.id}/${token}`
         transporter.sendMail(resetPasswordMail(response.email, link), (err) => {
           if(err){
             throw {
@@ -250,11 +264,14 @@ module.exports = class AuthController {
     try {
       const { id } = req.params
       const { password, password2 } = req.body
+      if(!req.body){
+        throw {name: 'password_not_found'}
+      }
       if(password !== password2){
         throw {name: "password_not_match"}
       }
       //create hooks beforeUpdate to hash new password
-      let params = { password }
+      let params = { password: getSalt(password) }
       await User.update(params, {
         where: { id }
       })
@@ -295,5 +312,30 @@ module.exports = class AuthController {
       next(err)
     }
   }
+
+    static async approveUser(req, res, next) {
+    try {
+      const { id, token } = req.params;
+      const response = await User.findOne({where: {id}})
+      if(response.approved_at){
+        verifyData(token);
+        await User.update({
+          approved_at: new Date(),
+        }, {
+          where: {id}
+        });
+        res.status(201).json({ 
+          message: 'User has been approved.',
+          id,
+        });
+      }
+      else{
+        throw {name: 'not_authenticated'}
+      }
+      // !TODO : create history.
+    } catch (error) {
+      next(error);
+    };
+  };
 }
 

@@ -41,14 +41,29 @@ const detailData = {
 
 export default function MerchantDetail() {
   const {state} = useLocation()
-
+  console.log(state, 'asup mantapp uhuyy');
+  const [data, setData] = useState()
+  const [text, setText] = useState()
+  useEffect(() => {
+    if (!state) {
+      console.log(null);
+    } else {
+      if (!state.approved_at && !state.approved_by) {
+        setText('Akun Pengelola Baru')
+        setData(state)
+    } else {
+        setText('Pengelola QR Code Detail')
+        setData(state)
+    }
+    }
+  }, [])
   return (
     <>
-      <div className="container mt-5">
+      <div style={{backgroundColor:'white'}}>
         <div className="row">
           <div className="d-flex flex-row">
-            <div className="d-flex flex-column" style={{ marginLeft: 500 }}>
-              <h3 style={heading}>Informasi Pengelola QR Code</h3>
+            <div className="d-flex flex-column" style={{ marginLeft: '380px', marginTop:'20px' }}>
+              <h3 style={heading}>{text?text:null}</h3>
               <div style={{padding: 10}}>
                 <div>
                   <div className="d-flex flex-row" style={{ marginTop: 20 }}>
@@ -67,18 +82,18 @@ export default function MerchantDetail() {
                       <p>Kota :</p>
                     </div>
                     <div className="d-flex flex-column" style={detailData}>
-                      <p>{state.email}</p>
-                      <p>{state.full_name}</p>
-                      <p>{state.phone_number}</p>
-                      <p>{state.Merchant.Category?.name?state.Merchant.Category.name: "-" }</p>
-                      <p>{state.Merchant.tenant_category_id? state.Merchant.tenant_category_id : "-"}</p>
+                      <p>{data?.email}</p>
+                      <p>{data?.full_name}</p>
+                      <p>{data?.phone_number}</p>
+                      <p>{data?.merchant?.sub_category?.category? data.merchant.sub_category.category.name: "-" }</p>
+                      <p>{data?.merchant?.sub_category?.name? data.merchant.sub_category.name: "-"}</p>
+                      <p>{data?.merchant?.sub_category?.category?.is_tenant_category? data.merchant.sub_category.category.name: "-"}</p>
                       <p>-</p>
-                      <p>-</p>
-                      <p>{state.Merchant.place_name}</p>
-                      <p>{state.Merchant.institution}</p>
-                      <p>{state.Merchant.address}</p>
-                      <p>{state.Merchant.province_id}</p>
-                      <p>{state.Merchant.city_id}</p>
+                      <p>{data?.merchant?.place_name}</p>
+                      <p>{data?.merchant?.institution}</p>
+                      <p>{data?.merchant?.address}</p>
+                      <p>{data?.merchant?.province_id}</p>
+                      <p>{data?.merchant?.city_id}</p>
                     </div>
                   </div>
                 </div>

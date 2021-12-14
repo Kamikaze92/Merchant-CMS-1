@@ -1,4 +1,5 @@
 import React from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./css/CategoryTenantPage.css";
@@ -136,7 +137,7 @@ export default function CategoryNonTenant(props) {
             aria-describedby="basic-addon2"
           ></input>
           <div className="input-group-append">
-            <button onClick={filterCategory} className="btn btn-default mx-2">
+            <button onClick={filterCategory} className="btn btn-default mx-2" style={{backgroundColor:'#229BD8', color:'white'}}>
               Cari
             </button>
           </div>
@@ -150,6 +151,7 @@ export default function CategoryNonTenant(props) {
           <div className="input-group-append add-category mt-4">
             <button
               className="btn btn-default"
+              style={{fontSize: '15px'}}
               onClick={() =>
                 handleShow({
                   name: "Tambah Kategori",
@@ -184,24 +186,7 @@ export default function CategoryNonTenant(props) {
                   ? non_tenant.map((el, i) => {
                       if (i < 5) {
                         return (
-                          <tr key={el.id}>
-                            <td>{el.name}</td>
-                            <td>{el.description}</td>
-                            <td>
-                              {el.sub_category?.length
-                                ? el.sub_category.length
-                                : 0}
-                            </td>
-                            <td>
-                              <a
-                                style={{ cursor: "pointer" }}
-                                onClick={() => navigate(`/categories/${el.id}`)}
-                              >
-                                <i class="bx bx-list-ul"></i>
-                                Detail
-                              </a>
-                            </td>
-                          </tr>
+                          <TableRowNonTenant el={el}/>
                         );
                       } else {
                         return null;
@@ -210,24 +195,7 @@ export default function CategoryNonTenant(props) {
                   : category
                   ? category.map((el, i) => {
                       return (
-                        <tr key={el.id}>
-                          <td>{el.name}</td>
-                          <td>{el.description}</td>
-                          <td>
-                            {el.sub_category?.length
-                              ? el.sub_category.length
-                              : 0}
-                          </td>
-                          <td>
-                            <a
-                              style={{ cursor: "pointer" }}
-                              onClick={() => navigate(`/categories/${el.id}`)}
-                            >
-                              <i class="bx bx-list-ul"></i>
-                              Detail
-                            </a>
-                          </td>
-                        </tr>
+                        <TableRowNonTenant el={el}/>
                       );
                     })
                   : null}
@@ -241,6 +209,30 @@ export default function CategoryNonTenant(props) {
       </div>
     </>
   );
+
+  function TableRowNonTenant({el}) {
+    return (
+      <tr key={el.id}>
+                            <td>{el.name}</td>
+                            <td>{el.description}</td>
+                            <td>
+                              {el.sub_category?.length
+                                ? el.sub_category.length
+                                : 0}
+                            </td>
+                            <td>
+                              <a
+                                style={{ cursor: "pointer", color:'#229BD8' }}
+                                onClick={() => navigate(`/categories/${el.id}`)}
+                              >
+                                <i class="bx bx-list-ul"></i>
+                                Detail
+                              </a>
+                            </td>
+                          </tr>
+    )
+  }
+
   function Pagination({ lengthData }) {
     let data = Math.ceil(lengthData.length / pagination);
     let pageNumber = [];

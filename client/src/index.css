@@ -33,31 +33,30 @@ body {
 }
 
 #partitioned {
-  padding-left: 15px;
-  letter-spacing: 42px;
+  text-align:left;
+  letter-spacing: 29px;
+  padding-left: 2px;
+  text-indent: 12px;
+  margin-right: -29px;
   border: 0;
-  background-image: linear-gradient(
-    to left,
-    black 70%,
-    rgba(255, 255, 255, 0) 0%
-  );
+  background-image: linear-gradient( to left, black 70%, rgba(255, 255, 255, 0) 0% );
   background-position: bottom;
   background-size: 50px 2px;
   background-repeat: repeat-x;
-  background-position-x: 35px;
-  width: 220px;
-  min-width: 220px;
+  background-position-x: 40px;
+  width: 295px;
+  max-width: 295px;
   outline: unset;
 }
 
 #divInner {
-  left: 0;
+  margin-left: 110px;
   position: sticky;
 }
 
 #divOuter {
-  width: 190px;
-  overflow: hidden;
+  width: 300px;
+  margin-left: 100px;
 }
 
 #cardOtp {
@@ -73,7 +72,7 @@ body {
   background-color: #094c6f;
   font-family: Roboto;
   width: auto;
-  height: 800px;
+  height: 100vh;
 }
 
 #checkPage {
@@ -119,6 +118,18 @@ body {
   left: 32px;
   top: 320px;
   background: #eeeeee;
+  border-radius: 12px;
+}
+
+#is-valid-password {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  position: static;
+  left: 32px;
+  top: 320px;
+  background: rgb(255, 201, 201);
   border-radius: 12px;
 }
 

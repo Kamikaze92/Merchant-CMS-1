@@ -1,7 +1,6 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class User_Group extends Model {
     /**
@@ -11,36 +10,52 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User_Group.belongsTo(models.Role, {
+        foreignKey: 'role_id',
+        as: 'role',
+      });
+
+      User_Group.belongsTo(models.Privilege, {
+        foreignKey: 'privilege_id',
+        as: 'privilege',
+      });
     }
-  };
-  User_Group.init({
-    role_id: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
-      validate: {
-        notNull: {
-          msg: "role_id can't be empty"
+  }
+  User_Group.init(
+    {
+      role_id: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        validate: {
+          notNull: {
+            msg: 'Role is required',
+          },
+          notEmpty: {
+            msg: 'Role is required',
+          },
         },
-        notEmpty: {
-          msg: "role_id can't be empty"
-        }
-      }
+      }, // required
+      privilege_id: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        validate: {
+          notNull: {
+            msg: 'Privilege is required',
+          },
+          notEmpty: {
+            msg: 'Privilege is required',
+          },
+        },
+      }, // required
     },
-    privilege_id: {
-      allowNull: false,
-      type: DataTypes.INTEGER,
-      validate: {
-        notNull: {
-          msg: "privilege_id can't be empty"
-        },
-        notEmpty: {
-          msg: "privilege_id can't be empty"
-        }
-      }
+    {
+      sequelize,
+      paranoid: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      deletedAt: 'deleted_at',
+      modelName: 'User_Group',
     }
-  }, {
-    sequelize,
-    modelName: 'User_Group',
-  });
+  );
   return User_Group;
 };

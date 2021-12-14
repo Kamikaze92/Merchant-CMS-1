@@ -1,4 +1,5 @@
 import errorImage from '../assets/images/Frame 167.svg'
+import {Link} from 'react-router-dom'
 const VerifiedPage = {
     backgroundColor: "#094C6F",
     backgroundSize: "cover",
@@ -53,6 +54,11 @@ export default function AccountVerified(){
                       Periksa email anda dalam kurun waktu 2x24 jam.
                     </h6>
                   </div>
+                  <div className="mb-4 text-center mt-4">
+                  <Link to="/login">
+                    <a href="#" className="text-info text-decoration-none"><strong>Kembali ke Login</strong></a>
+                  </Link>
+                </div>
                 </div>
               </div>
             </div>

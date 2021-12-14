@@ -12,20 +12,60 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Verifier.hasOne(models.User, {
         foreignKey: 'verifier_id',
+        as: 'verifier',
       });
+
+      Verifier.belongsTo(models.City, {
+        foreignKey: 'city_id',
+        as: 'city',
+      })
+
+      Verifier.belongsTo(models.Province, {
+        foreignKey: 'province_id',
+        as: 'province',
+      })
+      
     }
-  };
-  Verifier.init({
-    institution: DataTypes.STRING,
-    province_id: DataTypes.INTEGER,
-    city_id: DataTypes.INTEGER
-  }, {
-    sequelize,
-    paranoid: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
-    deletedAt: 'deleted_at',
-    modelName: 'Verifier',
-  });
+  }
+  Verifier.init(
+    {
+      institution: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        validate: {
+          notNull: {
+            msg: 'Institution is required',
+          },
+          notEmpty: {
+            msg: 'Institution is required',
+          },
+        },
+      }, // required.
+      province_id: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        validate: {
+          notNull: {
+            msg: 'Province is required',
+          },
+          notEmpty: {
+            msg: 'Province is required',
+          },
+        },
+      }, // required.
+      city_id: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+      }, // required.
+    },
+    {
+      sequelize,
+      paranoid: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      deletedAt: 'deleted_at',
+      modelName: 'Verifier',
+    }
+  );
   return Verifier;
 };

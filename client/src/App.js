@@ -13,7 +13,7 @@ import LoginPage from "./Pages/LoginPage";
 import ActiveMerchant from "./Pages/ActiveMerchant";
 import UserVerifierApproval from "./Pages/UserVerifierApproval";
 import MerchantApproval from "./Pages/MerchantApproval";
-import ActiveMerchantDetail from "./Pages/ActiveMerchantDetail";
+import DetailUserMerchant from "./Pages/DetailUserMerchant";
 import ErrorPage from "./Pages/ErrorPage";
 import ListGroupDetail from "./Pages/ListGroupDetail";
 import ChangePassword from "./Pages/ChangePassword";
@@ -22,6 +22,7 @@ import { RequireAuth, HasToken } from './Components/RequireAuth';
 import Dashboard from './Pages/Dashboard';
 import ForgotPassword from './Pages/ForgotPassword';
 import SetPassword from "./Pages/SetPassword";
+import ApprovalPage from './Pages/ApprovalPage'
 
 function App() {
   return (
@@ -32,9 +33,10 @@ function App() {
           {/* Table utama */}
           <Route index element={<MerchantApproval />}></Route>
           <Route path="/merchants" element={<MerchantApproval />}></Route>
+          <Route path="/merchants/:id" element={<DetailUserMerchant />}></Route>
           <Route path="/verifiers" element={<UserVerifierApproval />}></Route>
           <Route path="/active-merchants" element={<ActiveMerchant />}></Route>
-          <Route path="/active-merchants/:id" element={<ActiveMerchantDetail />}></Route>
+          <Route path="/active-merchants/:id" element={<DetailUserMerchant />}></Route>
 
           {/* users, usergroup, category */}
           <Route path="/users" element={<Users />}></Route>
@@ -54,6 +56,7 @@ function App() {
         <Route path="/otp-verification/:id/:token" element={<HasToken><OtpInput /></HasToken>}></Route>
         <Route path="/check-status" element={<HasToken><CheckStatus /></HasToken>}></Route>
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+        <Route path="/approval-page/:id/:token" element={<ApprovalPage />}></Route>
         <Route path="/set-password/:id/:token" element={<SetPassword />}></Route>
         <Route path="/errors" element={<ErrorPage />}></Route>
         <Route

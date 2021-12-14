@@ -11,6 +11,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "not_authenticated") {
     code = 401;
     msg = "Login first";
+  } else if (err.name === "not_approved") {
+    code = 401;
+    msg = "Your account not approved please check status";
   } else if (err.name === "JsonWebTokenError" || err.name === "invalid_token") {
     code = 401;
     msg = "Invalid token";
@@ -65,6 +68,9 @@ const errorHandler = (err, req, res, next) => {
   } else if (err.name === "invalid_otp") {
     code = 400;
     msg = "OTP is not valid"
+  } else if(err.name === 'NotAuthorized') {
+    code = 403;
+    msg = "Your not authorized"
   }
 
   res.status(code).json({

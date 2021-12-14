@@ -1,9 +1,11 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./css/CategoryTenantPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategoriesTenant } from "../store/actions/category";
 import { Modal, Button, Form } from "react-bootstrap";
+import ModalCategoryTenant from "./ModalCategoryTenant";
 import {
   createCategoryTenant,
   updateCategoryTenant,
@@ -125,7 +127,7 @@ export default function Category(props) {
   };
   return (
     <>
-      <FormPage data={show} />
+      < ModalCategoryTenant data={show} />
       <div className="filter p-3">
         <div className="input-group mb-3 input-filter">
           <input
@@ -137,7 +139,7 @@ export default function Category(props) {
             aria-describedby="basic-addon2"
           ></input>
           <div className="input-group-append">
-            <button onClick={filterCategory} className="btn btn-default mx-2">
+            <button onClick={filterCategory} className="btn btn-default mx-2" style={{backgroundColor:'#229bd8', borderColor:'#229bd8', color: 'white'}}>
               Cari
             </button>
           </div>
@@ -151,6 +153,7 @@ export default function Category(props) {
           <div className="input-group-append add-category mt-4">
             <button
               className="btn btn-default"
+              style={{fontSize:'15px'}}
               onClick={() =>
                 handleShow({
                   name: "Tambah Kategori",
@@ -183,43 +186,7 @@ export default function Category(props) {
                   ? tenant.map((el, i) => {
                       if (i < 5) {
                         return (
-                          <tr key={el.id}>
-                            <td>{el.name}</td>
-                            <td>
-                              <i
-                                className="bi bi-pencil  bd-highlight"
-                                style={{ color: "#229BD8" }}
-                              ></i>
-                              <a
-                                onClick={() =>
-                                  handleShow({
-                                    name: "Edit Kategori",
-                                    payload: el.id,
-                                    categoryName: el.name,
-                                    show: true,
-                                  })
-                                }
-                              >
-                                Edit
-                              </a>
-                              <i
-                                className="bi bi-trash  bd-highlight"
-                                style={{ color: "#229BD8" }}
-                              ></i>
-                              <a
-                                onClick={() =>
-                                  handleShow({
-                                    name: "Hapus Kategori",
-                                    payload: el.id,
-                                    categoryName: "",
-                                    show: true,
-                                  })
-                                }
-                              >
-                                Hapus
-                              </a>
-                            </td>
-                          </tr>
+                          <TableCategoryTenant el={el}/>
                         );
                       } else {
                         return null;
@@ -228,45 +195,7 @@ export default function Category(props) {
                   : category
                   ? category.map((el, i) => {
                       return (
-                        <tr key={el.id}>
-                          <td>{el.name}</td>
-                          <td>
-                            <div>
-                            <i
-                              className="bi bi-pencil  bd-highlight"
-                              style={{ color: "#229BD8" }}
-                            ></i>
-                            <a
-                              onClick={() =>
-                                handleShow({
-                                  name: "Edit Kategori",
-                                  payload: el.id,
-                                  categoryName: el.name,
-                                  show: true,
-                                })
-                              }
-                            >
-                              Edit
-                            </a>
-                            <i
-                              className="bi bi-trash  bd-highlight"
-                              style={{ color: "#229BD8" }}
-                            ></i>
-                            <a
-                              onClick={() =>
-                                handleShow({
-                                  name: "Hapus Kategori",
-                                  payload: el.id,
-                                  categoryName: "",
-                                  show: true,
-                                })
-                              }
-                            >
-                              Hapus
-                            </a>
-                            </div>
-                          </td>
-                        </tr>
+                        <TableCategoryTenant el={el}/>
                       );
                     })
                   : null}
@@ -347,64 +276,127 @@ export default function Category(props) {
     );
   }
 
-  function FormPage({ data }) {
-    let { name, show, payload, categoryName } = data;
-    let nameUpdate = categoryName;
+  // function FormPage({ data }) {
+  //   let { name, show, payload, categoryName } = data;
+  //   let nameUpdate = categoryName;
+  //   return (
+  //     <Modal
+  //       show={show}
+  //       onHide={() =>
+  //         handleClose({
+  //           name: null,
+  //           payload: null,
+  //         })
+  //       }
+  //       animation={false}
+  //     >
+  //       <Modal.Header closeButton>
+  //         <Modal.Title>{name}</Modal.Title>
+  //       </Modal.Header>
+  //       <Modal.Body>
+  //         {name === "Edit Kategori" || name === "Tambah Kategori" ? (
+  //           <>
+  //             <Form.Label>Name</Form.Label>
+  //             <input
+  //               onChange={inputName}
+  //               type="text"
+  //               value={inputCategory}
+  //               className="form-control"
+  //               placeholder="Name"
+  //               aria-label="Name"
+  //               aria-describedby="basic-addon2"
+  //             ></input>
+  //           </>
+  //         ) : null}
+  //       </Modal.Body>
+  //       <Modal.Footer>
+  //         <Button
+  //           variant="secondary"
+  //           onClick={() =>
+  //             handleClose({
+  //               name: null,
+  //               payload: null,
+  //             })
+  //           }
+  //         >
+  //           Close
+  //         </Button>
+  //         <Button
+  //           variant="primary"
+  //           onClick={() =>
+  //             handleClose({
+  //               name,
+  //               payload,
+  //             })
+  //           }
+  //         >
+  //           Save Changes
+  //         </Button>
+  //       </Modal.Footer>
+  //     </Modal>
+  //   );
+  // }
+
+  function TableCategoryTenant({el}) {
     return (
-      <Modal
-        show={show}
-        onHide={() =>
-          handleClose({
-            name: null,
-            payload: null,
-          })
-        }
-        animation={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>{name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {name === "Edit Kategori" || name === "Tambah Kategori" ? (
-            <>
-              <Form.Label>Name</Form.Label>
-              <input
-                onChange={inputName}
-                type="text"
-                value={inputCategory}
-                className="form-control"
-                placeholder="Name"
-                aria-label="Name"
-                aria-describedby="basic-addon2"
-              ></input>
-            </>
-          ) : null}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
+      <tr key={el.id}>
+        <td>{el.name}</td>
+        <td>
+        <p style={{fontSize: '13px'}}>
+          <i
+            className="bi bi-pencil-fill"
+            style={{ color: "#229BD8" }}
             onClick={() =>
-              handleClose({
-                name: null,
-                payload: null,
+              handleShow({
+                name: "Edit Kategori",
+                payload: el.id,
+                categoryName: el.name,
+                show: true,
               })
             }
-          >
-            Close
-          </Button>
-          <Button
-            variant="primary"
+          ></i> &nbsp;
+          <a
             onClick={() =>
-              handleClose({
-                name,
-                payload,
+              handleShow({
+                name: "Edit Kategori",
+                payload: el.id,
+                categoryName: el.name,
+                show: true,
               })
             }
+            style={{ color: "#229BD8" }}
           >
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    );
+            Edit
+          </a> &nbsp; 
+          <i
+            className="bi bi-trash  bd-highlight"
+            style={{ color: "#F6303A" }}
+            onClick={() =>
+              handleShow({
+                name: "Hapus Kategori",
+                payload: el.id,
+                categoryName: "",
+                show: true,
+              })
+            }
+          ></i> &nbsp;
+          <a
+            onClick={() =>
+              handleShow({
+                name: "Hapus Kategori",
+                payload: el.id,
+                categoryName: "",
+                show: true,
+              })
+            }
+            style={{ color: "#F6303A" }}
+          >
+            Hapus
+          </a>
+          </p>
+        </td>
+      </tr>
+    )
   }
+
 }

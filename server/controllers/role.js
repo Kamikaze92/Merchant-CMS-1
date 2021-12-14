@@ -30,7 +30,7 @@ class RoleController {
         { exclude: ['createdAt', 'updatedAt'] } 
       });
       if(!resp.length) {
-        res.status(200).json({ message: 'Role is not found' });
+        res.status(404).json({ message: 'Role is not found' });
     } else {
         res.status(200).json(resp);
     }
