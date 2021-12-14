@@ -43,6 +43,7 @@ const LoginFooter = {
 export default function LoginPage() {
   document.body.style = `background: ${LoginPageStyle.backgroundColor}`;
   const navigate = useNavigate();
+  const [error, setError] = useState('')
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: ''
@@ -71,16 +72,16 @@ export default function LoginPage() {
       if (response.status === 200) {
         localStorage.setItem('access_token', response.data.access_token);
         navigate('/merchants');
-      } if(response.status === 401){
-        navigate('/account-verified')
       }
       else {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
+      setError(error.response.data.message)
       console.log(error.response.data);
     }
   }
+  
   return (
     <div style={ LoginPageStyle }>
       <div className="register-form">
@@ -100,6 +101,11 @@ export default function LoginPage() {
               </div>
               <form onSubmit={(e) => login(e)}>
                 <div className="px-1 py-1">
+                {error ? (
+                <div className="alert alert-danger alert-dismissible" role="alert">
+                  <strong>Ups!</strong> {error}
+                </div>
+                ): (null)}
                   <div className="mt-2">
                     <label className="form-label" style={FormText}>
                       Email
@@ -127,27 +133,28 @@ export default function LoginPage() {
                       onChange={handleFormDataChange}
                     />
                 </div>
+                <div className="align-item-right mb-3">
+                  <h3 style={{ fontColor: '#229BD8', fontSize: 14}}>
+                    <Link to="/register-verifier"  className="text-info text-decoration-none mx-2"><strong>Lupa Password ?</strong></Link>
+                  </h3>
+                </div>
                 <div className="d-grid gap-2 col-12 mt-3">
                   <button
                     className="btn"
                     type="submit"
                     style={{ backgroundColor: "#0277bd", color: "whitesmoke" }}
                   >
-                    Login
+                    Masuk
                   </button>
-                  <h3 style={{ fontColor: '#229BD8', fontSize: 16}}>
-                    Lupa Password
-                    <Link to="/register-verifier"  className="text-info text-decoration-none mx-2"><strong>di sini</strong></Link>
-                  </h3>
                 </div>
               </form>
               <div style={LoginFooter} className="mt-3">
                 <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
-                  Daftar sebagai verifikator 
+                  Daftar Sebagai Verifikator 
                     <Link to="/register-verifier"  className="text-info text-decoration-none mx-2"><strong>di sini</strong></Link>
                 </h3>
                 <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
-                  Belum punya akun? <Link to="/register-merchant"  className="text-info text-decoration-none"><strong>Register</strong></Link>
+                Daftar Sebagai Merchant <Link to="/register-merchant"  className="text-info text-decoration-none"><strong>di sini</strong></Link>
                 </h3>
                 <h3 style={{ fontColor: '#229BD8', fontSize: 18}}>
                   Sudah melakukan registrasi?{" "}

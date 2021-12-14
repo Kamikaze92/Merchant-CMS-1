@@ -13,13 +13,13 @@ module.exports = class AuthController {
       let response = await User.findOne({
         where: { email },
       });
-      if(!response.approved_at && !response.approved_by && !response.verified_at){
-        throw {
-          name: "not_authenticated",
-        }
-      }
 
       if(response && comparePassword(password, response.password)){
+        if(!response.approved_at && !response.approved_by && !response.verified_at){
+          throw {
+            name: "not_approved",
+          }
+        }
         const access_token = jwtSign({
           id: response.id,
           email: response.email,
@@ -228,7 +228,7 @@ module.exports = class AuthController {
         }
         if(!response.approved_at && !response.approved_by && !response.verified_at){
           throw {
-            name: "not_authenticated",
+            name: "not_approved",
           }
         }
         const payload = {
