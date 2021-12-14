@@ -16,7 +16,6 @@ const layoutBorder = {
 
 export default function ListGroupPage ({ id }) {
     const { isLoading, userGroups } = useSelector(state => state.userGroups);
-    console.log(userGroups);
     const dispatch = useDispatch();
     const detailData = {
       id
@@ -25,16 +24,14 @@ export default function ListGroupPage ({ id }) {
     useEffect( () => {
         dispatch(getUserGroups());
     }, [dispatch]);
-    console.log(userGroups);
     const addGroup = () => {
       console.log('Add Feature');
     }
     return (
       <>
       {
-        JSON.stringify(userGroups)
-      }
-          <div className="container-fluid mt-3">
+        isLoading ? <LoadingComponent></LoadingComponent> :
+        <div className="container-fluid mt-3">
           <div className="border" style={layoutBorder}>
               <div className="d-flex flex-row justify-content-center">
                 <div className="col-5">
@@ -61,8 +58,7 @@ export default function ListGroupPage ({ id }) {
               </div>
                 <div>
                     {
-                        isLoading ? 
-                        <LoadingComponent/> :
+                        isLoading ? <LoadingComponent/> :
                         userGroups?.length ?
                         <table className="table table-hover">
                             <thead>
@@ -76,13 +72,14 @@ export default function ListGroupPage ({ id }) {
                             </thead>
                                 <tbody>
                                 {
-                                    userGroups.map(el => {
+                                    userGroups?.map(el => {
+                                      const path = `/group-list/${el.id}`
                                         return (
                                             <tr>
-                                                <td scope="row">Admin</td>
-                                                <td>Untuk Administrator</td>
+                                                <td scope="row">{ el.role?.name }</td>
+                                                <td>{ el.role?.description }</td>
                                                 <td>2</td>
-                                                <td>Super Admin</td>
+                                                <td>{ el.privilege?.name }</td>
                                                 <td><Link to={ path } state= {{ detailData }}><i class='bx bx-list-ul' ></i> Detail</Link></td>
                                             </tr>
                                         )
@@ -119,6 +116,7 @@ export default function ListGroupPage ({ id }) {
               </div>
               </div>
           </div>
+      }
         </>
       );
 }

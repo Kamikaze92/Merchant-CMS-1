@@ -41,7 +41,7 @@ function App() {
           <Route path="/users" element={<Users />}></Route>
           <Route path="/users/:id" element={<UserDetail />}></Route>
           <Route path="/group-list" element={<ListGroup />}></Route>
-          <Route path="/group-list/detail" element={<ListGroupDetail />}></Route>
+          <Route path="/group-list/:id" element={<ListGroupDetail />}></Route>
           <Route path="/change-password" element={<ChangePassword />}></Route>
           <Route path="/categories" element={<CategoryNonTenant />}></Route>
           <Route path="/categories/tenant" element={<CategoryTenant />}></Route>
