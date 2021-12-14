@@ -6,28 +6,39 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       name: {
         allowNull: false,
         unique: true,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       description: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      createdAt: {
+      created_by: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
       },
-      updatedAt: {
+      created_at: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deleted_at: {
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Roles');
-  }
+  },
 };

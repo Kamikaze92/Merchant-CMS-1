@@ -77,6 +77,7 @@ module.exports = class AuthController {
           institution,
           province_id: province_id || null,
           city_id: city_id || null,
+          created_by: 1,
         }, { transaction: t });
       };
 
@@ -87,6 +88,7 @@ module.exports = class AuthController {
         phone_number,
         password: 'random',
         verifier_id: verifierTransaction?.id || null,
+        created_by: 1,
       }, { transaction: t });
 
       // merchant transaction.
@@ -104,6 +106,7 @@ module.exports = class AuthController {
           postal_code,
           tenant_category_id,
           parent_id,
+          created_by: 1,
         }, { transaction: t });
       }
 
@@ -114,7 +117,7 @@ module.exports = class AuthController {
       //     throw { name: 'fail_create_history' };
       // }
       // if transaction successfull, send the OTP.
-      t.afterCommit(() => {
+      t.afterCommit(async () => {
         // using padStart so it will be always 6 digit.
         const OTP = String(Math.floor(Math.random() * 999999));
         transporter.sendMail(mailOtp(userTransaction.email, OTP), async (error) => {
