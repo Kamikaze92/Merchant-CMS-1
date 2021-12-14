@@ -5,11 +5,9 @@ import { useNavigate, Link } from 'react-router-dom';
 
 
 const layoutBorder = {
-  borderRadius: 5,
   padding: "16px",
   backgroundColor: "white",
   marginTop: 20,
-  marginLeft: 24,
   marginRight: 24,
 };
 export default function ActiveMerchantTable() {
@@ -39,7 +37,7 @@ export default function ActiveMerchantTable() {
     <>
       <div className="container-fluid mt-3">
           <div className="">
-            <div className="border" style={layoutBorder}>
+            <div style={layoutBorder}>
               <h6 style={{ fontSize: 14 }}>Status Pendaftaran</h6>
               <div className="d-flex flex-row justify-content-between">
                 <div className="col-4">
@@ -68,7 +66,7 @@ export default function ActiveMerchantTable() {
                 </div>
               </div>
             </div>
-            <div className="border p-3 mt-4 mb-4" style={layoutBorder}>
+            <div className="p-3 mt-4 mb-4" style={layoutBorder}>
               <div
                 className="d-flex flex-row justify-content-between mb-3"
                 style={{ alignItems: "center" }}
