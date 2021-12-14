@@ -64,19 +64,34 @@ module.exports = class UserController {
         include.push(
           {
             model: Verifier,
-            require: true, // REQUIRED!. because if not have verifier it should return empty array!.
+            require: true,
+            as: "verifier"
+            // REQUIRED!. because if not have verifier it should return empty array!.
           },
         );
       } else {
         include.push(
           {
             model: Merchant,
-            require: true, // REQUIRED!. because if not have merchant it should return empty array!.
+            require: true,
+            as: "merchant",
+            // REQUIRED!. because if not have merchant it should return empty array!.
             include: [
               {
                 model: Category,
+                as: 'sub_category',
                 require: true, // REQUIRED!. because merchant should have category!.
               },
+              {
+                model: Province,
+                as: 'province',
+                require: true, // REQUIRED!. because if not have merchant it should return empty array!.
+              },
+              {
+                model: City,
+                as: 'city',
+                require: true, // REQUIRED!. because if not have merchant it should return empty array!.
+              }
             ]
           }
         );
