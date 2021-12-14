@@ -77,7 +77,7 @@ export default function SetPassword() {
                   Buat Password Akun
                 </h4>
               </div>
-              <form method="get">
+              <form method="get" onSubmit={changePassword}>
                 <div className="px-1 py-1">
                     <div>
                         <label className="form-label" style={FormText}>

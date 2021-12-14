@@ -114,7 +114,7 @@ module.exports = class UserController {
       // New Merchant User.
       let conditions = {
         verifier_id: null,
-        verified_at: null,
+        verified_at: { [Op.ne]: null },
         approved_at: null,
         approved_by: null,
         is_rejected: null,
@@ -618,28 +618,6 @@ module.exports = class UserController {
     }
   }
 
-  static async approveUser(req, res, next) {
-    try {
-      const { id, token } = req.params;
-
-      // if token was invalid its throw error.
-      verifyData(token);
-      await User.update({
-        approved_at: new Date(),
-      }, {
-        where: {id}
-      });
-
-      // !TODO : create history.
-
-      res.status(200).json({ 
-        message: 'User has been approved.',
-        id,
-      });
-    } catch (error) {
-      next(error);
-    };
-  };
 
   static async userChangePassword(req, res, next){
     try {
