@@ -3,6 +3,7 @@ const  newHistory = require('../helpers/historyInstance');
 const { User, Role, Verificator, sequelize, History, Category, Verifier, Merchant, City } = require("../models");
 const { Op } = require("sequelize");
 const {jwtSign, verifyData} = require('../helpers/jwt')
+const {comparePassword} = require('../helpers/bcrypt')
 const {transporter, mailActivation} = require('../helpers/nodemailer')
 module.exports = class UserController {
   // your code goes here
@@ -587,25 +588,28 @@ module.exports = class UserController {
     };
   };
 
-  static async userCreatePassword(req, res, next){
+  static async userChangePassword(req, res, next){
     try {
-      const { id } = req.params;
+      const { id } = req.user.id;
+      const response = await User.findOne({where: {id}})
       const { password, confirmPassword } = req.body;
-      if (password !== confirmPassword) {
-        throw {
-          name: "password_not_match"
+      if(comparePassword(password, response.password)){
+        if (password !== confirmPassword) {
+          throw {
+            name: "password_not_match"
+          };
         };
-      };
-      //create hooks beforeUpdate to hash new password
-      await User.update({ password }, {
-        where: { id },
-      });
-
-      // !TODO : create history.
-
-      res.status(200).json({ 
-        message: 'Password registered. You can login now.'
-      });
+        //create hooks beforeUpdate to hash new password
+        await User.update({ password }, {
+          where: { id },
+        });
+  
+        // !TODO : create history.
+  
+        res.status(200).json({ 
+          message: 'Password changed. You can login now.'
+        });
+      }
     } catch (error) {
       next(error);
     };
