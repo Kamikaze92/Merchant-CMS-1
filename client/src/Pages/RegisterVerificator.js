@@ -179,7 +179,6 @@ export default function RegisterVerificator() {
         if (error.message && !error.response?.data) {
           setLoading(false)
         } else {
-          console.log(error.response.data.message, '>>>>>>');
           setLoading(false)
         }
         setLoading(false)

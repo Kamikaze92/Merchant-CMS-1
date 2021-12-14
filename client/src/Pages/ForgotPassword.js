@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import successImage from '../assets/images/Frame 167.svg'
 import axios from "axios";
-
 const ForgotPasswordPage = {
   backgroundColor: "#094C6F",
   minHeight: '100vh',
@@ -41,11 +41,14 @@ const RegisterFooter = {
 };
 
 export default function ForgotPassword() {
-  const navigate = useNavigate();
   const [formEmail, setFormEmail] = useState({
     url: `${window.location.hostname}/set-password`,
     email: "",
   });
+  const [text, setText] = useState('Reset Password')
+  const [isValid, setIsValid] = useState(false)
+  const [emptyUser, setEmptyUser] = useState(false)
+  const [isLoading, setLoading] = useState(false)
   const inputEmail = (e) => {
     const { name, value } = e.target;
     setFormEmail({
@@ -56,18 +59,25 @@ export default function ForgotPassword() {
   const resetPassword = async (e) => {
     try {
       e.preventDefault();
-      const response = await axios({
-        url: `${process.env.REACT_APP_BASE_URL}/forgot-password`,
-        method: "POST",
-        data: formEmail,
-      })
-      if(response.status == 200){
-        //redirect ke page link
+      setLoading(true)
+      setEmptyUser(false)
+      if (!formEmail.email) {
+        setEmptyUser(true)
+        setLoading(false)
+      } else {        
+        const response = await axios({
+          url: `${process.env.REACT_APP_BASE_URL}/forgot-password`,
+          method: "POST",
+          data: formEmail,
+        })
+        setEmptyUser(false)
+        setIsValid(true)
+        setText('Verify Password')
+        setLoading(false)
       }
-      console.log(response.data.message)
-      navigate("/login")
     } catch (error) {
-      console.log(error);
+      setLoading(false)
+      setEmptyUser(true)
     }
   };
   return (
@@ -83,10 +93,23 @@ export default function ForgotPassword() {
                   style={{ height: "70px", width: "200px" }}
                 />
                 <h6 style={{ fontSize: 12, color: "#229BD8" }}>Merchant CMS</h6>
-                <h4 style={TextHeading}>Reset Password</h4>
+                <h4 style={TextHeading}>{text}</h4>
               </div>
-              <form>
+              {
+                isValid? 
+                <>
+                <img style={{marginTop: '-100px', marginLeft:'40px'}} src={successImage}></img>
+                <p style={{textAlign: 'center', marginTop: '10px'}}>Please check your email for your information to update new password.</p>
+                </> :  <form>
                 <div className="px-1 py-1">
+                  {emptyUser?
+                <div id="is-valid-password" className="mt-3">
+                  <div>
+                    <strong>Tidak ada akun dengan nama pengguna tersebut.</strong><br/>
+                    <u>Temukan nama pengguna Anda disini.</u>
+                  </div> 
+                </div> : null
+                  }
                   <div>
                     <label className="form-label" style={FormText}>
                       Alamat Email
@@ -101,7 +124,12 @@ export default function ForgotPassword() {
                       onChange={inputEmail}
                     />
                   </div>
-                  <div className="d-grid gap-2 col-12 mt-3">
+                  {
+                    isLoading?<div className="d-grid gap-2 col-12 mt-3">
+                    <button className="btn" type="button" disabled>
+                    <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                  </button></div>: <div className="d-grid gap-2 col-12 mt-3">
                     <button
                       className="btn"
                       type="submit"
@@ -114,8 +142,15 @@ export default function ForgotPassword() {
                       Submit
                     </button>
                   </div>
+                  }
+                  
                 </div>
-              </form>
+              </form> 
+              }
+              {
+                isValid? <Link to="/login" style={{textDecoration:'none', color:'black', marginLeft:'230px'}}>Kembali ke halaman <span style={{color:'#229BD8'}}><u>login</u></span></Link> :
+              <Link to="/login" style={{textDecoration:'none', color:'black'}}>Kembali ke halaman <span style={{color:'#229BD8'}}><u>login</u></span></Link>
+              }
             </div>
           </div>
         </div>

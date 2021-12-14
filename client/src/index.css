@@ -122,6 +122,18 @@ body {
   border-radius: 12px;
 }
 
+#is-valid-password {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  position: static;
+  left: 32px;
+  top: 320px;
+  background: rgb(255, 201, 201);
+  border-radius: 12px;
+}
+
 #reason-text {
   flex: none;
   order: 3;
