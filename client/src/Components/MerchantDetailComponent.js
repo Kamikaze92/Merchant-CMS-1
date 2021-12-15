@@ -87,13 +87,13 @@ export default function MerchantDetail() {
                       <p>{data?.phone_number}</p>
                       <p>{data?.merchant?.sub_category?.category? data.merchant.sub_category.category.name: "-" }</p>
                       <p>{data?.merchant?.sub_category?.name? data.merchant.sub_category.name: "-"}</p>
-                      <p>{data?.merchant?.sub_category?.category?.is_tenant_category? data.merchant.sub_category.category.name: "-"}</p>
-                      <p>-</p>
+                      <p>{data?.merchant?.tenant_category ? data.merchant.tenant_category.name : "-"}</p>
+                      <p>{data?.merchant?.non_tenant_merchant ? data.merchant.non_tenant_merchant.place_name : "-"}</p>
                       <p>{data?.merchant?.place_name}</p>
                       <p>{data?.merchant?.institution}</p>
                       <p>{data?.merchant?.address}</p>
-                      <p>{data?.merchant?.province_id}</p>
-                      <p>{data?.merchant?.city_id}</p>
+                      <p>{data?.merchant?.province ? data?.merchant?.province.name: "-"}</p>
+                      <p>{data?.merchant?.city ? data?.merchant?.city.name: "-"}</p>
                     </div>
                   </div>
                 </div>

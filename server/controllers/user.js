@@ -78,9 +78,44 @@ module.exports = class UserController {
             // REQUIRED!. because if not have merchant it should return empty array!.
             include: [
               {
+                model: Merchant,
+                require: true, // REQUIRED!. because merchant should have province!.
+                as: 'non_tenant_merchant',
+                attributes: {
+                  include: ["place_name"],
+                },
+              },
+              {
                 model: Category,
-                as: 'sub_category',
                 require: true, // REQUIRED!. because merchant should have category!.
+                as: 'sub_category',
+                attributes: {
+                  include: ["name", "description"],
+                },
+                include: {
+                  model: Category,
+                  require: true, // REQUIRED!. because merchant should have category!.
+                  as: 'category',
+                  attributes: {
+                    include: ["name", "description"],
+                  },
+                },
+              },
+              {
+                model: Category,
+                require: true, // REQUIRED!. because merchant should have category!.
+                as: 'tenant_category',
+                attributes: {
+                  include: ["name", "description"],
+                },
+                include: {
+                  model: Category,
+                  require: true, // REQUIRED!. because merchant should have category!.
+                  as: 'category',
+                  attributes: {
+                    include: ["name", "description"],
+                  },
+                },
               },
               {
                 model: Province,
