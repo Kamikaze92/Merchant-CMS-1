@@ -72,7 +72,7 @@ body {
   background-color: #094c6f;
   font-family: Roboto;
   width: auto;
-  height: 100vh;
+  min-height: "100%";
 }
 
 #checkPage {

@@ -5,7 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const RegisterPage = {
   backgroundColor: "#094C6F",
-  height: "150vh"
+  minHeight: "100%"
 };
 const RegisterForm = {
   backgroundColor: "white",
