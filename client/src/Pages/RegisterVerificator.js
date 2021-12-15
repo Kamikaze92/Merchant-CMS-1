@@ -7,7 +7,7 @@ const RegisterPage = {
   backgroundColor: "#094C6F",
   backgroundSize: "cover",
   width: "100%",
-  height: "100vh"
+  minHeight: "100%"
 };
 const RegisterForm = {
   backgroundColor: "white",
